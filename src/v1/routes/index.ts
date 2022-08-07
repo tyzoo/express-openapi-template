@@ -3,14 +3,14 @@ import express from "express";
 const router = express.Router();
 
 /**
- * @swagger
+ * @openapi
  * /:
- *  title: Header
- *  description: yo
  *  get:
+ *      tags:
+ *          - test
+ *      description: Test if the routes are working
  *      produces:
  *          -application/json
- *      description: Test if the routes are working
  *      responses:
  *          '200':
  *              description: A successful response!
@@ -25,7 +25,7 @@ router.get("/", (
     res: express.Response,
     next: express.NextFunction,
 ) => {
-    res.status(200).json({ message: `Here's yo data son`});
+    res.status(200).json({ message: `${process.env.APP_NAME} API index`});
 })
 
 export default router;
