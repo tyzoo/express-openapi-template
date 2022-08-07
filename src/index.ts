@@ -1,18 +1,20 @@
 import path from "path";
 import cors from "cors";
 import express from "express";
-import * as dotenv from "dotenv";
-import * as bodyParser from "body-parser";
 import swagger from "swagger-jsdoc"
 import swaggerUI from "swagger-ui-express"
+import * as dotenv from "dotenv";
+import * as bodyParser from "body-parser";
 import v1Router from "./v1/routes/data"
 
 dotenv.config();
+
 const APP_NAME = process.env.APP_NAME;
 const APP_BASE_URL = process.env.APP_BASE_URL;
 const APP_TITLE = process.env.APP_TITLE;
 const APP_DESCRIPTION = process.env.APP_DESCRIPTION;
 const PORT = parseInt(process.env.PORT ?? "3000");
+
 const swaggerConfig = {
     swaggerDefinition: {
         info: {
@@ -30,6 +32,7 @@ const swaggerConfig = {
     apis: [path.join(__dirname, "v1", "routes", "*")]
 }
 const swaggerDocs = swagger(swaggerConfig);
+
 const app = express();
 
 app.use(cors());
