@@ -1,5 +1,6 @@
 import express from "express";
-//https://editor.swagger.io/# good examples
+import itemsController from "../controllers/itemsController";
+//https://editor.swagger.io/# good inspiration
 const router = express.Router();
 
 /**
@@ -7,46 +8,43 @@ const router = express.Router();
  * /crud:
  *  get:
  *      tags:
- *          - crud
+ *          - CRUD
  *      summary: Find all items
  *      description: Returns all items
  *      produces:
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response!
+ *              description: A successful response
  *              schema:
  *                  type: object
  *                  properties:
  *                      message:
  *                          type: string
  */
-router.get("/", ((req,res,next) => {
-    res.status(200).json({ message: `Here is your list of posts`});
-}) as express.RequestHandler);
+router.get("/", itemsController.findAllItems);
 
 /**
  * @openapi
  * /crud/{itemId}:
  *  get:
  *      tags:
- *          - crud
+ *          - CRUD
  *      summary: Find an item by ID
  *      description: Returns a single item
  *      operationId: getItemById
  *      parameters:
- *          - name: itemId
- *            in: path
+ *          - in: path
+ *            name: itemId
  *            description: ID of the item to return
  *            required: true
  *            schema:
- *              type: integer
- *              format: int64
+ *              type: string
  *      produces:
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response!
+ *              description: A successful response
  *              schema:
  *                  type: object
  *                  properties:
@@ -54,22 +52,35 @@ router.get("/", ((req,res,next) => {
  *                          type: string
  *  put:
  *      tags:
- *          - crud
+ *          - CRUD
  *      summary: Update an item by ID
  *      description: Returns a single item
+ *      requestBody:
+ *          description: Description for request body
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                              default: Item
+ *                          rng:
+ *                              type: number
+ *                              required: false
  *      parameters:
- *          - name: itemId
- *            in: path
+ *          - in: path
+ *            name: itemId
  *            description: ID of the item to update
  *            required: true
  *            schema:
- *              type: integer
- *              format: int64
+ *              type: string
  *      produces:
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response!
+ *              description: A successful response
  *              schema:
  *                  type: object
  *                  properties:
@@ -77,7 +88,7 @@ router.get("/", ((req,res,next) => {
  *                          type: string
  *  delete:
  *      tags:
- *          - crud
+ *          - CRUD
  *      summary: Delete an item by ID
  *      description: Returns a single item
  *      parameters:
@@ -86,29 +97,27 @@ router.get("/", ((req,res,next) => {
  *            description: ID of the item to delete
  *            required: true
  *            schema:
- *              type: integer
- *              format: int64
+ *              type: string
  *      produces:
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response!
+ *              description: A successful response
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ *          '500':
+ *              description: Item does not exist
  *              schema:
  *                  type: object
  *                  properties:
  *                      message:
  *                          type: string
  */
-router.get("/:itemId", ((req,res,next) => {
-    res.status(200).json({ message: `Here's your item: ${req.params.itemId}`});
-}) as express.RequestHandler);
-
-router.put("/:itemId", ((req,res,next) => {
-    res.status(200).json({ message: `Updated item: ${req.params.itemId}`});
-}) as express.RequestHandler);
-
-router.delete("/:itemId", ((req,res,next) => {
-    res.status(200).json({ message: `Deleted item: ${req.params.itemId}`});
-}) as express.RequestHandler);
+router.get("/:itemId", itemsController.findItem);
+router.put("/:itemId", itemsController.updateItem);
+router.delete("/:itemId", itemsController.deleteItem);
 
 export default router;

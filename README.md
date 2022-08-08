@@ -2,7 +2,7 @@
 ### by [@tyzoo](https://github.io/tyzoo)
 
 ### About
-A simple express API in typescript with example OpenAPI/Swagger annotation which is used to automatically generate beautiful and functional docs for your API.
+A simple express API in typescript with example OpenAPI/Swagger annotation which is used to automatically generate beautiful and functional docs for your API. Also uses mongodb/mongoose/typegoose for database.
 
 ### Getting Started
 * Use this template to create a new repositiory

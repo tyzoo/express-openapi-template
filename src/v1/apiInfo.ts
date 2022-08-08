@@ -28,11 +28,11 @@ const config = {
         ],
         tags: [
             {
-                name: `crud`,
+                name: `CRUD`,
                 description: `A set of example CRUD routes`,
             },
             {
-                name: `test`,
+                name: `Tests`,
                 description: `Test if the API is up and running`,
             },
         ]
@@ -41,6 +41,7 @@ const config = {
         path.join(__dirname, "routes", "*"),
     ]
 }
+
 const docs = swagger(config);
 
 const v1ApiInfo = {

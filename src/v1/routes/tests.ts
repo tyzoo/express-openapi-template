@@ -5,12 +5,12 @@ const router = express.Router();
 
 /**
  * @openapi
- * /:
+ * /tests/add-items:
  *  get:
  *      tags:
  *          - Tests
- *      summary: Check if the API is online
- *      description: Test if the routes are working
+ *      summary: Create 10 test Documents
+ *      description: Add 10 test documents to database
  *      produces:
  *          -application/json
  *      responses:
@@ -19,9 +19,9 @@ const router = express.Router();
  *              schema:
  *                  type: object
  *                  properties:
- *                      online:
- *                          type: boolean
+ *                      message:
+ *                          type: string
  */
-router.get("/", testsController.checkConnection);
+router.get("/add-items", testsController.addItems);
 
 export default router;
