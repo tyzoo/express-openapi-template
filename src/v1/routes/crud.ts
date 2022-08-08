@@ -21,8 +21,35 @@ const router = express.Router();
  *                  properties:
  *                      message:
  *                          type: string
+ *  post:
+ *      tags:
+ *          - CRUD
+ *      summary: Create an Item
+ *      description: Create an Item
+ *      requestBody:
+ *          description: Description for request body
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                              default: Item
+ *      produces:
+ *          -application/json
+ *      responses:
+ *          '200':
+ *              description: A successful response
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
  */
 router.get("/", itemsController.findAllItems);
+router.post("/", itemsController.createItem);
 
 /**
  * @openapi

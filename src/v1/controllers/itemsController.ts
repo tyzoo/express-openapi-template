@@ -3,6 +3,16 @@ import { ItemModel } from "../../models/Item";
 
 const itemsController: {[name: string]: express.RequestHandler } = {
     
+    createItem: async (req, res, next) => {
+        try {
+            const item = new ItemModel(req.body);
+            await item.save();
+            res.status(200).json(item);
+        }catch(err: any){
+            res.status(500).json({ message: `Error: ${err.message ?? "unknown error"}` })
+        }
+    },
+    
     findItem: async (req, res, next) => {
         const item = await ItemModel.findById(req.params.itemId).select(["-__v"]);
         res.status(200).json(item);
@@ -17,7 +27,7 @@ const itemsController: {[name: string]: express.RequestHandler } = {
         let item = await ItemModel.updateOne(
             { _id: req.params.itemId },
             req.body,
-            { upsert: true }
+            { upsert: false }
         );
         if(item){
             res.status(200).json(item);
