@@ -4,6 +4,9 @@
 ### About
 A simple express API in typescript with example OpenAPI/Swagger annotation which is used to automatically generate beautiful and functional docs for your API. Also uses mongodb/mongoose/typegoose for database.
 
+### Demo
+[https://express-openapi-ts-app.herokuapp.com/](https://express-openapi-ts-app.herokuapp.com/)
+
 ### Getting Started
 * Use this template to create a new repositiory
 * Create a `./.env` file with the required variables
