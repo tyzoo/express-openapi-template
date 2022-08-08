@@ -5,7 +5,6 @@ const testsController: {[name: string]: express.RequestHandler } = {
     
     addItems: async (req, res, next) => {
         const count = await ItemModel.countDocuments({})
-        //Create 10 Test Items in DB
         for(let i = 1+count; i <= 10+count; i++){
             await ItemModel.create({
                 name: `Item ${i}`,

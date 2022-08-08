@@ -37,6 +37,7 @@ const router = express.Router();
  *                          name:
  *                              type: string
  *                              default: Item
+ *                              required: true
  *      produces:
  *          -application/json
  *      responses:
@@ -93,6 +94,7 @@ router.post("/", itemsController.createItem);
  *                          name:
  *                              type: string
  *                              default: Item
+ *                              required: true
  *                          rng:
  *                              type: number
  *                              required: false
