@@ -6,7 +6,7 @@ import { ethers } from "ethers";
         try {
             this.address = ethers.utils.getAddress(this.address)
         }catch(err:any) {
-            throw Error(`Invalid ethereum address ${err.message}`)
+            throw Error(`Invalid ethereum address`)
         }
     }
 })
