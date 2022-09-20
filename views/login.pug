@@ -1,0 +1,23 @@
+extends layout.pug
+
+block body
+  p.lead
+    a.btn.btn-lg.btn-secondary.enableEthereumButton(href='#') Connect Wallet
+  table.table.text-white
+    tbody
+      tr
+        td Account:
+        td
+          b.showAccount not connected
+  div.siwe
+  if session.jwt !== undefined
+    p.mt-4.alert.alert-info(role="alert")
+      span You are logged in! &nbsp;
+      a.logoutButton(href='#') 
+        b.text-black Logout
+    p Here is your JWT:
+    textarea(rows=10, style="min-width: 300px;")=session.jwt
+  else
+      p.mt-4.alert.alert-primary.text-left(role="alert") Sign in with Ethereum to reveal your session JWT which can be used to interact with protected API routes.
+
+

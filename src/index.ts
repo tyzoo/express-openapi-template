@@ -1,4 +1,5 @@
 import cors from "cors";
+import path from "path";
 import helmet from "helmet";
 import express from "express";
 import mongoose from "mongoose";
@@ -16,13 +17,19 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const app = express();
 
+app.set('view engine', 'pug');
 app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", appRouter);
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(v1ApiInfo.docs));
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(v1ApiInfo.docs, {
+    swaggerOptions: {
+        persistAuthorization: true
+    },
+}));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use(((req, res, next) => {
     var err: any = new Error('Not Found');

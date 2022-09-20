@@ -39,6 +39,8 @@ const router = express.Router();
  *          - CRUD
  *      summary: Create an Item
  *      description: Create an Item
+ *      security:
+ *          - bearerAuth: []
  *      requestBody:
  *          description: Description for request body
  *          required: true
@@ -63,6 +65,13 @@ const router = express.Router();
  *                          type: string
  *          '400':
  *              description: Bad request - Validation failed
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ *          '403':
+ *              description: Not authenticated
  *              schema:
  *                  type: object
  *                  properties:
@@ -115,6 +124,8 @@ router.get("/:itemId", crudController.findItem);
  *          - CRUD
  *      summary: Update an item by ID
  *      description: Returns a single item
+ *      security:
+ *          - bearerAuth: []
  *      requestBody:
  *          description: Description for request body
  *          required: true
@@ -154,6 +165,13 @@ router.get("/:itemId", crudController.findItem);
  *                  properties:
  *                      message:
  *                          type: string
+ *          '403':
+ *              description: Not authenticated
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
  *          '500':
  *              description: Server Error - Item does not exist
  *              schema:
@@ -172,6 +190,8 @@ router.put("/:itemId", crudController.updateItem);
  *          - CRUD
  *      summary: Delete an item by ID
  *      description: Returns a single item
+ *      security:
+ *          - bearerAuth: []
  *      parameters:
  *          - in: path
  *            name: itemId
@@ -191,6 +211,13 @@ router.put("/:itemId", crudController.updateItem);
  *                          type: string
  *          '400':
  *              description: Bad request - Validation failed
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ *          '403':
+ *              description: Not authenticated
  *              schema:
  *                  type: object
  *                  properties:

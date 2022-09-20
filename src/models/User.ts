@@ -1,12 +1,12 @@
 import { prop, getModelForClass, pre } from "@typegoose/typegoose";
-import ethers from "ethers";
+import { ethers } from "ethers";
 
 @pre<User>("save", async function() {
     if(this.isNew){
         try {
             this.address = ethers.utils.getAddress(this.address)
-        }catch{
-            throw Error(`Invalid ethereum address`)
+        }catch(err:any) {
+            throw Error(`Invalid ethereum address ${err.message}`)
         }
     }
 })

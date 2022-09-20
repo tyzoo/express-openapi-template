@@ -1,11 +1,6 @@
 import express from "express";
 import { ItemModel } from "../../models/Item";
-import controllerLoader from "../utils/controllerLoader";
-
-/**
- * Validation rules for this controller
- */
-// const rules = {}
+import controllerLoader from "../middleware/controllerLoader";
 
 /**
  * Controller object returns array of middleware by key

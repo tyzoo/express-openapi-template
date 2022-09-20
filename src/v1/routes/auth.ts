@@ -2,6 +2,9 @@ import 'iron-session';
 import express from "express";
 import { SiweMessage } from 'siwe';
 import authController from "../controllers/auth";
+import ironSession from '../middleware/ironSession';
+
+import v1ApiInfo from "../apiInfo"
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -25,7 +28,7 @@ const router = express.Router();
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
  *              schema:
  *                  type: object
  *                  properties:
@@ -69,7 +72,7 @@ router.get("/nonce", authController.nonce);
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
  *              schema:
  *                  type: object
  *                  properties:
@@ -90,7 +93,7 @@ router.get("/nonce", authController.nonce);
  *                      message:
  *                          type: string
  */
-router.get("/login", authController.login);
+router.post("/login", authController.login);
 
 /**
  * @openapi
@@ -104,7 +107,7 @@ router.get("/login", authController.login);
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
  *              schema:
  *                  type: object
  *                  properties:
@@ -125,8 +128,23 @@ router.get("/logout", authController.logout);
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
  */
 router.get("/profile", authController.profile);
+
+
+/**
+ * Render a Login form for users to SIWE
+ */
+
+router.get('/', ironSession, (req, res) => {
+  const { info: { contact: { name: author }} } = v1ApiInfo.docs as any;
+  res.render('login', { 
+      title: 'Sign in with Ethereum', 
+      session: req.session,
+      author,
+  })
+})
+
 
 export default router;

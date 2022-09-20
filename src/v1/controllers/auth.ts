@@ -3,8 +3,9 @@ import express from "express";
 import { body } from "express-validator";
 import { generateNonce, SiweMessage } from 'siwe'
 import User from "../../models/User";
-import controllerLoader from "../utils/controllerLoader";
-import ironSession, { ironSessionOptions } from "../utils/ironSession";
+import controllerLoader from "../middleware/controllerLoader";
+import ironSession, { ironSessionOptions } from "../middleware/ironSession";
+
 /**
  * Validation rules for this controller
  */
@@ -54,7 +55,7 @@ export default controllerLoader({
         ironSession,
         (async (req, res, next) => {
             try {
-                const { payload, signature } = req.body;
+                const { siwe: { signature, payload} } = req.body;
                 const siweMessage = new SiweMessage(payload);
                 const fields = await siweMessage.validate(signature);
                 const { address, nonce } = fields;
@@ -69,6 +70,7 @@ export default controllerLoader({
                 if(!user) user = await User.create({ address });
                 res.json({ success: true });
             } catch (err: any) {
+                console.log(err)
                 res.status(500).json({
                     message: `Error: ${err.message ?? "unknown error"}`,
                 })

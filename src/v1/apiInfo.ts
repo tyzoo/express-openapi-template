@@ -29,10 +29,9 @@ const config = {
                 }
             }
         },
-        // Global Security Definition
-        // security: [{
-        //     bearerAuth: []
-        // }],
+        security: [{
+            bearerAuth: []
+        }],
         servers: [
             {
                 url: `${APP_BASE_URL}/v1`,
@@ -41,6 +40,10 @@ const config = {
         ],
         tags: [
             {
+                name: `Authentication`,
+                description: `Authenticate using Sign in With Ethereum (SIWE)`,
+            },
+            {
                 name: `CRUD`,
                 description: `A set of example CRUD routes`,
             },
@@ -48,6 +51,11 @@ const config = {
                 name: `Tests`,
                 description: `Test if the API is up and running`,
             },
+            {
+                name: `Decentraland`,
+                description: `Example routes enforcing DCL middleware`,
+            },
+
         ],
     },
     apis: [

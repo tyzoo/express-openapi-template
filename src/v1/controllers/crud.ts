@@ -1,7 +1,9 @@
 import express from "express";
 import { body, param } from "express-validator";
 import { ItemModel } from "../../models/Item";
-import controllerLoader from "../utils/controllerLoader";
+import authMiddleware from "../middleware/auth";
+import ironSession from "../middleware/ironSession";
+import controllerLoader from "../middleware/controllerLoader";
 
 /**
  * Validation rules for this controller
@@ -26,6 +28,8 @@ const rules = {
 export default controllerLoader({
 
     createItem: [
+        ironSession,
+        authMiddleware.jwtHeaderOrSession,
         rules.body.name.required,
         (async (req, res, next) => {
             try {
@@ -69,6 +73,8 @@ export default controllerLoader({
     ],
 
     updateItem: [
+        ironSession,
+        authMiddleware.jwtHeaderOrSession,
         rules.param.itemId.required,
         rules.param.itemId.isMongoId,
         rules.body.name.required,
@@ -93,6 +99,8 @@ export default controllerLoader({
     ],
 
     deleteItem: [
+        ironSession,
+        authMiddleware.jwtHeaderOrSession,
         rules.param.itemId.required,
         rules.param.itemId.isMongoId,
         (async (req, res, next) => {

@@ -15,7 +15,7 @@ const router = express.Router();
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
  *              schema:
  *                  type: object
  *                  properties:
