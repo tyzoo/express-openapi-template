@@ -1,10 +1,11 @@
 import cors from "cors";
+import helmet from "helmet";
 import express from "express";
 import mongoose from "mongoose";
-import swaggerUI from "swagger-ui-express"
+import swaggerUI from "swagger-ui-express";
 import * as dotenv from "dotenv";
 import * as bodyParser from "body-parser";
-import v1Router from "./v1/router"
+import appRouter from "./appRouter";
 import v1ApiInfo from "./v1/apiInfo";
 
 dotenv.config();
@@ -15,16 +16,27 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const app = express();
 
+app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/v1", v1Router);
-app.use("/", swaggerUI.serve, swaggerUI.setup(v1ApiInfo.docs));
+app.use("/", appRouter);
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(v1ApiInfo.docs));
+
+app.use(((req, res, next) => {
+    var err: any = new Error('Not Found');
+    err.status = 404;
+    next(err);
+}) as express.RequestHandler);
 
 app.use(((err, req, res, next) => {
-    res.status(err.status).json(err);
+    res.status(err.status ?? 500).json({
+        message: `Internal server error - ${err.message}`,
+    })
 }) as express.ErrorRequestHandler);
+
+app.disable('x-powered-by');
 
 const start = async (): Promise<void> => {
     try {

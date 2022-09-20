@@ -20,6 +20,19 @@ const config = {
                 email: `tyler.russell.design@gmail.com`,
             },
         },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                }
+            }
+        },
+        // Global Security Definition
+        // security: [{
+        //     bearerAuth: []
+        // }],
         servers: [
             {
                 url: `${APP_BASE_URL}/v1`,
@@ -35,11 +48,11 @@ const config = {
                 name: `Tests`,
                 description: `Test if the API is up and running`,
             },
-        ]
+        ],
     },
     apis: [
         path.join(__dirname, "routes", "*"),
-    ]
+    ],
 }
 
 const docs = swagger(config);

@@ -13,3 +13,6 @@ A simple express API in typescript with example OpenAPI/Swagger annotation which
 * `npm run dev` or `yarn dev` to start the app in development mode
 * View the docs at [http://localhost:4269/](http://localhost:4269/)
 * Test your API at [http://localhost:4269/v1/](http://localhost:4269/v1/)
+
+### Docs and links
+- [https://helmetjs.github.io/](https://helmetjs.github.io/)

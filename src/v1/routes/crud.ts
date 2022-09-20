@@ -1,6 +1,13 @@
 import express from "express";
-import itemsController from "../controllers/itemsController";
-//https://editor.swagger.io/# good inspiration
+import crudController from "../controllers/crud";
+
+/**
+ * This file provides an example set of CRUD routes
+ * 
+ * https://editor.swagger.io/# - Openapi annotation inspiration
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses
+ */
+
 const router = express.Router();
 
 /**
@@ -15,12 +22,18 @@ const router = express.Router();
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
  *              schema:
  *                  type: object
  *                  properties:
  *                      message:
  *                          type: string
+ */
+ router.get("/", crudController.findAllItems);
+
+/**
+ * @openapi
+ * /crud:
  *  post:
  *      tags:
  *          - CRUD
@@ -42,15 +55,21 @@ const router = express.Router();
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ *          '400':
+ *              description: Bad request - Validation failed
  *              schema:
  *                  type: object
  *                  properties:
  *                      message:
  *                          type: string
  */
-router.get("/", itemsController.findAllItems);
-router.post("/", itemsController.createItem);
+router.post("/", crudController.createItem);
 
 /**
  * @openapi
@@ -72,12 +91,25 @@ router.post("/", itemsController.createItem);
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
  *              schema:
  *                  type: object
  *                  properties:
  *                      message:
  *                          type: string
+ *          '400':
+ *              description: Bad request - Validation failed
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ */
+router.get("/:itemId", crudController.findItem);
+
+/**
+ * @openapi
+ * /crud/{itemId}:
  *  put:
  *      tags:
  *          - CRUD
@@ -109,12 +141,32 @@ router.post("/", itemsController.createItem);
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
  *              schema:
  *                  type: object
  *                  properties:
  *                      message:
  *                          type: string
+ *          '400':
+ *              description: Bad request - Validation failed
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ *          '500':
+ *              description: Server Error - Item does not exist
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ */
+router.put("/:itemId", crudController.updateItem);
+
+/**
+ * @openapi
+ * /crud/{itemId}:
  *  delete:
  *      tags:
  *          - CRUD
@@ -131,22 +183,27 @@ router.post("/", itemsController.createItem);
  *          -application/json
  *      responses:
  *          '200':
- *              description: A successful response
+ *              description: Successful request
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ *          '400':
+ *              description: Bad request - Validation failed
  *              schema:
  *                  type: object
  *                  properties:
  *                      message:
  *                          type: string
  *          '500':
- *              description: Item does not exist
+ *              description: Server Error - Item does not exist
  *              schema:
  *                  type: object
  *                  properties:
  *                      message:
  *                          type: string
  */
-router.get("/:itemId", itemsController.findItem);
-router.put("/:itemId", itemsController.updateItem);
-router.delete("/:itemId", itemsController.deleteItem);
+router.delete("/:itemId", crudController.deleteItem);
 
 export default router;
