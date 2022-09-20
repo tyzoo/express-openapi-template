@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/toBundle.ts',
@@ -10,15 +11,17 @@ module.exports = {
           use: 'ts-loader',
           exclude: /node_modules/,
         },
-        {
-          test: /\.css$/i,
-          use: ["style-loader", "css-loader"],
-        },
       ],
     },
     plugins: [
       new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],
+      }),
+      new CopyWebpackPlugin({
+        patterns: [{
+          from: 'public/css/*.css',
+          to: '../../dist'
+        }]
       }),
     ],
     resolve: {
