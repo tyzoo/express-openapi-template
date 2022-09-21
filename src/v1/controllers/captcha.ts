@@ -3,7 +3,7 @@ import controllerLoader from "../middleware/controllerLoader";
 import svgCaptcha from "svg-captcha";
 import ironSession from "../middleware/ironSession";
 import { body } from "express-validator";
-
+import { svg2png } from "svg-png-converter";
 /**
  * Validation rules for this controller
  */
@@ -29,11 +29,25 @@ export default controllerLoader({
                 const captcha = svgCaptcha.create({
                     size: 6,
                     noise: 3,
+                    width: 300,
+                    height: 100,
                 });
+                const png = await svg2png({ 
+                    input: captcha.data.trim(), 
+                    encoding: 'dataURL', 
+                    format: 'png',
+                })
                 req.session.captcha = captcha.text;
                 await req.session.save();
-                res.type('svg');
-                res.status(200).send(captcha.data);
+                const img = Buffer.from(
+                    png.replace(/^data:image\/png;base64,/, ''), 
+                    'base64'
+                );
+                res.writeHead(200, {
+                  'Content-Type': 'image/png',
+                  'Content-Length': img.length
+                });
+                res.end(img); 
             } catch (err: any) {
                 res.status(500).json({
                     message: `Error: ${err.message ?? "unknown error"}`,
