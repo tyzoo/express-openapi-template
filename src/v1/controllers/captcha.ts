@@ -26,7 +26,10 @@ export default controllerLoader({
         ironSession,
         (async (req, res, next) => {
             try {
-                const captcha = svgCaptcha.create();
+                const captcha = svgCaptcha.create({
+                    size: 6,
+                    noise: 3,
+                });
                 req.session.captcha = captcha.text;
                 await req.session.save();
                 res.type('svg');
