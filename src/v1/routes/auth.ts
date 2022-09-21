@@ -1,16 +1,18 @@
 import 'iron-session';
 import express from "express";
+import svgCaptcha from "svg-captcha";
 import { SiweMessage } from 'siwe';
 import authController from "../controllers/auth";
 import ironSession from '../middleware/ironSession';
-
-import v1ApiInfo from "../apiInfo"
+import captchaRoutes from "../routes/captcha";
+import v1ApiInfo from "../apiInfo";
 
 declare module 'iron-session' {
   interface IronSessionData {
-    nonce?: string
-    siwe?: SiweMessage
-    jwt?: string
+    nonce?: string;
+    siwe?: SiweMessage;
+    jwt?: string;
+    captcha?: string;
   }
 }
 
@@ -145,6 +147,12 @@ router.get('/', ironSession, (req, res) => {
       author,
   })
 })
+
+/**
+ * Captcha routes
+ */
+
+router.use(`/captcha`, captchaRoutes)
 
 
 export default router;
