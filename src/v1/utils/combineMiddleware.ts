@@ -17,8 +17,6 @@ export default function combineMiddleware(mids: express.RequestHandler[]) {
                 }
                 b(req, res, next);
             });
-            
         };
-
     });
 }
