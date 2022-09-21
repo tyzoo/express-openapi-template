@@ -1,6 +1,5 @@
 import 'iron-session';
 import express from "express";
-import svgCaptcha from "svg-captcha";
 import { SiweMessage } from 'siwe';
 import authController from "../controllers/auth";
 import ironSession from '../middleware/ironSession';
