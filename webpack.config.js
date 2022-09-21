@@ -21,6 +21,9 @@ module.exports = {
         patterns: [{
           from: 'public/css/*.css',
           to: '../../dist'
+        },{
+          from: 'public/js/*.js',
+          to: '../../dist'
         }]
       }),
     ],
