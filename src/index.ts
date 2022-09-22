@@ -18,7 +18,13 @@ const MONGO_URI = process.env.MONGO_URI;
 const app = express();
 
 app.set('view engine', 'pug');
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            imgSrc: ["'self'", "data:" , "blob:" , process.env.APP_BASE_URL!],
+        },
+    }
+}));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
