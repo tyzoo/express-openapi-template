@@ -41,7 +41,7 @@ const config = {
         tags: [
             {
                 name: `Authentication`,
-                description: `Authenticate using Sign in With Ethereum (SIWE)`,
+                description: `Authenticate using Sign in With Ethereum (SIWE) [Connect Wallet](./../v1/auth)`,
             },
             {
                 name: `CRUD`,
