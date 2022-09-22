@@ -23,6 +23,18 @@ const rules = {
                     .exists()
                     .isLength({ min: 1 }),
         },
+        address: {
+            required: 
+                body('address', 'address is required')
+                    .exists()
+                    .isLength({ min: 1 }),
+        },
+        nonce: {
+            required: 
+                body('nonce', 'nonce is required')
+                    .exists()
+                    .isLength({ min: 1 }),
+        },
     },
 }
 
@@ -41,6 +53,39 @@ export default controllerLoader({
                 res.status(200).send(JSON.stringify({
                     nonce: req.session.nonce,
                 }, null, 2));
+            } catch (err: any) {
+                res.status(500).json({
+                    message: `Error: ${err.message ?? "unknown error"}`,
+                })
+            }
+        }) as express.RequestHandler
+    ],
+
+    getSiweMessage: [
+        rules.body.address.required,
+        rules.body.nonce.required,
+        ironSession,
+        (async (req, res, next) => {
+            try {
+                const nonce = req.session.nonce;
+                const domain = req.hostname;
+                const origin = req.headers.origin;
+                const { address, nonce: NONCE } = req.body;
+                if(!nonce || !NONCE || nonce !== NONCE){
+                    return res.status(400).send({
+                        message: `Invalid nonce`,
+                    })
+                }
+                const siweMessage = new SiweMessage({
+                    domain,
+                    address,
+                    statement: `Sign in with Ethereum to the app.`,
+                    uri: origin,
+                    version: '1',
+                    nonce,
+                    chainId: 1,
+                });
+                res.json({ message: siweMessage.prepareMessage() });
             } catch (err: any) {
                 res.status(500).json({
                     message: `Error: ${err.message ?? "unknown error"}`,
