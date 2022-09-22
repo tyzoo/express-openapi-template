@@ -134,6 +134,43 @@ router.get("/logout", authController.logout);
 router.get("/profile", authController.profile);
 
 
+
+/**
+ * @openapi
+ * /auth/siwe-payload:
+ *  post:
+ *      tags:
+ *          - Authentication
+ *      summary: Fetch a SIWE Payload
+ *      description: Fetch a SIWE Payload
+ *      requestBody:
+ *          description: Description for request body
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          nonce:
+ *                              type: string
+ *                              required: true
+ *                          address:
+ *                              type: string
+ *                              required: true
+ *      produces:
+ *          -application/json
+ *      responses:
+ *          '200':
+ *              description: Successful request
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type: string
+ */
+ router.post("/siwe-payload", authController.getSiweMessage);
+
+
 /**
  * Render a Login form for users to SIWE
  */

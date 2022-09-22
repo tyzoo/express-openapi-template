@@ -50,10 +50,7 @@ router.get("/new", captchaController.new);
  *          '200':
  *              description: Successful request
  *              schema:
- *                  type: object
- *                  properties:
- *                      message:
- *                          type: string
+ *                  type: image
  */
 router.post("/verify", captchaController.verify);
 
