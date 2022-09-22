@@ -5,6 +5,7 @@ import { generateNonce, SiweMessage } from 'siwe'
 import User from "../../models/User";
 import controllerLoader from "../middleware/controllerLoader";
 import ironSession, { ironSessionOptions } from "../middleware/ironSession";
+import { ethers } from "ethers";
 
 /**
  * Validation rules for this controller
@@ -74,6 +75,13 @@ export default controllerLoader({
                 if(!nonce || !NONCE || nonce !== NONCE){
                     return res.status(400).send({
                         message: `Invalid nonce`,
+                    })
+                }
+                try {
+                    ethers.utils.getAddress(address)
+                }catch{
+                    return res.status(400).send({
+                        message: `Invalid ethereum address`,
                     })
                 }
                 const siweMessage = new SiweMessage({
