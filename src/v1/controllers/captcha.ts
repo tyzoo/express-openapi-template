@@ -28,9 +28,10 @@ export default controllerLoader({
             try {
                 const captcha = svgCaptcha.create({
                     size: 6,
-                    noise: 3,
+                    noise: 6,
                     width: 300,
                     height: 100,
+                    ignoreChars: '0o1iIlO',
                 });
                 const png = await svg2png({ 
                     input: captcha.data.trim(), 
