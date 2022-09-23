@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
 import express from "express";
 import { body } from "express-validator";
+import { ethers } from "ethers";
 import { generateNonce, SiweMessage } from 'siwe'
 import User from "../../models/User";
 import controllerLoader from "../middleware/controllerLoader";
 import ironSession, { ironSessionOptions } from "../middleware/ironSession";
-import { ethers } from "ethers";
 
 /**
  * Validation rules for this controller
@@ -46,10 +46,29 @@ export default controllerLoader({
 
     nonce: [
         ironSession,
+        rules.body.address.required,
         (async (req, res, next) => {
             try {
-                req.session.nonce = generateNonce();
+                let { address } = req.body;
+                try {
+                    address = ethers.utils.getAddress(address)
+                }catch{
+                    return res.status(400).send({
+                        message: `Invalid ethereum address`,
+                    })
+                }
+
+                const nonce = generateNonce();
+                req.session.nonce = nonce;
                 await req.session.save();
+                
+                let user = await User.findOne({ address });
+                if(!user) {
+                    user = await User.create({ address, nonce });
+                } else {
+                    user.nonce = nonce;
+                    await user.save();
+                }
                 res.setHeader('Content-Type', 'application/json');
                 res.status(200).send(JSON.stringify({
                     nonce: req.session.nonce,
@@ -63,25 +82,37 @@ export default controllerLoader({
     ],
 
     getSiweMessage: [
+        ironSession,
         rules.body.address.required,
         rules.body.nonce.required,
-        ironSession,
         (async (req, res, next) => {
             try {
-                const nonce = req.session.nonce;
+                let { address, nonce } = req.body;
                 const domain = req.hostname;
                 const origin = req.headers.origin;
-                const { address, nonce: NONCE } = req.body;
-                if(!nonce || !NONCE || nonce !== NONCE){
-                    return res.status(400).send({
-                        message: `Invalid nonce`,
-                    })
-                }
+
                 try {
-                    ethers.utils.getAddress(address)
+                    address = ethers.utils.getAddress(address)
                 }catch{
                     return res.status(400).send({
                         message: `Invalid ethereum address`,
+                    })
+                }
+                
+                let checkNonce = req.session.nonce;
+                if(!checkNonce){
+                    const user = await User.findOne({ address });
+                    if(!user) return res.status(400).send({
+                        message: `Invalid user`,
+                    });
+                    if(!user.nonce) return res.status(400).send({
+                        message: `Missing nonce on user`,
+                    });
+                    checkNonce = user.nonce;
+                }
+                if(!nonce || !checkNonce || nonce !== checkNonce){
+                    return res.status(400).send({
+                        message: `Invalid nonce`,
                     })
                 }
                 const siweMessage = new SiweMessage({
@@ -93,7 +124,7 @@ export default controllerLoader({
                     nonce,
                     chainId: 1,
                 });
-                res.json({ message: siweMessage.prepareMessage() });
+                res.status(200).json({ message: siweMessage.prepareMessage() });
             } catch (err: any) {
                 res.status(500).json({
                     message: `Error: ${err.message ?? "unknown error"}`,

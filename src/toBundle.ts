@@ -57,7 +57,7 @@ async function logout(){
 
 async function signIn() {
   console.log(`Signing in with Ethereum account ${account}..`);
-  const { nonce } = (await axios.get(`auth/nonce`)).data;
+  const { nonce } = (await axios.post(`auth/nonce`, { address: account })).data;
   const message = new SiweMessage({
     domain,
     address: account!,

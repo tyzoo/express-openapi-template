@@ -1,4 +1,5 @@
-import { prop, getModelForClass, pre } from "@typegoose/typegoose";
+import { prop, getModelForClass, pre, index } from "@typegoose/typegoose";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { ethers } from "ethers";
 
 @pre<User>("save", async function() {
@@ -11,13 +12,18 @@ import { ethers } from "ethers";
     }
 })
 
-export class User {
+@index({ address: 1 }, { unique: true })
+
+export class User extends TimeStamps {
 
   @prop({ required: true, immutable: true })
   public address!: string;
 
   @prop({ required: true, default: false })
   public admin!: boolean;
+
+  @prop({ required: false })
+  public nonce?: string;
 
 }
 

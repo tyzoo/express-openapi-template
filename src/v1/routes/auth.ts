@@ -20,13 +20,24 @@ const router = express.Router();
 /**
  * @openapi
  * /auth/nonce:
- *  get:
+ *  post:
  *      tags:
  *          - Authentication
  *      summary: Generate a new session nonce 
  *      description: Fetch a new nonce
  *      produces:
  *          -application/json
+ *      requestBody:
+ *          description: Description for request body
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          address:
+ *                              type: string
+ *                              required: true
  *      responses:
  *          '200':
  *              description: Successful request
@@ -43,7 +54,7 @@ const router = express.Router();
  *                      message:
  *                          type: string
  */
-router.get("/nonce", authController.nonce);
+router.post("/nonce", authController.nonce);
 
 /**
  * @openapi
