@@ -7,7 +7,7 @@ import { checkCoords, checkPlayer } from './verifyOnMap'
 export function checkOrigin(req: Request) {
   const validOrigins = [
     'https://play.decentraland.org', 
-    'https://play.decentraland.zone',
+    'https://play.decentraland.zone'
   ]
   return validOrigins.includes(req.headers.origin!)
 }
@@ -27,7 +27,8 @@ export async function runChecks(
     .map((item: string) => parseInt(item, 10));
   const localhost = [
     `127.0.0.1:8001`,
-    `localhost`
+    `localhost`,
+    `LocalPreview`
   ]
   // check that the request comes from a decentraland domain
   const validOrigin = (TESTS_ENABLED && localhost.includes(metadata.realm.catalystName ?? ``))
