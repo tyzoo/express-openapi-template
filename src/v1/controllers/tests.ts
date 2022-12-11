@@ -1,11 +1,27 @@
 import express from "express";
 import { ItemModel } from "../../models/Item";
 import controllerLoader from "../middleware/controllerLoader";
+import createRateLimiter from "../middleware/rateLimiter";
 
 /**
  * Controller object returns array of middleware by key
  */
 export default controllerLoader({
+
+    rateLimit: [
+        createRateLimiter({
+            prefix: `rateLimitExample`, 
+            requestLimit: 1, 
+            secondsPerWindow: 10,
+        }),
+        (async (req, res, next) => {
+            res.json({
+                ok: true,
+                message: `This request is allowed!`,
+                ...res.locals.rateLimit,
+            })
+        }) as express.RequestHandler
+    ],
 
     addItems: [
         (async (req, res, next) => {

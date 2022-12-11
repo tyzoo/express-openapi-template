@@ -5,6 +5,7 @@
 A simple express API written in typescript with example OpenAPI/Swagger annotation which is used to automatically generate beautiful and functional docs for your API. 
 * Database: mongodb/mongoose/typegoose
 * Authentication: Sign in With Ethereum with secure sessions via Iron Session
+* Rate limit with Redis
 
 ### Demo
 [https://express-openapi-ts-app.herokuapp.com/](https://express-openapi-ts-app.herokuapp.com/)
