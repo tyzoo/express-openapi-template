@@ -1,7 +1,7 @@
 import express from "express";
 import { Get, Route, Request, Middlewares, Tags, Response, Example } from "tsoa";
 import { ItemModel } from "../../models/Item";
-import createRateLimiter, { IRateLimitProps } from "../middleware/rateLimitter";
+import createRateLimiter, { RateLimitResponse } from "../middleware/rateLimitter";
 
 @Route("tests")
 @Tags("Tests")
@@ -13,7 +13,7 @@ export class TestsController {
    * @summary Check if API is online
    */
   @Get("")
-  @Example({
+  @Example<{ online: boolean; }>({
     online: true,
   }, "Successful Response")
   public async checkIfOnline(): Promise<{
@@ -27,7 +27,7 @@ export class TestsController {
    * @summary Add 10 test items to DB
    */
   @Get("add-items")
-  @Example({
+  @Example<{ message: string; }>({
     message: `Added 10 test items to database`
   }, "Successful Response")
   public async addItems(): Promise<{
@@ -52,21 +52,21 @@ export class TestsController {
     requestLimit: 1,
     secondsPerWindow: 10,
   }))
-  @Example({
+  @Example<RateLimitResponse>({
     ok: true,
     message: "This request is allowed!",
     requests: 1,
     ttl: 10
   }, "Successful Response")
-  @Response<IRateLimitProps>(503, "Service Unavailable", {
+  @Response<RateLimitResponse>(503, "Service Unavailable", {
     ok: false,
     message: "You are being rate limited! Slow down",
     requests: 2,
-    ttl: 10,
+    ttl: 9,
   })  
   public async rateLimiter(
     @Request() req: express.Request,
-  ): Promise<IRateLimitProps> {
+  ): Promise<RateLimitResponse> {
     return { 
       ok: true,
       message: `This request is allowed!`,

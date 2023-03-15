@@ -2,10 +2,26 @@ import express from "express";
 import combineMiddleware from "../combineMiddleware";
 import redis from "./redis";
 
-export interface IRateLimitProps {
+export interface RateLimitResponse {
+    /**
+     * Status
+     * @example true
+     */
     ok: boolean;
+    /**
+     * Status message
+     * @example "This request is allowed!"
+     */
     message: string;
+    /**
+     * Number of requests
+     * @example 1
+     */
     requests: number;
+    /**
+     * Time To Live, the interval in seconds after which a key-value pair of cache elements will be evicted from the cache.
+     * @example 10
+     */
     ttl: number;
 }
 

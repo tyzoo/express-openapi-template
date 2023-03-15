@@ -53,7 +53,7 @@ export class CaptchaController {
    */
   @Post("verify")
   @Middlewares(ironSession)
-  @Example({
+  @Example<{ success: boolean; }>({
     success: true,
   }, "Successful Response")
   public async getSiweMessage(

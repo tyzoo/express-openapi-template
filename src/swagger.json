@@ -104,21 +104,29 @@
 				],
 				"type": "object"
 			},
-			"IRateLimitProps": {
+			"RateLimitResponse": {
 				"properties": {
 					"ok": {
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Status",
+						"example": true
 					},
 					"message": {
-						"type": "string"
+						"type": "string",
+						"description": "Status message",
+						"example": "This request is allowed!"
 					},
 					"requests": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "Number of requests",
+						"example": 1
 					},
 					"ttl": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "Time To Live, the interval in seconds after which a key-value pair of cache elements will be evicted from the cache.",
+						"example": 10
 					}
 				},
 				"required": [
@@ -521,6 +529,17 @@
 											"allOf": [
 												{
 													"$ref": "#/components/schemas/User"
+												},
+												{
+													"properties": {
+														"_id": {
+															"type": "string"
+														}
+													},
+													"required": [
+														"_id"
+													],
+													"type": "object"
 												}
 											],
 											"nullable": true
@@ -1331,7 +1350,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IRateLimitProps"
+									"$ref": "#/components/schemas/RateLimitResponse"
 								},
 								"examples": {
 									"Successful Response": {
@@ -1351,7 +1370,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IRateLimitProps"
+									"$ref": "#/components/schemas/RateLimitResponse"
 								},
 								"examples": {
 									"Example 1": {
@@ -1359,7 +1378,7 @@
 											"ok": false,
 											"message": "You are being rate limited! Slow down",
 											"requests": 2,
-											"ttl": 10
+											"ttl": 9
 										}
 									}
 								}

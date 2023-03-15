@@ -56,7 +56,7 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"signer":{"dataType":"string","required":true},"realm":{"dataType":"nestedObjectLiteral","nestedProperties":{"lighthouseVersion":{"dataType":"string"},"layer":{"dataType":"string"},"catalystName":{"dataType":"string"},"domain":{"dataType":"string"}},"required":true},"isGuest":{"dataType":"boolean"},"network":{"dataType":"string"},"tld":{"dataType":"string"},"parcel":{"dataType":"string"},"sceneId":{"dataType":"string"},"origin":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IRateLimitProps": {
+    "RateLimitResponse": {
         "dataType": "refObject",
         "properties": {
             "ok": {"dataType":"boolean","required":true},
