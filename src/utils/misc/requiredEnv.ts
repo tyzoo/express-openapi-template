@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 /**
  * Checks if a list of ENV vars are included, or throws an error
  * @param envVars 
@@ -6,10 +9,13 @@ export function requiredEnv(envVars: string[]): void {
     const undefinedVars: string[] = [];
     const emptyVars: string[] = [];
     for (const envVar of envVars) {
-        if (!(envVar in process.env)) {
-            undefinedVars.push(envVar);
-        } else if (process.env[envVar] === '') {
-            emptyVars.push(envVar);
+        const [,env] = envVar.split(":");
+        if(env && env === process.env.NODE_ENV){
+            if (!(envVar in process.env)) {
+                undefinedVars.push(envVar);
+            } else if (process.env[envVar] === '') {
+                emptyVars.push(envVar);
+            }
         }
     }
     if (undefinedVars.length > 0 || emptyVars.length > 0) {
@@ -30,7 +36,7 @@ export function requiredEnv(envVars: string[]): void {
 export function checkEnv() {
     requiredEnv([
         "NODE_ENV",
-        "PORT",
+        "PORT:development",
         "APP_NAME",
         "APP_DESCRIPTION",
         "APP_BASE_URL",
