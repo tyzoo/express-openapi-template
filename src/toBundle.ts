@@ -34,8 +34,9 @@ async function getAccount() {
     if (ethereumButton && showAccount && siweParent && account) {
       ethereumButton.innerHTML = `Disconnect Wallet`
       showAccount.innerHTML = account;
-      const data = (await axios.get(`auth/profile`)).data
-      if(data.jwt === undefined){
+      try {
+        const data = (await axios.get(`v2/auth/profile`)).data
+      }catch{
         siweParent.appendChild(siweButton);
       }
     }
@@ -51,13 +52,13 @@ async function getAccount() {
 }
 
 async function logout(){
-  await axios.get(`auth/logout`);
+  await axios.get(`v2/auth/logout`);
   window.location.reload()
 }
 
 async function signIn() {
   console.log(`Signing in with Ethereum account ${account}..`);
-  const { nonce } = (await axios.post(`auth/nonce`, { address: account })).data;
+  const { nonce } = (await axios.post(`v2/auth/nonce`, { address: account })).data;
   const message = new SiweMessage({
     domain,
     address: account!,
@@ -69,7 +70,7 @@ async function signIn() {
   });
   const payload = message.prepareMessage()
   signature = await signer.signMessage(payload);
-  (await axios.post(`auth/login`, {
+  (await axios.post(`v2/auth/login`, {
     siwe: {
       address: account!,
       payload,

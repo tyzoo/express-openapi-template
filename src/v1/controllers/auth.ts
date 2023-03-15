@@ -3,7 +3,7 @@ import express from "express";
 import { body } from "express-validator";
 import { ethers } from "ethers";
 import { generateNonce, SiweMessage } from 'siwe'
-import User from "../../models/User";
+import { UserModel } from "../../models/User";
 import controllerLoader from "../middleware/controllerLoader";
 import ironSession, { ironSessionOptions } from "../middleware/ironSession";
 
@@ -62,9 +62,9 @@ export default controllerLoader({
                 req.session.nonce = nonce;
                 await req.session.save();
                 
-                let user = await User.findOne({ address });
+                let user = await UserModel.findOne({ address });
                 if(!user) {
-                    user = await User.create({ address, nonce });
+                    user = await UserModel.create({ address, nonce });
                 } else {
                     user.nonce = nonce;
                     await user.save();
@@ -101,7 +101,7 @@ export default controllerLoader({
                 
                 let checkNonce = req.session.nonce;
                 if(!checkNonce){
-                    const user = await User.findOne({ address });
+                    const user = await UserModel.findOne({ address });
                     if(!user) return res.status(400).send({
                         message: `Invalid user`,
                     });
@@ -150,8 +150,8 @@ export default controllerLoader({
                   siwe: fields,
                 }, ironSessionOptions.password);
                 await req.session.save();
-                let user = await User.findOne({ address });
-                if(!user) user = await User.create({ address });
+                let user = await UserModel.findOne({ address });
+                if(!user) user = await UserModel.create({ address });
                 res.json({ success: true });
             } catch (err: any) {
                 console.log(err)
@@ -183,7 +183,7 @@ export default controllerLoader({
                 const address = req.session.siwe?.address;
                 const jwt = req.session?.jwt;
                 if(!address) return res.json({ user: null });
-                const user = await User.findOne({ address });
+                const user = await UserModel.findOne({ address });
                 res.json({ user, jwt });
             } catch (err: any) {
                 res.status(500).json({
