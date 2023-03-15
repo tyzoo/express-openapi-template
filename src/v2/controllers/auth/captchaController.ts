@@ -11,7 +11,8 @@ import { APIError, svg2png, svgCaptcha } from "../../utils";
 export class CaptchaController {
 
   /**
-   * Get a nonce for a user
+   * Generate a new Captcha
+   * @summary Generate a new Captcha
    */
   @Get("new")
   @Middlewares(ironSession)
@@ -47,7 +48,8 @@ export class CaptchaController {
   }
 
   /**
-   * Get a SIWE Payload for an address/nonce
+   * Verify a Captcha
+   * @summary Verify a Captcha
    */
   @Post("verify")
   @Middlewares(ironSession)

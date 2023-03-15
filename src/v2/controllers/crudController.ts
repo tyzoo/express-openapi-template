@@ -12,6 +12,7 @@ export class CrudController {
 
   /**
    * Get all items
+   * @summary Get all items
    */
   @Get("")
   public async findAllitems(): Promise<(Item & { _id: string })[]> {
@@ -20,6 +21,7 @@ export class CrudController {
 
   /**
    * Get Item by ID
+   * @summary Get Item By ID
    */
   @Get("{itemId}")
   public async findItem(
@@ -30,6 +32,7 @@ export class CrudController {
 
   /**
    * Create an Item
+   * @summary Create an Item
    */
   @Post("")
   public async createItem(
@@ -45,6 +48,7 @@ export class CrudController {
 
   /**
    * Update an Item
+   * @summary Update an Item
    */
   @Put("{itemId}")
   @Middlewares([
@@ -67,6 +71,7 @@ export class CrudController {
 
   /**
    * Delete an Item
+   * @summary Delete an Item
    */
   @Delete("{itemId}")
   @Middlewares([

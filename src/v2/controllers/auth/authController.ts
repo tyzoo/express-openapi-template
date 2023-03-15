@@ -15,6 +15,7 @@ export class AuthController {
 
   /**
    * Get a nonce for a user
+   * @summary Get a new nonce
    */
   @Post("nonce")
   @Middlewares(ironSession)
@@ -43,6 +44,7 @@ export class AuthController {
 
   /**
    * Get a SIWE Payload for an address/nonce
+   * @summary Get a SIWE Payload
    */
   @Post("siwe-payload")
   @Middlewares(ironSession)
@@ -83,6 +85,7 @@ export class AuthController {
 
   /**
    * Login with SIWE
+   * @summary Login with SIWE
    */
   @Post("login")
   @Middlewares(ironSession)
@@ -113,6 +116,7 @@ export class AuthController {
 
   /**
    * Logout from SIWE
+   * @summary Logout from SIWE
    */
   @Get("logout")
   @Middlewares(ironSession)
@@ -129,6 +133,7 @@ export class AuthController {
 
   /**
    * Get SIWE Profile
+   * @summary Get SIWE Profile
    */
   @Get("profile")
   @Middlewares(ironSession)

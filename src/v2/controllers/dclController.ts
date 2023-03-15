@@ -17,6 +17,7 @@ export class DCLController {
 
   /**
    * Optional DCL route
+   * @summary Optional DCL Route
    */
   @Get("optional")
   @Middlewares(decentralandMiddleware.Optional)
@@ -34,6 +35,7 @@ export class DCLController {
 
   /**
    * Required DCL Route
+   * @summary Required DCL Route
    */
   @Get("required")
   @Middlewares(decentralandMiddleware.Required)

@@ -10,6 +10,7 @@ export class TestsController {
 
   /**
    * Check if API is online
+   * @summary Check if API is online
    */
   @Get("")
   public async checkIfOnline(): Promise<{
@@ -20,6 +21,7 @@ export class TestsController {
 
   /**
    * Add 10 test items to DB
+   * @summary Add 10 test items to DB
    */
   @Get("add-items")
   public async addItems(): Promise<{
@@ -36,6 +38,7 @@ export class TestsController {
 
   /**
    * Test Rate Limitter
+   * @summary Test Rate Limitter
    */
   @Get("rate-limiter")
   @Middlewares(createRateLimiter({
