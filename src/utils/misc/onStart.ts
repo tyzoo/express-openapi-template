@@ -11,7 +11,7 @@ export async function onStart(app: express.Express) {
   try {
     const { MONGO_URI, PORT } = process.env;
     await mongoose.connect(MONGO_URI!);
-    const controllers = await readDir(path.join(__dirname, "..", "..", "controllers"), ".ts");
+    const controllers = await readDir(path.join(__dirname, "..", "..", "controllers"), [".js",".ts"]);
     app.listen(PORT, () => {
       const target = `http://localhost:${PORT}`;
       const messageLines = [

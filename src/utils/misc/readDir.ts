@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export const readDir = async (directoryPath: string, extension?: string): Promise<string[]> => {
+export const readDir = async (directoryPath: string, extensions?: string[]): Promise<string[]> => {
     const files: string[] = [];
   
     const contents = await fs.promises.readdir(directoryPath);
@@ -11,9 +11,9 @@ export const readDir = async (directoryPath: string, extension?: string): Promis
       const isFile = await fs.promises.stat(itemPath).then(stats => stats.isFile());
   
       if (isFile) {
-        if(extension){
+        if(extensions){
             const ext = path.extname(itemPath);
-            if (ext === extension) {
+            if (extensions.includes(ext)) {
               files.push(itemPath);
             }
         }else{
