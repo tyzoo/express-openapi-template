@@ -57,6 +57,53 @@
 				"type": "object",
 				"description": "Construct a type with a set of properties K of type T"
 			},
+			"Metadata": {
+				"properties": {
+					"signer": {
+						"type": "string"
+					},
+					"realm": {
+						"properties": {
+							"lighthouseVersion": {
+								"type": "string"
+							},
+							"layer": {
+								"type": "string"
+							},
+							"catalystName": {
+								"type": "string"
+							},
+							"domain": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"isGuest": {
+						"type": "boolean"
+					},
+					"network": {
+						"type": "string"
+					},
+					"tld": {
+						"type": "string"
+					},
+					"parcel": {
+						"type": "string"
+					},
+					"sceneId": {
+						"type": "string"
+					},
+					"origin": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"signer",
+					"realm"
+				],
+				"type": "object"
+			},
 			"IRateLimitProps": {
 				"properties": {
 					"ok": {
@@ -1050,7 +1097,20 @@
 									"Successful Response": {
 										"value": {
 											"address": "0x12345...",
-											"metadata": {}
+											"metadata": {
+												"origin": "http://127.0.0.1:8000",
+												"sceneId": "b64-L1Vz...",
+												"parcel": "0,0",
+												"tld": "org",
+												"network": "mainnet",
+												"isGuest": true,
+												"realm": {
+													"domain": "http://127.0.0.1:8000",
+													"layer": "",
+													"catalystName": "http://127.0.0.1:8000"
+												},
+												"signer": "decentraland-kernel-scene"
+											}
 										}
 									}
 								}
@@ -1108,13 +1168,14 @@
 								"schema": {
 									"properties": {
 										"metadata": {
-											"$ref": "#/components/schemas/Record_string.any_"
+											"$ref": "#/components/schemas/Metadata"
 										},
 										"address": {
 											"type": "string"
 										}
 									},
 									"required": [
+										"metadata",
 										"address"
 									],
 									"type": "object"
@@ -1123,7 +1184,20 @@
 									"Successful Response": {
 										"value": {
 											"address": "0x12345...",
-											"metadata": {}
+											"metadata": {
+												"origin": "http://127.0.0.1:8000",
+												"sceneId": "b64-L1Vz...",
+												"parcel": "0,0",
+												"tld": "org",
+												"network": "mainnet",
+												"isGuest": true,
+												"realm": {
+													"domain": "http://127.0.0.1:8000",
+													"layer": "",
+													"catalystName": "http://127.0.0.1:8000"
+												},
+												"signer": "decentraland-kernel-scene"
+											}
 										}
 									}
 								}

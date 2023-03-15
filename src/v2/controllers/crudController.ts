@@ -15,7 +15,7 @@ export class CrudController {
    * @summary Get all items
    */
   @Get("")
-  @Example([
+  @Example<(Item & { _id: string })[]>([
     {
       _id: "62f05f918c8a2e1d6608dfd2",
       name: "Item 4",
@@ -31,7 +31,7 @@ export class CrudController {
    * @summary Get Item By ID
    */
   @Get("{itemId}")
-  @Example({
+  @Example<Item & { _id: string }>({
     _id: "62f05f918c8a2e1d6608dfd2",
     name: "Item 4",
     rng: 0.9992763155631645
@@ -47,7 +47,7 @@ export class CrudController {
    * @summary Create an Item
    */
   @Post("")
-  @Example({
+  @Example<Item & { _id: string }>({
     _id: "62f05f918c8a2e1d6608dfd2",
     name: "Item 4",
     rng: 0.9992763155631645
@@ -72,7 +72,7 @@ export class CrudController {
     ironSession,
     authMiddleware.jwtHeaderOrSession,
   ])
-  @Example({
+  @Example<Item & { _id: string }>({
     _id: "62f05f918c8a2e1d6608dfd2",
     name: "Item 4",
     rng: 0.9992763155631645
@@ -96,7 +96,7 @@ export class CrudController {
    * @summary Delete an Item
    */
   @Delete("{itemId}")
-  @Example({
+  @Example<Item & { _id: string }>({
     _id: "62f05f918c8a2e1d6608dfd2",
     name: "Item 4",
     rng: 0.9992763155631645
