@@ -26,6 +26,7 @@ export async function onStart(app: express.Express) {
         `   🚀 Server running at: ${target}`,
         ``,
       ];
+      console.log({ controllers })
       const longest = [...messageLines].sort((a, b) => b.length - a.length)[0].length;
       const extraPad = Math.max(longest - 47, 0);
       const border = '*'.repeat(52 + extraPad);
