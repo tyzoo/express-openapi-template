@@ -19,6 +19,6 @@ A simple express API written in typescript with example OpenAPI/Swagger annotati
 * Test your API at [http://localhost:4270/v1/](http://localhost:4270/v1/)
 
 ### Docs and links
-- [https://helmetjs.github.io/](https://helmetjs.github.io)
-- [https://typegoose.github.io/typegoose/docs/guides/quick-start-guide](https://typegoose.github.io)
-- [https://tsoa-community.github.io/docs/introduction.html](https://tsoa-community.github.io)
+- [helmetjs](https://helmetjs.github.io/)
+- [typegoose](https://typegoose.github.io/typegoose/docs/guides/quick-start-guide)
+- [tsoa](https://tsoa-community.github.io/docs/introduction.html)
