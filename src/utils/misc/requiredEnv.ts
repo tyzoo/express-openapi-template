@@ -8,15 +8,13 @@ dotenv.config();
 export function requiredEnv(envVars: string[]): void {
     const undefinedVars: string[] = [];
     const emptyVars: string[] = [];
-    for (let envVar of envVars) {
-        const [main,env] = envVar.split(":");
-        if(env && env === process.env.NODE_ENV){
-            envVar = main;
-        }
-        if (!(envVar in process.env)) {
-            undefinedVars.push(envVar);
-        } else if (process.env[envVar] === '') {
-            emptyVars.push(envVar);
+    for (const envVar of envVars) {
+        const [main, env] = envVar.split(':');
+        const value = env ? (env === process.env.NODE_ENV ? main : undefined) : main;
+        if (value && !(value in process.env)) {
+            undefinedVars.push(value);
+        } else if (value && process.env[value] === '') {
+            emptyVars.push(value);
         }
     }
     if (undefinedVars.length > 0 || emptyVars.length > 0) {
