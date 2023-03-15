@@ -1,33 +1,27 @@
-import 'global';
+import "global";
+import "./sessions";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
 import express from "express";
-import mongoose from "mongoose";
 import swaggerUI from "swagger-ui-express";
 import * as dotenv from "dotenv";
 import * as swaggerDocument from './swagger.json';
-import { SiweMessage } from 'siwe';
-import { ValidateError } from 'tsoa';
 import { RegisterRoutes } from "./v2/routes";
 import { morganMiddleware } from './v2/middleware/morgan';
-import { APIError, tag } from './v2/utils';
+import { onStart, handleErrors, requiredEnv } from './v2/utils';
 import ironSession from './v2/middleware/ironSession';
 
-declare module 'iron-session' {
-  interface IronSessionData {
-    nonce?: string;
-    siwe?: SiweMessage;
-    jwt?: string;
-    captcha?: string;
-  }
-}
-
 dotenv.config();
-
-const APP_NAME = process.env.APP_NAME;
-const PORT = parseInt(process.env.PORT ?? "3000");
-const MONGO_URI = process.env.MONGO_URI;
+requiredEnv([
+  "NODE_ENV",
+  "PORT",
+  "APP_BASE_URL",
+  "MONGO_URI",
+  "SECRET_COOKIE_PASSWORD",
+  "TESTS_ENABLED",
+  "REDIS_URI",
+]);
 
 const app = express();
 
@@ -57,56 +51,15 @@ app.get('/auth', ironSession, (req, res) => {
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.use(function errorHandler(
-  err: unknown,
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-): express.Response | void {
-  if (err instanceof ValidateError) {
-    console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
-    return res.status(422).json({
-      message: `Validation Failed: ${Object.keys(err?.fields ?? {}).map(key => (
-        `'${key}': ${err.fields[key].message.replaceAll('"', "'")}`
-      )).join(", ")}`,
-    });
-  }
-  if (err instanceof APIError) {
-    return res.status(err?.status ?? 500).json({
-      message: err?.message ?? `Internal server error`,
-    });
-  }
-  if (err instanceof Error) {
-    return res.status(500).json({
-      message: err?.message ?? `Internal server error`,
-    });
-  }
-  next();
-});
-
-app.use(((req, res, next) => {
-  var err: any = new Error('Not Found');
-  err.status = 404;
-  next(err);
-}) as express.RequestHandler);
-
-app.use(((err, req, res, next) => {
-  res.status(err.status ?? 500).json({
-    message: `Internal server error - ${err.message}`,
-  })
-}) as express.ErrorRequestHandler);
+handleErrors(app);
 
 app.disable('x-powered-by');
 
 const start = async (): Promise<void> => {
   try {
-    tag();
-    await mongoose.connect(MONGO_URI!);
-    app.listen(PORT, () => {
-      console.log(`${APP_NAME} server started at http://localhost:${PORT}`);
-    });
+    onStart(app);
   } catch (error) {
-    console.error(error);
+    console.error(`Error! Failed to start: `, error);
     process.exit(1);
   }
 };

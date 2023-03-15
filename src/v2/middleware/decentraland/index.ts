@@ -9,7 +9,7 @@ export const decentralandOptional = combineMiddleware([
     (_req, res, next) => {
         const req: express.Request & dcl.DecentralandSignatureData = (_req as any);
         res.locals.address = req.auth as string | undefined;
-        res.locals.metadata = req.authMetadata as Record<string, any> | undefined;
+        res.locals.metadata = req.authMetadata as Metadata | undefined;
         next()
     }
 ]);
@@ -22,7 +22,7 @@ export const decentralandRequired = (parcel: [x: number, y: number]) => combineM
     async (_req, res, next) => {
         const req: express.Request & dcl.DecentralandSignatureData<Metadata> = (_req as any);
         res.locals.address = req.auth as string;
-        res.locals.metadata = req.authMetadata as Record<string, any>;
+        res.locals.metadata = req.authMetadata as Metadata;
         try {
             await runChecks(req, parcel);
         }catch(err:any){
