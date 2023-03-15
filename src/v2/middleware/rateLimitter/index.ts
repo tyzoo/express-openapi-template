@@ -1,6 +1,13 @@
 import express from "express";
-import combineMiddleware from "../utils/combineMiddleware";
-import redis from "../utils/redis";
+import combineMiddleware from "../combineMiddleware";
+import redis from "./redis";
+
+export interface IRateLimitProps {
+    ok: boolean;
+    message: string;
+    requests: number;
+    ttl: number;
+}
 
 export default function createRateLimiter({
     prefix,

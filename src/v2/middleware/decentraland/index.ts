@@ -1,8 +1,8 @@
 import { Request } from 'express';
 import * as dcl from 'decentraland-crypto-middleware';
-import combineMiddleware from '../utils/combineMiddleware';
-import { runChecks } from '../utils/security/securityChecks';
-import { Metadata, VALID_SIGNATURE_TOLERANCE_INTERVAL_MS } from '../utils/security/utils';
+import combineMiddleware from '../combineMiddleware';
+import { runChecks } from './security/securityChecks';
+import { Metadata, VALID_SIGNATURE_TOLERANCE_INTERVAL_MS } from './security/utils';
 
 /**
  * Decentraland SignedFetch Middleware
