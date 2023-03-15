@@ -1,0 +1,1236 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"User": {
+				"properties": {
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"address": {
+						"type": "string"
+					},
+					"admin": {
+						"type": "boolean"
+					},
+					"nonce": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"address",
+					"admin"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Item": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"rng": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"mongoose.Types.ObjectId": {
+				"type": "string"
+			},
+			"Record_string.any_": {
+				"properties": {},
+				"type": "object",
+				"description": "Construct a type with a set of properties K of type T"
+			},
+			"IRateLimitProps": {
+				"properties": {
+					"ok": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"requests": {
+						"type": "number",
+						"format": "double"
+					},
+					"ttl": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"ok",
+					"message",
+					"requests",
+					"ttl"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"api_key": {
+				"type": "apiKey",
+				"name": "access_token",
+				"in": "query"
+			},
+			"jwt": {
+				"type": "apiKey",
+				"name": "authorization",
+				"in": "header",
+				"scopes": {
+					"admin:all": "admin rights"
+				}
+			},
+			"tsoa_auth": {
+				"type": "oauth2",
+				"flows": {
+					"implicit": {
+						"authorizationUrl": "http://swagger.io/api/oauth/dialog",
+						"scopes": {
+							"write:pets": "modify things",
+							"read:pets": "read things"
+						}
+					}
+				}
+			}
+		}
+	},
+	"info": {
+		"title": "Example API",
+		"version": "1.0.0",
+		"description": "An example node app using OpenAPI - Express - Typescript. [Sign In With Ethereum](./../auth)",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"name": "@tyzoo",
+			"url": "https://github.com/tyzoo",
+			"email": "tyler.russell.design@gmail.com"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/auth/nonce": {
+			"post": {
+				"operationId": "Nonce",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"nonce": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"nonce"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a nonce for a user",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"address": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"address"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/siwe-payload": {
+			"post": {
+				"operationId": "GetSiweMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a SIWE Payload for an address/nonce",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"nonce": {
+										"type": "string"
+									},
+									"address": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"nonce",
+									"address"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"success"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Login with SIWE",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"siwe": {
+										"properties": {
+											"payload": {
+												"type": "string"
+											},
+											"signature": {
+												"type": "string"
+											},
+											"address": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"payload",
+											"signature",
+											"address"
+										],
+										"type": "object"
+									}
+								},
+								"required": [
+									"siwe"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/logout": {
+			"get": {
+				"operationId": "Logout",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"success"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Logout from SIWE",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/auth/profile": {
+			"get": {
+				"operationId": "Profile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"jwt": {
+											"type": "string"
+										},
+										"user": {
+											"allOf": [
+												{
+													"$ref": "#/components/schemas/User"
+												}
+											],
+											"nullable": true
+										}
+									},
+									"required": [
+										"user"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"user": {
+												"_id": "632a1ed547dcfbc73c912345",
+												"address": "0x3C815A79f52A07AD30a8Ad299F68D0C328E12345",
+												"admin": false,
+												"nonce": "ItiFRj6T1rQaqwerty",
+												"updatedAt": "2023-03-15T01:29:47.938Z"
+											},
+											"jwt": "eyfrgGciJ..."
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get SIWE Profile",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/captcha/new": {
+			"get": {
+				"operationId": "NewCaptcha",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"enum": [
+										null
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a nonce for a user",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/captcha/verify": {
+			"post": {
+				"operationId": "GetSiweMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"success"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a SIWE Payload for an address/nonce",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"code": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"code"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/crud": {
+			"get": {
+				"operationId": "FindAllitems",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"allOf": [
+											{
+												"$ref": "#/components/schemas/Item"
+											},
+											{
+												"properties": {
+													"_id": {
+														"type": "string"
+													}
+												},
+												"required": [
+													"_id"
+												],
+												"type": "object"
+											}
+										]
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all items",
+				"tags": [
+					"CRUD"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateItem",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Item"
+										},
+										{
+											"properties": {
+												"_id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"_id"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Create an Item",
+				"tags": [
+					"CRUD"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/crud/{itemId}": {
+			"get": {
+				"operationId": "FindItem",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Item"
+										},
+										{
+											"properties": {
+												"_id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"_id"
+											],
+											"type": "object"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"description": "Get Item by ID",
+				"tags": [
+					"CRUD"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "itemId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "UpdateItem",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Item"
+										},
+										{
+											"properties": {
+												"_id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"_id"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Update an Item",
+				"tags": [
+					"CRUD"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "itemId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteItem",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Item"
+										},
+										{
+											"properties": {
+												"_id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"_id"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete an Item",
+				"tags": [
+					"CRUD"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "itemId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						}
+					}
+				]
+			}
+		},
+		"/dcl/optional": {
+			"get": {
+				"operationId": "Optional",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"metadata": {
+											"$ref": "#/components/schemas/Record_string.any_"
+										},
+										"address": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"address"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										},
+										"ok": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"message",
+										"ok"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"ok": false,
+											"message": "Invalid Auth Chain"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Optional DCL route",
+				"tags": [
+					"Decentraland"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/dcl/required": {
+			"get": {
+				"operationId": "Required",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"metadata": {
+											"$ref": "#/components/schemas/Record_string.any_"
+										},
+										"address": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"address"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										},
+										"ok": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"message",
+										"ok"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"ok": false,
+											"message": "Invalid Auth Chain"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Required DCL Route",
+				"tags": [
+					"Decentraland"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/tests": {
+			"get": {
+				"operationId": "CheckIfOnline",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"online": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"online"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Check if API is online",
+				"tags": [
+					"Tests"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/tests/add-items": {
+			"get": {
+				"operationId": "AddItems",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Add 10 test items to DB",
+				"tags": [
+					"Tests"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/tests/rate-limiter": {
+			"get": {
+				"operationId": "RateLimiter",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IRateLimitProps"
+								}
+							}
+						}
+					},
+					"503": {
+						"description": "Service Unavailable",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IRateLimitProps"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"ok": false,
+											"message": "You are being rate limited! Slow down",
+											"requests": 2,
+											"ttl": 10
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Test Rate Limitter",
+				"tags": [
+					"Tests"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/users/{userId}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"name"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unathorized"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"project:read"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/v2"
+		}
+	],
+	"tags": [
+		{
+			"name": "Authentication",
+			"description": "Authenticate using Sign in With Ethereum (SIWE) [Connect Wallet](./../auth)"
+		},
+		{
+			"name": "CRUD",
+			"description": "A set of example CRUD routes"
+		},
+		{
+			"name": "Tests",
+			"description": "Test if the API is up and running"
+		},
+		{
+			"name": "Decentraland",
+			"description": "Example routes enforcing DCL middleware"
+		}
+	]
+}

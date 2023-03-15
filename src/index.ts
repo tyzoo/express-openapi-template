@@ -6,7 +6,7 @@ import express from "express";
 import mongoose from "mongoose";
 import swaggerUI from "swagger-ui-express";
 import * as dotenv from "dotenv";
-import * as swaggerDocument from '../dist/swagger.json';
+import * as swaggerDocument from './swagger.json';
 import { SiweMessage } from 'siwe';
 import { ValidateError } from 'tsoa';
 import { RegisterRoutes } from "./v2/routes";

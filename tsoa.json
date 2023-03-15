@@ -14,7 +14,7 @@
         },
         "basePath": "/v2",
         "entryFile": "./src/index.ts",
-        "outputDirectory": "./dist",
+        "outputDirectory": "./src",
         "specVersion": 3,
         "persistAuthorization": true,
         "securityDefinitions": {
