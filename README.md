@@ -1,4 +1,4 @@
-# express-openapi-ts-app
+# express-openapi-template
 ### by [@tyzoo](https://github.io/tyzoo)
 
 ### About
