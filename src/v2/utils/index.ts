@@ -37,6 +37,7 @@ export async function onStart(app: express.Express) {
         console.log(chalk.hex('#ffffff')(borderAndMessage));
     });
 }
+export { readDir } from "./misc/readDir";
 
 export { requiredEnv } from "./misc/requiredEnv";
 

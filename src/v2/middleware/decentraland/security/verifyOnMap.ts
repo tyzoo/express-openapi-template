@@ -1,4 +1,4 @@
-import { MARGIN_OF_ERROR, PeerResponse } from './utils'
+import { MARGIN_OF_ERROR, PeerResponse } from './dclConfig'
 
 // validate that the player is active in a catalyst server, and in the indicated coordinates, or within a margin of error
 export async function checkPlayer(

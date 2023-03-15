@@ -1,6 +1,6 @@
 import express from "express";
 import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example } from "tsoa";
-import ironSession from "../../middleware/ironSession";
+import { ironSession } from "../../middleware";
 import { APIError, svg2png, svgCaptcha } from "../../utils";
 
 @Route("captcha")

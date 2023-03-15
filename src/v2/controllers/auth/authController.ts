@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import express from "express";
 import { ethers } from "ethers";
 import { generateNonce, SiweMessage } from "siwe";
-import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example, Security } from "tsoa";
+import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example } from "tsoa";
 import { Scopes, User, UserModel } from "../../../models/User";
 import ironSession, { ironSessionOptions } from "../../middleware/ironSession";
 import { APIError } from "../../utils";

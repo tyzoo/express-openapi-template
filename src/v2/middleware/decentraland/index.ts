@@ -1,8 +1,13 @@
 import express from "express";
 import * as dcl from 'decentraland-crypto-middleware';
 import combineMiddleware from "../combineMiddleware";
-import { Metadata, VALID_SIGNATURE_TOLERANCE_INTERVAL_MS } from "./security/utils";
+import { Metadata, VALID_SIGNATURE_TOLERANCE_INTERVAL_MS } from "./security/dclConfig";
 import { runChecks } from "./security/securityChecks";
+
+export * as securityChecks from "./security/securityChecks";
+export * as dclConfig from "./security/dclConfig";
+export { Metadata, PeerResponse } from "./security/dclConfig";
+export * as verifyOnMap from "./security/verifyOnMap";
 
 export const decentralandOptional = combineMiddleware([
     dcl.express({ optional: true }),

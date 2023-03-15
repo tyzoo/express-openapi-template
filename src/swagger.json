@@ -39,9 +39,9 @@
 						"description": "Privleged access to API's and other account flags",
 						"example": [
 							"user",
-							"banned",
+							"admin",
 							"verified",
-							"admin"
+							"banned"
 						]
 					},
 					"jwt": {

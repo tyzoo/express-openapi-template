@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import dcl from 'decentraland-crypto-middleware'
-import { denyListedIPS, TESTS_ENABLED, Metadata } from './utils'
+import { denyListedIPS, TESTS_ENABLED, Metadata } from './dclConfig'
 import { checkCoords, checkPlayer } from './verifyOnMap'
 
 export function checkOrigin(req: Request) {

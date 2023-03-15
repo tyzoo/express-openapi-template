@@ -32,7 +32,7 @@ export class User extends TimeStamps {
 
   /**
    * Privleged access to API's and other account flags
-   * @example ["user", "banned", "verified", "admin"]
+   * @example ["user", "admin", "verified", "banned"]
    */
   @prop({ required: false, default: [] })
   public scopes?: Scopes[];

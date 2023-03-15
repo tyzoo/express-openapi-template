@@ -8,9 +8,8 @@ import swaggerUI from "swagger-ui-express";
 import * as dotenv from "dotenv";
 import * as swaggerDocument from './swagger.json';
 import { RegisterRoutes } from "./v2/routes";
-import { morganMiddleware } from './v2/middleware/morgan';
 import { onStart, handleErrors, requiredEnv } from './v2/utils';
-import ironSession from './v2/middleware/ironSession';
+import { ironSession, morganMiddleware } from './v2/middleware';
 
 dotenv.config();
 requiredEnv([

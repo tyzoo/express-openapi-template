@@ -2,6 +2,8 @@ import express from "express";
 import combineMiddleware from "../combineMiddleware";
 import redis from "./redis";
 
+export * as redis from "./redis";
+
 export interface RateLimitResponse {
     /**
      * Status

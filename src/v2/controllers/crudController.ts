@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { Get, Route, Tags, Body, Post, Put, Delete, Response, Path, Example, Security } from "tsoa";
 import { APIError } from "../utils";
-import { ItemModel, Item } from "../../models/Item";
-import { Scopes } from "../../models/User";
+import { ItemModel, Item, Scopes } from "../../models";
 
 @Route("crud")
 @Tags("CRUD")

@@ -1,8 +1,7 @@
 import express from "express";
 import * as dcl from 'decentraland-crypto-middleware'
 import { Get, Route, Request, Middlewares, Tags, Response, Example } from "tsoa";
-import { Metadata } from "../middleware/decentraland/security/utils";
-import { decentralandOptional, decentralandRequired } from "../middleware/decentraland";
+import { decentralandOptional, decentralandRequired, Metadata } from "../middleware";
 
 @Route("dcl")
 @Tags("Decentraland")
