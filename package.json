@@ -5,12 +5,10 @@
   "main": "dist/src/index.js",
   "scripts": {
     "start": "node dist/src/index.js",
-    "build": "npm run bundle && tsc && npm run docs",
-    "dev": "npm run docs && nodemon src/index.ts",
+    "build": "npm run bundle && npm run generator && tsc",
+    "dev": "npm run generator && nodemon src/index.ts",
     "bundle": "npx webpack --config webpack.config.js",
-    "gen-routes": "tsoa routes",
-    "gen-spec": "tsoa spec",
-    "docs": "npm run gen-routes && npm run gen-spec"
+    "generator": "ts-node scripts/generator"
   },
   "author": "",
   "license": "ISC",

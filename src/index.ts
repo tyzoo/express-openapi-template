@@ -15,11 +15,14 @@ dotenv.config();
 requiredEnv([
   "NODE_ENV",
   "PORT",
+  "APP_NAME",
+  "APP_DESCRIPTION",
   "APP_BASE_URL",
+  "APP_BASE_PATH",
   "MONGO_URI",
+  "REDIS_URI",
   "SECRET_COOKIE_PASSWORD",
   "TESTS_ENABLED",
-  "REDIS_URI",
 ]);
 
 const app = express();
@@ -54,13 +57,4 @@ handleErrors(app);
 
 app.disable('x-powered-by');
 
-const start = async (): Promise<void> => {
-  try {
-    onStart(app);
-  } catch (error) {
-    console.error(`Error! Failed to start: `, error);
-    process.exit(1);
-  }
-};
-
-void start();
+void onStart(app);

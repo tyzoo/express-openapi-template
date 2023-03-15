@@ -9,5 +9,5 @@ export {
 } from "./decentraland";
 export { RateLimitResponse, redis } from "./rateLimitter";
 export { default as combineMiddleware } from "./combineMiddleware";
-export { default as ironSession } from "./ironSession";
+export { default as ironSession, ironSessionOptions } from "./ironSession";
 export { morganMiddleware } from "./morgan";

@@ -170,10 +170,7 @@
 			"jwt": {
 				"type": "apiKey",
 				"name": "authorization",
-				"in": "header",
-				"scopes": {
-					"admin:all": "admin rights to all resources"
-				}
+				"in": "header"
 			},
 			"tsoa_auth": {
 				"type": "oauth2",
@@ -191,11 +188,7 @@
 	},
 	"info": {
 		"title": "Example API",
-		"version": "2.0.0",
 		"description": "An example node app using OpenAPI - Express - Typescript. [Sign In With Ethereum](./../auth)",
-		"license": {
-			"name": "ISC"
-		},
 		"contact": {
 			"name": "@tyzoo",
 			"url": "https://github.com/tyzoo",

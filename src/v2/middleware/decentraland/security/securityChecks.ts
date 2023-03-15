@@ -20,10 +20,9 @@ export async function runChecks(
   req: Request & dcl.DecentralandSignatureData<Metadata>,
   parcel?: number[]
 ) {
-  const metadata = req.authMetadata;
-  const userAddress = req.auth;
-  const coordinates = metadata.parcel?.split(',')
-    .map((item: string) => parseInt(item, 10));
+  const metadata = req.res!.locals.metadata;
+  const userAddress = req.res!.locals.address;
+  const coordinates = metadata.parcel?.split(',').map((item: string) => parseInt(item, 10));
   const localhost = [
     `127.0.0.1:8001`,
     `localhost`,

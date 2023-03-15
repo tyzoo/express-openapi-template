@@ -1,6 +1,6 @@
 import express from "express";
 import { ValidateError } from "tsoa";
-import { APIError } from ".";
+import { APIError } from "..";
 
 export function handleErrors(app: express.Express) {
 	/**

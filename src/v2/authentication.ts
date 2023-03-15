@@ -21,7 +21,6 @@ export async function expressAuthentication(
       ])(req, req.res!, req.next!)
     })
   }
-
   const ironReq = await getIronRequest() as unknown as express.Request;
 
   if (securityName === "api_key") {
@@ -46,11 +45,8 @@ export async function expressAuthentication(
       ironReq.query.token ||
       ironReq.headers.authorization?.replace("Bearer ", "") ||
       ironReq.session.jwt;
-
     return new Promise((resolve, reject) => {
-      if (!token) {
-        reject(new Error("No token provided"));
-      }
+      if (!token) return reject(new Error("No token provided"));
       jwt.verify(
         token,
         process.env.SECRET_COOKIE_PASSWORD!,
@@ -64,12 +60,12 @@ export async function expressAuthentication(
             ]);
             if (!user) return reject(new Error(`User doesn't exist`));
             if (user.scopes?.includes(Scopes.BANNED) && !scopes?.includes(Scopes.BANNED)) {
-              reject(new Error(`Your account is banned`));
+              return reject(new Error(`Your account is banned`));
             }
             if (scopes) {
               for (const scope of scopes) {
                 if (!user.scopes?.includes(scope as Scopes)) {
-                  reject(new Error(`User account is missing a required scope '${scope}'`));
+                  return reject(new Error(`User account is missing a required scope '${scope}'`));
                 }
               }
             }
@@ -80,5 +76,4 @@ export async function expressAuthentication(
       );
     });
   }
-
 }
