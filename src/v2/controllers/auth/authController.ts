@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import express from "express";
 import { ethers } from "ethers";
 import { generateNonce, SiweMessage } from "siwe";
-import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example } from "tsoa";
+import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example, Security } from "tsoa";
 import { User, UserModel } from "../../../models/User";
 import ironSession, { ironSessionOptions } from "../../middleware/ironSession";
 import { APIError } from "../../utils";
@@ -108,18 +108,22 @@ export class AuthController {
     },
     @Request() req: express.Request,
   ): Promise<{ success: boolean; }> {
-    const { siwe: { signature, payload} } = body;
+    const { siwe: { signature, payload } } = body;
     const siweMessage = new SiweMessage(payload);
     const fields = await siweMessage.validate(signature);
     const { address, nonce } = fields;
     if (nonce !== req.session.nonce) throw new APIError(401, `Invalid nonce`);
+    let user = await UserModel.findOne({ address });
+    if (!user) user = await UserModel.create({ address });
     req.session.siwe = fields;
-    req.session.jwt = jwt.sign({ 
+    const token = jwt.sign({
+      user,
       siwe: fields,
     }, ironSessionOptions.password);
+    req.session.jwt = token;
     await req.session.save();
-    let user = await UserModel.findOne({ address });
-    if(!user) user = await UserModel.create({ address });
+    user.jwt = token;
+    await user.save();
     return { success: true }
   }
 
@@ -135,10 +139,18 @@ export class AuthController {
   public async logout(
     @Request() req: express.Request,
   ): Promise<{ success: boolean; }> {
-    if(req.session?.jwt){
+    if (req.session?.jwt) {
+      const payload = jwt.decode(req.session.jwt) as jwt.JwtPayload;
+      if(payload?.user){
+        const user = await UserModel.findById(payload.user._id);
+        if(user){
+          user.jwt = undefined;
+          await user.save();
+        }
+      }
       req.session.destroy();
       return { success: true };
-    }else{
+    } else {
       return { success: false };
     }
   }
@@ -156,7 +168,6 @@ export class AuthController {
     "user": {
       _id: "632a1ed547dcfbc73c912345",
       address: "0x3C815A79f52A07AD30a8Ad299F68D0C328E12345",
-      admin: false,
       nonce: "ItiFRj6T1rQaqwerty",
       updatedAt: new Date("2023-03-15T01:29:47.938Z")
     },
@@ -170,9 +181,9 @@ export class AuthController {
   }> {
     const address = req.session.siwe?.address;
     const jwt = req.session?.jwt;
-    if(!address) throw new APIError(401, "Session not found");
+    if (!address) throw new APIError(401, "Session not found");
     const user = await UserModel.findOne({ address });
-    if(!user) throw new APIError(401, "User not found");
+    if (!user) throw new APIError(401, "User not found");
     return { user, jwt };
   }
 }

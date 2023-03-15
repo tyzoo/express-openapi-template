@@ -28,7 +28,7 @@
                 "name": "authorization",
                 "in": "header",
                 "scopes": {
-                    "admin:all": "admin rights"
+                    "admin:all": "admin rights to all resources"
                 }
             },
             "tsoa_auth": {

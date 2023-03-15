@@ -19,16 +19,21 @@
 					"address": {
 						"type": "string"
 					},
-					"admin": {
-						"type": "boolean"
-					},
 					"nonce": {
+						"type": "string"
+					},
+					"scopes": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"jwt": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"address",
-					"admin"
+					"address"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -150,7 +155,7 @@
 				"name": "authorization",
 				"in": "header",
 				"scopes": {
-					"admin:all": "admin rights"
+					"admin:all": "admin rights to all resources"
 				}
 			},
 			"tsoa_auth": {
@@ -556,7 +561,6 @@
 											"user": {
 												"_id": "632a1ed547dcfbc73c912345",
 												"address": "0x3C815A79f52A07AD30a8Ad299F68D0C328E12345",
-												"admin": false,
 												"nonce": "ItiFRj6T1rQaqwerty",
 												"updatedAt": "2023-03-15T01:29:47.938Z"
 											},
@@ -979,7 +983,13 @@
 				"tags": [
 					"CRUD"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"admin:all"
+						]
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -1077,7 +1087,13 @@
 				"tags": [
 					"CRUD"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"admin:all"
+						]
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
