@@ -1,6 +1,6 @@
 import express from "express";
 import * as dcl from 'decentraland-crypto-middleware'
-import { Get, Route, Request, Middlewares, Tags, Response } from "tsoa";
+import { Get, Route, Request, Middlewares, Tags, Response, Example } from "tsoa";
 import decentralandMiddleware from "../middleware/decentraland";
 
 @Route("dcl")
@@ -21,6 +21,10 @@ export class DCLController {
    */
   @Get("optional")
   @Middlewares(decentralandMiddleware.Optional)
+  @Example({
+    address: `0x12345...`,
+    metadata: {},
+  }, "Successful Response")
   public async optional(
     @Request() _req: express.Request,
   ): Promise<{
@@ -39,6 +43,10 @@ export class DCLController {
    */
   @Get("required")
   @Middlewares(decentralandMiddleware.Required)
+  @Example({
+    address: `0x12345...`,
+    metadata: {},
+  }, "Successful Response")
   public async required(
     @Request() _req: express.Request,
     ): Promise<{

@@ -1,5 +1,5 @@
 import express from "express";
-import { Get, Route, Request, Middlewares, Tags, Body, Post, Response } from "tsoa";
+import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example } from "tsoa";
 import ironSession from "../../middleware/ironSession";
 import { APIError, svg2png, svgCaptcha } from "../../utils";
 
@@ -53,6 +53,9 @@ export class CaptchaController {
    */
   @Post("verify")
   @Middlewares(ironSession)
+  @Example({
+    success: true,
+  }, "Successful Response")
   public async getSiweMessage(
     @Body() body: {
       code: string;

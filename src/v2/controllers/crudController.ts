@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Get, Route, Middlewares, Tags, Body, Post, Put, Delete, Response, Path } from "tsoa";
+import { Get, Route, Middlewares, Tags, Body, Post, Put, Delete, Response, Path, Example } from "tsoa";
 import ironSession from "../middleware/ironSession";
 import authMiddleware from "../middleware/auth";
 import { APIError } from "../utils";
@@ -15,6 +15,13 @@ export class CrudController {
    * @summary Get all items
    */
   @Get("")
+  @Example([
+    {
+      _id: "62f05f918c8a2e1d6608dfd2",
+      name: "Item 4",
+      rng: 0.9992763155631645
+    },
+  ], "Successful Response")
   public async findAllitems(): Promise<(Item & { _id: string })[]> {
     return ItemModel.find({}).select(["-__v"]);
   }
@@ -24,6 +31,11 @@ export class CrudController {
    * @summary Get Item By ID
    */
   @Get("{itemId}")
+  @Example({
+    _id: "62f05f918c8a2e1d6608dfd2",
+    name: "Item 4",
+    rng: 0.9992763155631645
+  }, "Successful Response")
   public async findItem(
     @Path() itemId: mongoose.Types.ObjectId,
   ): Promise<(Item & { _id: string }) | null> {
@@ -35,6 +47,11 @@ export class CrudController {
    * @summary Create an Item
    */
   @Post("")
+  @Example({
+    _id: "62f05f918c8a2e1d6608dfd2",
+    name: "Item 4",
+    rng: 0.9992763155631645
+  }, "Successful Response")
   public async createItem(
     @Body() body: {
       name: string;
@@ -55,6 +72,11 @@ export class CrudController {
     ironSession,
     authMiddleware.jwtHeaderOrSession,
   ])
+  @Example({
+    _id: "62f05f918c8a2e1d6608dfd2",
+    name: "Item 4",
+    rng: 0.9992763155631645
+  }, "Successful Response")
   @Response<{ message: string; }>(401, "Unauthorized", { message: `Unauthorized request` })
   public async updateItem(
     @Path() itemId: mongoose.Types.ObjectId,
@@ -74,6 +96,11 @@ export class CrudController {
    * @summary Delete an Item
    */
   @Delete("{itemId}")
+  @Example({
+    _id: "62f05f918c8a2e1d6608dfd2",
+    name: "Item 4",
+    rng: 0.9992763155631645
+  }, "Successful Response")
   @Middlewares([
     ironSession,
     authMiddleware.jwtHeaderOrSession,

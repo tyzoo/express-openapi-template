@@ -19,6 +19,9 @@ export class AuthController {
    */
   @Post("nonce")
   @Middlewares(ironSession)
+  @Example({
+    nonce: "MQ4YUxu1R1WUqwerty"
+  }, "Successful Response")
   public async nonce(
     @Body() body: { address: string; },
     @Request() req: express.Request,
@@ -48,6 +51,9 @@ export class AuthController {
    */
   @Post("siwe-payload")
   @Middlewares(ironSession)
+  @Example({
+    message: "express-openapi-ts-app.herokuapp.com wants you to sign in with your Ethereum account:\n0x12345...\n\nSign in with Ethereum to the app.\n\nURI: https://express-openapi-ts-app.herokuapp.com\nVersion: 1\nChain ID: 1\nNonce: MQ4YUxu1R1WUqwerty\nIssued At: 2023-03-15T02:28:43.469Z"
+  }, "Successful Response")
   public async getSiweMessage(
     @Body() body: {
       address: string;
@@ -89,6 +95,9 @@ export class AuthController {
    */
   @Post("login")
   @Middlewares(ironSession)
+  @Example({
+    success: true,
+  }, "Successful Response")
   public async login(
     @Body() body: {
       siwe: {
@@ -120,6 +129,9 @@ export class AuthController {
    */
   @Get("logout")
   @Middlewares(ironSession)
+  @Example({
+    success: true,
+  }, "Successful Response")
   public async logout(
     @Request() req: express.Request,
   ): Promise<{ success: boolean; }> {
