@@ -114,7 +114,7 @@
 	},
 	"info": {
 		"title": "Example API",
-		"version": "1.0.0",
+		"version": "2.0.0",
 		"description": "An example node app using OpenAPI - Express - Typescript. [Sign In With Ethereum](./../auth)",
 		"license": {
 			"name": "ISC"
@@ -176,6 +176,7 @@
 					}
 				},
 				"description": "Get a nonce for a user",
+				"summary": "Get a new nonce",
 				"tags": [
 					"Authentication"
 				],
@@ -250,6 +251,7 @@
 					}
 				},
 				"description": "Get a SIWE Payload for an address/nonce",
+				"summary": "Get a SIWE Payload",
 				"tags": [
 					"Authentication"
 				],
@@ -328,6 +330,7 @@
 					}
 				},
 				"description": "Login with SIWE",
+				"summary": "Login with SIWE",
 				"tags": [
 					"Authentication"
 				],
@@ -418,6 +421,7 @@
 					}
 				},
 				"description": "Logout from SIWE",
+				"summary": "Logout from SIWE",
 				"tags": [
 					"Authentication"
 				],
@@ -496,6 +500,7 @@
 					}
 				},
 				"description": "Get SIWE Profile",
+				"summary": "Get SIWE Profile",
 				"tags": [
 					"Authentication"
 				],
@@ -547,7 +552,8 @@
 						}
 					}
 				},
-				"description": "Get a nonce for a user",
+				"description": "Generate a new Captcha",
+				"summary": "Generate a new Captcha",
 				"tags": [
 					"Authentication"
 				],
@@ -603,7 +609,8 @@
 						}
 					}
 				},
-				"description": "Get a SIWE Payload for an address/nonce",
+				"description": "Verify a Captcha",
+				"summary": "Verify a Captcha",
 				"tags": [
 					"Authentication"
 				],
@@ -663,6 +670,7 @@
 					}
 				},
 				"description": "Get all items",
+				"summary": "Get all items",
 				"tags": [
 					"CRUD"
 				],
@@ -699,6 +707,7 @@
 					}
 				},
 				"description": "Create an Item",
+				"summary": "Create an Item",
 				"tags": [
 					"CRUD"
 				],
@@ -756,6 +765,7 @@
 					}
 				},
 				"description": "Get Item by ID",
+				"summary": "Get Item By ID",
 				"tags": [
 					"CRUD"
 				],
@@ -826,6 +836,7 @@
 					}
 				},
 				"description": "Update an Item",
+				"summary": "Update an Item",
 				"tags": [
 					"CRUD"
 				],
@@ -914,6 +925,7 @@
 					}
 				},
 				"description": "Delete an Item",
+				"summary": "Delete an Item",
 				"tags": [
 					"CRUD"
 				],
@@ -987,6 +999,7 @@
 					}
 				},
 				"description": "Optional DCL route",
+				"summary": "Optional DCL Route",
 				"tags": [
 					"Decentraland"
 				],
@@ -1051,6 +1064,7 @@
 					}
 				},
 				"description": "Required DCL Route",
+				"summary": "Required DCL Route",
 				"tags": [
 					"Decentraland"
 				],
@@ -1082,6 +1096,7 @@
 					}
 				},
 				"description": "Check if API is online",
+				"summary": "Check if API is online",
 				"tags": [
 					"Tests"
 				],
@@ -1113,6 +1128,7 @@
 					}
 				},
 				"description": "Add 10 test items to DB",
+				"summary": "Add 10 test items to DB",
 				"tags": [
 					"Tests"
 				],
@@ -1156,57 +1172,12 @@
 					}
 				},
 				"description": "Test Rate Limitter",
+				"summary": "Test Rate Limitter",
 				"tags": [
 					"Tests"
 				],
 				"security": [],
 				"parameters": []
-			}
-		},
-		"/users/{userId}": {
-			"get": {
-				"operationId": "GetUser",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"name": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"name"
-									],
-									"type": "object"
-								}
-							}
-						}
-					},
-					"403": {
-						"description": "Unathorized"
-					}
-				},
-				"security": [
-					{
-						"jwt": [
-							"project:read"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "userId",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
 			}
 		}
 	},
