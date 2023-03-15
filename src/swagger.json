@@ -145,6 +145,13 @@
 										"nonce"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"nonce": "MQ4YUxu1R1WUqwerty"
+										}
+									}
 								}
 							}
 						}
@@ -220,6 +227,13 @@
 										"message"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"message": "express-openapi-ts-app.herokuapp.com wants you to sign in with your Ethereum account:\n0x12345...\n\nSign in with Ethereum to the app.\n\nURI: https://express-openapi-ts-app.herokuapp.com\nVersion: 1\nChain ID: 1\nNonce: MQ4YUxu1R1WUqwerty\nIssued At: 2023-03-15T02:28:43.469Z"
+										}
+									}
 								}
 							}
 						}
@@ -299,6 +313,13 @@
 										"success"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"success": true
+										}
+									}
 								}
 							}
 						}
@@ -390,6 +411,13 @@
 										"success"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"success": true
+										}
+									}
 								}
 							}
 						}
@@ -579,6 +607,13 @@
 										"success"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"success": true
+										}
+									}
 								}
 							}
 						}
@@ -664,6 +699,17 @@
 										]
 									},
 									"type": "array"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": [
+											{
+												"_id": "62f05f918c8a2e1d6608dfd2",
+												"name": "Item 4",
+												"rng": 0.9992763155631645
+											}
+										]
+									}
 								}
 							}
 						}
@@ -701,6 +747,15 @@
 											"type": "object"
 										}
 									]
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"_id": "62f05f918c8a2e1d6608dfd2",
+											"name": "Item 4",
+											"rng": 0.9992763155631645
+										}
+									}
 								}
 							}
 						}
@@ -759,6 +814,15 @@
 										}
 									],
 									"nullable": true
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"_id": "62f05f918c8a2e1d6608dfd2",
+											"name": "Item 4",
+											"rng": 0.9992763155631645
+										}
+									}
 								}
 							}
 						}
@@ -805,6 +869,15 @@
 											"type": "object"
 										}
 									]
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"_id": "62f05f918c8a2e1d6608dfd2",
+											"name": "Item 4",
+											"rng": 0.9992763155631645
+										}
+									}
 								}
 							}
 						}
@@ -894,6 +967,15 @@
 											"type": "object"
 										}
 									]
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"_id": "62f05f918c8a2e1d6608dfd2",
+											"name": "Item 4",
+											"rng": 0.9992763155631645
+										}
+									}
 								}
 							}
 						}
@@ -963,6 +1045,14 @@
 										"address"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"address": "0x12345...",
+											"metadata": {}
+										}
+									}
 								}
 							}
 						}
@@ -1028,6 +1118,14 @@
 										"address"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"address": "0x12345...",
+											"metadata": {}
+										}
+									}
 								}
 							}
 						}
@@ -1090,6 +1188,13 @@
 										"online"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"online": true
+										}
+									}
 								}
 							}
 						}
@@ -1122,6 +1227,13 @@
 										"message"
 									],
 									"type": "object"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"message": "Added 10 test items to database"
+										}
+									}
 								}
 							}
 						}
@@ -1146,6 +1258,16 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IRateLimitProps"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"ok": true,
+											"message": "This request is allowed!",
+											"requests": 1,
+											"ttl": 10
+										}
+									}
 								}
 							}
 						}
