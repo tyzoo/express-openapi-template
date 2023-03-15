@@ -34,14 +34,18 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"string","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Record_string.any_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Metadata": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"signer":{"dataType":"string","required":true},"realm":{"dataType":"nestedObjectLiteral","nestedProperties":{"lighthouseVersion":{"dataType":"string"},"layer":{"dataType":"string"},"catalystName":{"dataType":"string"},"domain":{"dataType":"string"}},"required":true},"isGuest":{"dataType":"boolean"},"network":{"dataType":"string"},"tld":{"dataType":"string"},"parcel":{"dataType":"string"},"sceneId":{"dataType":"string"},"origin":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "MetadataResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "address": {"dataType":"string","required":true},
+            "metadata": {"ref":"Metadata"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RateLimitResponse": {
@@ -60,7 +64,7 @@ const models: TsoaRoute.Models = {
         "enums": ["admin","user","banned","verified"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "User": {
+    "UserDoc": {
         "dataType": "refObject",
         "properties": {
             "createdAt": {"dataType":"datetime"},
@@ -68,6 +72,16 @@ const models: TsoaRoute.Models = {
             "address": {"dataType":"string","required":true},
             "nonce": {"dataType":"string"},
             "scopes": {"dataType":"array","array":{"dataType":"refEnum","ref":"Scopes"}},
+            "jwt": {"dataType":"string"},
+            "_id": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ProfileResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "user": {"dataType":"union","subSchemas":[{"ref":"UserDoc"},{"dataType":"enum","enums":[null]}],"required":true},
             "jwt": {"dataType":"string"},
         },
         "additionalProperties": false,

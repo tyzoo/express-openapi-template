@@ -25,11 +25,6 @@
 			"mongoose.Types.ObjectId": {
 				"type": "string"
 			},
-			"Record_string.any_": {
-				"properties": {},
-				"type": "object",
-				"description": "Construct a type with a set of properties K of type T"
-			},
 			"Metadata": {
 				"properties": {
 					"signer": {
@@ -77,6 +72,21 @@
 				],
 				"type": "object"
 			},
+			"MetadataResponse": {
+				"properties": {
+					"address": {
+						"type": "string"
+					},
+					"metadata": {
+						"$ref": "#/components/schemas/Metadata"
+					}
+				},
+				"required": [
+					"address"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"RateLimitResponse": {
 				"properties": {
 					"ok": {
@@ -120,7 +130,7 @@
 				],
 				"type": "string"
 			},
-			"User": {
+			"UserDoc": {
 				"properties": {
 					"createdAt": {
 						"type": "string",
@@ -152,10 +162,34 @@
 					"jwt": {
 						"type": "string",
 						"description": "Store latest JWT for authorizaiton"
+					},
+					"_id": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"address"
+					"address",
+					"_id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProfileResponse": {
+				"properties": {
+					"user": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserDoc"
+							}
+						],
+						"nullable": true
+					},
+					"jwt": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"user"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -185,7 +219,7 @@
 				"operationId": "FindAllitems",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Array of Items",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -236,7 +270,7 @@
 				"operationId": "CreateItem",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "New Item",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -278,6 +312,7 @@
 				"security": [],
 				"parameters": [],
 				"requestBody": {
+					"description": "Provide new document contents",
 					"required": true,
 					"content": {
 						"application/json": {
@@ -290,7 +325,8 @@
 								"required": [
 									"name"
 								],
-								"type": "object"
+								"type": "object",
+								"description": "Provide new document contents"
 							}
 						}
 					}
@@ -302,7 +338,7 @@
 				"operationId": "FindItem",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Item",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -345,6 +381,7 @@
 				"security": [],
 				"parameters": [
 					{
+						"description": "Document MongoID",
 						"in": "path",
 						"name": "itemId",
 						"required": true,
@@ -358,7 +395,7 @@
 				"operationId": "UpdateItem",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Updated Item",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -431,6 +468,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Document MongoID",
 						"in": "path",
 						"name": "itemId",
 						"required": true,
@@ -440,6 +478,7 @@
 					}
 				],
 				"requestBody": {
+					"description": "Content to update to",
 					"required": true,
 					"content": {
 						"application/json": {
@@ -452,7 +491,8 @@
 								"required": [
 									"name"
 								],
-								"type": "object"
+								"type": "object",
+								"description": "Content to update to"
 							}
 						}
 					}
@@ -462,7 +502,7 @@
 				"operationId": "DeleteItem",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Deleted Item",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -535,6 +575,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Document MongoID",
 						"in": "path",
 						"name": "itemId",
 						"required": true,
@@ -550,7 +591,7 @@
 				"operationId": "NewCaptcha",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Captcha Image (PNG Format)",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -603,7 +644,7 @@
 				"operationId": "GetSiweMessage",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Success Boolean",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -689,18 +730,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"metadata": {
-											"$ref": "#/components/schemas/Record_string.any_"
-										},
-										"address": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"address"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/MetadataResponse"
 								},
 								"examples": {
 									"Successful Response": {
@@ -775,19 +805,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"metadata": {
-											"$ref": "#/components/schemas/Metadata"
-										},
-										"address": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"metadata",
-										"address"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/MetadataResponse"
 								},
 								"examples": {
 									"Successful Response": {
@@ -858,7 +876,7 @@
 				"operationId": "CheckIfOnline",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "If the server is online boolean",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -897,7 +915,7 @@
 				"operationId": "AddItems",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Status message",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -990,7 +1008,7 @@
 				"operationId": "Nonce",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Nonce for user",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1072,7 +1090,7 @@
 				"operationId": "GetSiweMessage",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Raw SIWE Payload as a string, to be signed",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1158,7 +1176,7 @@
 				"operationId": "Login",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Success boolean",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1216,6 +1234,7 @@
 				"security": [],
 				"parameters": [],
 				"requestBody": {
+					"description": "SIWE Object with address, signature, payload",
 					"required": true,
 					"content": {
 						"application/json": {
@@ -1244,7 +1263,8 @@
 								"required": [
 									"siwe"
 								],
-								"type": "object"
+								"type": "object",
+								"description": "SIWE Object with address, signature, payload"
 							}
 						}
 					}
@@ -1256,7 +1276,7 @@
 				"operationId": "Logout",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Success boolean",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1320,38 +1340,11 @@
 				"operationId": "Profile",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "User object and JWT for the logged in user",
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"jwt": {
-											"type": "string"
-										},
-										"user": {
-											"allOf": [
-												{
-													"$ref": "#/components/schemas/User"
-												},
-												{
-													"properties": {
-														"_id": {
-															"type": "string"
-														}
-													},
-													"required": [
-														"_id"
-													],
-													"type": "object"
-												}
-											],
-											"nullable": true
-										}
-									},
-									"required": [
-										"user"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/ProfileResponse"
 								},
 								"examples": {
 									"Successful Response": {

@@ -7,6 +7,14 @@ import { Scopes, User, UserModel } from "../../models";
 import { ironSession, ironSessionOptions } from "../../middleware";
 import { APIError } from "../../utils";
 
+interface UserDoc extends User {
+  _id: string;
+}
+interface ProfileResponse {
+  user: UserDoc | null;
+  jwt?: string;
+}
+
 @Route("auth")
 @Tags("Authentication")
 @Response<{ message: string; }>(401, "Unauthorized", { message: `Unauthorized request` })
@@ -16,6 +24,7 @@ export class AuthController {
   /**
    * Get a nonce for a user
    * @summary Get a new nonce
+   * @returns Nonce for user
    */
   @Post("nonce")
   @Middlewares(ironSession)
@@ -48,6 +57,9 @@ export class AuthController {
   /**
    * Get a SIWE Payload for an address/nonce
    * @summary Get a SIWE Payload
+   * @param address Ethereum Address
+   * @param nonce Current Nonce 
+   * @returns { string } Raw SIWE Payload as a string, to be signed
    */
   @Post("siwe-payload")
   @Middlewares(ironSession)
@@ -92,6 +104,8 @@ export class AuthController {
   /**
    * Login with SIWE
    * @summary Login with SIWE
+   * @param body SIWE Object with address, signature, payload
+   * @returns Success boolean
    */
   @Post("login")
   @Middlewares(ironSession)
@@ -123,7 +137,7 @@ export class AuthController {
     req.session.jwt = token;
     await req.session.save();
     user.jwt = token;
-    if(!user.scopes?.includes(Scopes.USER)){
+    if (!user.scopes?.includes(Scopes.USER)) {
       user.scopes?.push(Scopes.USER);
     }
     await user.save();
@@ -133,6 +147,7 @@ export class AuthController {
   /**
    * Logout from SIWE
    * @summary Logout from SIWE
+   * @returns Success boolean
    */
   @Get("logout")
   @Middlewares(ironSession)
@@ -144,9 +159,9 @@ export class AuthController {
   ): Promise<{ success: boolean; }> {
     if (req.session?.jwt) {
       const payload = jwt.decode(req.session.jwt) as jwt.JwtPayload;
-      if(payload?.user){
+      if (payload?.user) {
         const user = await UserModel.findById(payload.user._id);
-        if(user){
+        if (user) {
           user.jwt = undefined;
           await user.save();
         }
@@ -161,13 +176,11 @@ export class AuthController {
   /**
    * Get SIWE Profile
    * @summary Get SIWE Profile
+   * @returns { ProfileResponse } User object and JWT for the logged in user
    */
   @Get("profile")
   @Middlewares(ironSession)
-  @Example<{
-    user: User & { _id: string } | null;
-    jwt?: string;
-  }>({
+  @Example<ProfileResponse>({
     "user": {
       _id: "632a1ed547dcfbc73c912345",
       address: "0x3C815A79f52A07AD30a8Ad299F68D0C328E12345",
@@ -178,10 +191,7 @@ export class AuthController {
   }, "Successful Response")
   public async profile(
     @Request() req: express.Request,
-  ): Promise<{
-    user: User & { _id: string } | null;
-    jwt?: string;
-  }> {
+  ): Promise<ProfileResponse> {
     const address = req.session.siwe?.address;
     const jwt = req.session?.jwt;
     if (!address) throw new APIError(401, "Session not found");

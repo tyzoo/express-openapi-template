@@ -36,12 +36,14 @@ export function handleErrors(app: express.Express) {
 	/**
 	 * Catch any 404 errors
 	 */
+	// @ts-ignore
 	app.use(((req, res, next) => {
 		var err: any = new Error('Not Found');
 		err.status = 404;
 		next(err);
 	}) as express.RequestHandler);
 
+	// @ts-ignore
 	app.use(((err, req, res, next) => {
 		res.status(err.status ?? 500).json({
 			message: `Internal server error - ${err.message}`,

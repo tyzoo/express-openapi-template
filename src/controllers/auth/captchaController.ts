@@ -12,6 +12,7 @@ export class CaptchaController {
   /**
    * Generate a new Captcha
    * @summary Generate a new Captcha
+   * @returns Captcha Image (PNG Format)
    */
   @Get("new")
   @Middlewares(ironSession)
@@ -49,6 +50,8 @@ export class CaptchaController {
   /**
    * Verify a Captcha
    * @summary Verify a Captcha
+   * @param code Code to solve current captcha
+   * @returns Success Boolean
    */
   @Post("verify")
   @Middlewares(ironSession)

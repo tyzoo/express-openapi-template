@@ -11,6 +11,7 @@ export class TestsController {
   /**
    * Check if API is online
    * @summary Check if API is online
+   * @returns If the server is online boolean
    */
   @Get("")
   @Example<{ online: boolean; }>({
@@ -25,6 +26,7 @@ export class TestsController {
   /**
    * Add 10 test items to DB
    * @summary Add 10 test items to DB
+   * @returns Status message
    */
   @Get("add-items")
   @Example<{ message: string; }>({
@@ -45,6 +47,7 @@ export class TestsController {
   /**
    * Test Rate Limitter
    * @summary Test Rate Limitter
+   * @returns { RateLimitResponse }
    */
   @Get("rate-limiter")
   @Middlewares(createRateLimiter({

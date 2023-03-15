@@ -58,7 +58,7 @@ export default function createRateLimiter({
                 })
             }
             res.locals.rateLimit = { requests, ttl }
-            next()
+            return next()
     
         }) as express.RequestHandler,
     ])

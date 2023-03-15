@@ -35,7 +35,7 @@ async function getAccount() {
       ethereumButton.innerHTML = `Disconnect Wallet`
       showAccount.innerHTML = account;
       try {
-        const data = (await axios.get(`v2/auth/profile`)).data
+        await axios.get(`v2/auth/profile`);
       }catch{
         siweParent.appendChild(siweButton);
       }

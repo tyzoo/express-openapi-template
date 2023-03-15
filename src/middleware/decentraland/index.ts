@@ -30,6 +30,7 @@ export const decentralandRequired = (parcel: [x: number, y: number]) => combineM
         res.locals.metadata = req.authMetadata as Metadata;
         try {
             await runChecks(req, parcel);
+            return
         }catch(err:any){
             const { message } = err
             return res.status(403).json({

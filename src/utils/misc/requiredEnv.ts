@@ -8,14 +8,15 @@ dotenv.config();
 export function requiredEnv(envVars: string[]): void {
     const undefinedVars: string[] = [];
     const emptyVars: string[] = [];
-    for (const envVar of envVars) {
-        const [,env] = envVar.split(":");
+    for (let envVar of envVars) {
+        const [main,env] = envVar.split(":");
         if(env && env === process.env.NODE_ENV){
-            if (!(envVar in process.env)) {
-                undefinedVars.push(envVar);
-            } else if (process.env[envVar] === '') {
-                emptyVars.push(envVar);
-            }
+            envVar = main;
+        }
+        if (!(envVar in process.env)) {
+            undefinedVars.push(envVar);
+        } else if (process.env[envVar] === '') {
+            emptyVars.push(envVar);
         }
     }
     if (undefinedVars.length > 0 || emptyVars.length > 0) {

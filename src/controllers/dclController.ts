@@ -3,6 +3,11 @@ import * as dcl from 'decentraland-crypto-middleware'
 import { Get, Route, Request, Middlewares, Tags, Response, Example } from "tsoa";
 import { decentralandOptional, decentralandRequired, Metadata } from "../middleware";
 
+interface MetadataResponse {
+  address: string;
+  metadata?: Metadata;
+}
+
 @Route("dcl")
 @Tags("Decentraland")
 @Response<{
@@ -18,10 +23,11 @@ export class DCLController {
   /**
    * Optional DCL route
    * @summary Optional DCL Route
+   * @returns {MetadataResponse}
    */
   @Get("optional")
   @Middlewares(decentralandOptional)
-  @Example<{ address: string, metadata: Metadata }>({
+  @Example<MetadataResponse>({
     address: `0x12345...`,
     metadata: {
       origin: "http://127.0.0.1:8000",
@@ -40,10 +46,7 @@ export class DCLController {
   }, "Successful Response")
   public async optional(
     @Request() _req: express.Request,
-  ): Promise<{
-    address: string;
-    metadata: Record<string, any> | undefined;
-  }> {
+  ): Promise<MetadataResponse> {
     const req: Request & dcl.DecentralandSignatureData = (_req as any);
     const address: string | undefined = req.auth
     const metadata: Metadata | undefined = req.authMetadata as Metadata;
@@ -53,10 +56,11 @@ export class DCLController {
   /**
    * Required DCL Route
    * @summary Required DCL Route
+   * @returns {MetadataResponse}
    */
   @Get("required")
   @Middlewares(decentralandRequired)
-  @Example<{ address: string, metadata: Metadata }>({
+  @Example<MetadataResponse>({
     address: `0x12345...`,
     metadata: {
       origin: "http://127.0.0.1:8000",
@@ -75,10 +79,7 @@ export class DCLController {
   }, "Successful Response")
   public async required(
     @Request() _req: express.Request,
-  ): Promise<{
-    address: string;
-    metadata: Metadata;
-  }> {
+  ): Promise<MetadataResponse> {
     const req: Request & dcl.DecentralandSignatureData = (_req as any);
     const address: string = req.auth;
     const metadata = req.authMetadata as Metadata;

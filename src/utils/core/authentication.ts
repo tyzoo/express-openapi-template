@@ -12,12 +12,10 @@ export async function expressAuthentication(
 ): Promise<any> {
 
   const getIronRequest = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       combineMiddleware([
         ironSession,
-        ((req, res, next) => {
-          resolve(req)
-        }) as express.RequestHandler,
+        ((req) => resolve(req)) as express.RequestHandler,
       ])(req, req.res!, req.next!)
     })
   }
