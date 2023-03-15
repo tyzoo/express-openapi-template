@@ -2,9 +2,9 @@
   "name": "express-openapi-template",
   "version": "2.0.0",
   "description": "",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/src/index.js",
+    "start": "node dist/index.js",
     "build": "npm run bundle && npm run generator && tsc",
     "dev": "npm run generator && nodemon src/index.ts",
     "bundle": "npx webpack --config webpack.config.js",
