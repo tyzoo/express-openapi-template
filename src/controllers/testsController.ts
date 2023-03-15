@@ -1,6 +1,6 @@
 import express from "express";
 import { Get, Route, Request, Middlewares, Tags, Response, Example } from "tsoa";
-import { ItemModel } from "../../models/Item";
+import { ItemModel } from "../models/Item";
 import createRateLimiter, { RateLimitResponse } from "../middleware/rateLimitter";
 
 @Route("tests")

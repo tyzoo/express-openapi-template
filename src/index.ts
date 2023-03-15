@@ -1,15 +1,17 @@
 import "global";
-import "./sessions";
+import "./controllers/auth/authController";
+import "./controllers/auth/captchaController";
+import "./controllers/crudController";
+import "./controllers/dclController";
+import "./controllers/testsController";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
 import express from "express";
 import swaggerUI from "swagger-ui-express";
 import * as dotenv from "dotenv";
-import * as swaggerDocument from './swagger.json';
-import { RegisterRoutes } from "./v2/routes";
-import { onStart, handleErrors, checkEnv } from './v2/utils';
-import { ironSession, morganMiddleware } from './v2/middleware';
+import { RegisterRoutes, onStart, handleErrors, checkEnv, swaggerDocument } from './utils';
+import { ironSession, morganMiddleware } from './middleware';
 
 dotenv.config();
 checkEnv();

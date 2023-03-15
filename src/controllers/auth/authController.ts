@@ -3,7 +3,7 @@ import express from "express";
 import { ethers } from "ethers";
 import { generateNonce, SiweMessage } from "siwe";
 import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example } from "tsoa";
-import { Scopes, User, UserModel } from "../../../models";
+import { Scopes, User, UserModel } from "../../models";
 import { ironSession, ironSessionOptions } from "../../middleware";
 import { APIError } from "../../utils";
 

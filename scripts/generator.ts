@@ -6,18 +6,19 @@ import {
     ExtendedSpecConfig,
 } from "tsoa";
 import dotenv from "dotenv";
-import { checkEnv } from "../src/v2/utils";
+import { checkEnv } from "../src/utils/misc/requiredEnv";
+
 dotenv.config();
 
-checkEnv();
-
+const basePath = process.env.APP_BASE_PATH === "/" ? "" : process.env.APP_BASE_PATH;
 (async () => {
+    checkEnv();
     const specOptions: ExtendedSpecConfig = {
         noImplicitAdditionalProperties: "throw-on-extras",
         controllerPathGlobs: [
-            `./src${process.env.APP_BASE_PATH}/controllers/**/*.ts`
+            `./src${basePath}/controllers/**/*.ts`
         ],
-        outputDirectory: "./src",
+        outputDirectory: `./src${basePath}/config`,
         name: process.env.APP_NAME,
         description: process.env.APP_DESCRIPTION,
         contact: {
@@ -29,25 +30,25 @@ checkEnv();
         entryFile: "./src/index.ts",
         specVersion: 3,
         securityDefinitions: {
-            api_key: {
-                type: "apiKey",
-                name: "access_token",
-                in: "query"
-            },
             jwt: {
                 type: "apiKey",
                 name: "authorization",
                 in: "header",
             },
-            tsoa_auth: {
-                type: "oauth2",
-                authorizationUrl: "http://swagger.io/api/oauth/dialog",
-                flow: "implicit",
-                scopes: {
-                    "write:pets": "modify things",
-                    "read:pets": "read things"
-                }
-            }
+            // api_key: {
+            //     type: "apiKey",
+            //     name: "access_token",
+            //     in: "query"
+            // },
+            // tsoa_auth: {
+            //     type: "oauth2",
+            //     authorizationUrl: "http://swagger.io/api/oauth/dialog",
+            //     flow: "implicit",
+            //     scopes: {
+            //         "write:pets": "modify things",
+            //         "read:pets": "read things"
+            //     }
+            // }
         },
         tags: [
             {
@@ -73,13 +74,14 @@ checkEnv();
         noImplicitAdditionalProperties: "throw-on-extras",
         basePath: process.env.APP_BASE_PATH,
         entryFile: "./src/index.ts",
-        routesDir: `./src${process.env.APP_BASE_PATH}`,
-        authenticationModule: `./src${process.env.APP_BASE_PATH}/authentication.ts`
+        routesDir: `./src${basePath}/config`,
+        authenticationModule: `./src${basePath}/utils/core/authentication.ts`
     };
 
     await generateSpec(specOptions);
     console.log(`✅ Generated OpenAPI Spec`)
-    
+
     await generateRoutes(routeOptions);
     console.log(`✅ Generated OpenAPI Routes`)
+    
 })();

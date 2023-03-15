@@ -1,8 +1,8 @@
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { Scopes, UserModel } from "../models/User";
-import { combineMiddleware, ironSession } from "./middleware";
+import { Scopes, UserModel } from "../../models/User";
+import { combineMiddleware, ironSession } from "../../middleware";
 dotenv.config();
 
 export async function expressAuthentication(
