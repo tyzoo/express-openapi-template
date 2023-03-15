@@ -64,7 +64,7 @@ export class CaptchaController {
   ): Promise<{ success: boolean; }> {
     const { code } = body;
     const sessionCode = req.session.captcha
-    if(!code && sessionCode && code === sessionCode){
+    if(!(code && sessionCode && code === sessionCode)){
         throw new APIError(403, `Invalid code`)
     }
     return { success: true }
