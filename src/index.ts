@@ -11,8 +11,7 @@ import { SiweMessage } from 'siwe';
 import { ValidateError } from 'tsoa';
 import { RegisterRoutes } from "./v2/routes";
 import { morganMiddleware } from './v2/middleware/morgan';
-import { tag } from './v2/utils/tag';
-import { APIError } from './v2/utils';
+import { APIError, tag } from './v2/utils';
 import ironSession from './v2/middleware/ironSession';
 
 declare module 'iron-session' {

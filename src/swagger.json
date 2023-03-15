@@ -6,6 +6,15 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"Scopes": {
+				"enum": [
+					"admin",
+					"user",
+					"banned",
+					"verified"
+				],
+				"type": "string"
+			},
 			"User": {
 				"properties": {
 					"createdAt": {
@@ -24,12 +33,20 @@
 					},
 					"scopes": {
 						"items": {
-							"type": "string"
+							"$ref": "#/components/schemas/Scopes"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "Privleged access to API's and other account flags",
+						"example": [
+							"user",
+							"banned",
+							"verified",
+							"admin"
+						]
 					},
 					"jwt": {
-						"type": "string"
+						"type": "string",
+						"description": "Store latest JWT for authorizaiton"
 					}
 				},
 				"required": [
@@ -986,7 +1003,7 @@
 				"security": [
 					{
 						"jwt": [
-							"admin:all"
+							"admin"
 						]
 					}
 				],
@@ -1090,7 +1107,7 @@
 				"security": [
 					{
 						"jwt": [
-							"admin:all"
+							"admin"
 						]
 					}
 				],

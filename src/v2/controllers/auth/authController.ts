@@ -3,7 +3,7 @@ import express from "express";
 import { ethers } from "ethers";
 import { generateNonce, SiweMessage } from "siwe";
 import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example, Security } from "tsoa";
-import { User, UserModel } from "../../../models/User";
+import { Scopes, User, UserModel } from "../../../models/User";
 import ironSession, { ironSessionOptions } from "../../middleware/ironSession";
 import { APIError } from "../../utils";
 
@@ -123,6 +123,9 @@ export class AuthController {
     req.session.jwt = token;
     await req.session.save();
     user.jwt = token;
+    if(!user.scopes?.includes(Scopes.USER)){
+      user.scopes?.push(Scopes.USER);
+    }
     await user.save();
     return { success: true }
   }

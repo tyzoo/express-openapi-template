@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 // allow requests from localhost
-export const TESTS_ENABLED = true
+export const TESTS_ENABLED = process.env.TEST_ENABLED;
 
 // We want all signatures to be "current". We consider "current" to be the current time,
 // with a 10 minute tolerance to account for network delays and possibly unsynched clocks

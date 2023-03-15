@@ -3,7 +3,6 @@ import { Get, Route, Request, Middlewares, Tags, Body, Post, Response, Example }
 import ironSession from "../../middleware/ironSession";
 import { APIError, svg2png, svgCaptcha } from "../../utils";
 
-
 @Route("captcha")
 @Tags("Authentication")
 @Response<{ message: string; }>(401, "Unauthorized", { message: `Unauthorized request` })

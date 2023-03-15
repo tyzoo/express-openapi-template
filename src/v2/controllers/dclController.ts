@@ -1,8 +1,8 @@
 import express from "express";
 import * as dcl from 'decentraland-crypto-middleware'
 import { Get, Route, Request, Middlewares, Tags, Response, Example } from "tsoa";
-import decentralandMiddleware from "../middleware/decentraland";
 import { Metadata } from "../middleware/decentraland/security/utils";
+import { decentralandOptional, decentralandRequired } from "../middleware/decentraland";
 
 @Route("dcl")
 @Tags("Decentraland")
@@ -21,7 +21,7 @@ export class DCLController {
    * @summary Optional DCL Route
    */
   @Get("optional")
-  @Middlewares(decentralandMiddleware.Optional)
+  @Middlewares(decentralandOptional)
   @Example<{ address: string, metadata: Metadata }>({
     address: `0x12345...`,
     metadata: {
@@ -56,7 +56,7 @@ export class DCLController {
    * @summary Required DCL Route
    */
   @Get("required")
-  @Middlewares(decentralandMiddleware.Required)
+  @Middlewares(decentralandRequired)
   @Example<{ address: string, metadata: Metadata }>({
     address: `0x12345...`,
     metadata: {

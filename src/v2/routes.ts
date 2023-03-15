@@ -20,6 +20,11 @@ import type { RequestHandler, Router } from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "Scopes": {
+        "dataType": "refEnum",
+        "enums": ["admin","user","banned","verified"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "User": {
         "dataType": "refObject",
         "properties": {
@@ -27,7 +32,7 @@ const models: TsoaRoute.Models = {
             "updatedAt": {"dataType":"datetime"},
             "address": {"dataType":"string","required":true},
             "nonce": {"dataType":"string"},
-            "scopes": {"dataType":"array","array":{"dataType":"string"}},
+            "scopes": {"dataType":"array","array":{"dataType":"refEnum","ref":"Scopes"}},
             "jwt": {"dataType":"string"},
         },
         "additionalProperties": false,
@@ -332,7 +337,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/v2/crud/:itemId',
-            authenticateMiddleware([{"jwt":["admin:all"]}]),
+            authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(CrudController)),
             ...(fetchMiddlewares<RequestHandler>(CrudController.prototype.updateItem)),
 
@@ -359,7 +364,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/v2/crud/:itemId',
-            authenticateMiddleware([{"jwt":["admin:all"]}]),
+            authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(CrudController)),
             ...(fetchMiddlewares<RequestHandler>(CrudController.prototype.deleteItem)),
 

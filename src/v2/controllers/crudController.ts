@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { Get, Route, Middlewares, Tags, Body, Post, Put, Delete, Response, Path, Example, Security } from "tsoa";
-import ironSession from "../middleware/ironSession";
+import { Get, Route, Tags, Body, Post, Put, Delete, Response, Path, Example, Security } from "tsoa";
 import { APIError } from "../utils";
 import { ItemModel, Item } from "../../models/Item";
+import { Scopes } from "../../models/User";
 
 @Route("crud")
 @Tags("CRUD")
@@ -67,7 +67,7 @@ export class CrudController {
    * @summary Update an Item
    */
   @Put("{itemId}")
-  @Security("jwt", ["admin:all"])
+  @Security("jwt", [Scopes.ADMIN])
   @Example<Item & { _id: string }>({
     _id: "62f05f918c8a2e1d6608dfd2",
     name: "Item 4",
@@ -97,7 +97,7 @@ export class CrudController {
     name: "Item 4",
     rng: 0.9992763155631645
   }, "Successful Response")
-  @Security("jwt", ["admin:all"])
+  @Security("jwt", [Scopes.ADMIN])
   @Response<{ message: string; }>(401, "Unauthorized", { message: `Unauthorized request` })
   public async deleteItem(
     @Path() itemId: mongoose.Types.ObjectId,
