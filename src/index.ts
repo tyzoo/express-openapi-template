@@ -8,23 +8,11 @@ import swaggerUI from "swagger-ui-express";
 import * as dotenv from "dotenv";
 import * as swaggerDocument from './swagger.json';
 import { RegisterRoutes } from "./v2/routes";
-import { onStart, handleErrors, requiredEnv } from './v2/utils';
+import { onStart, handleErrors, checkEnv } from './v2/utils';
 import { ironSession, morganMiddleware } from './v2/middleware';
 
 dotenv.config();
-requiredEnv([
-  "NODE_ENV",
-  "PORT",
-  "APP_NAME",
-  "APP_DESCRIPTION",
-  "APP_BASE_URL",
-  "APP_BASE_PATH",
-  "MONGO_URI",
-  "REDIS_URI",
-  "SECRET_COOKIE_PASSWORD",
-  "TESTS_ENABLED",
-]);
-
+checkEnv();
 const app = express();
 
 app.set('view engine', 'pug');

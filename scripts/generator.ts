@@ -6,7 +6,10 @@ import {
     ExtendedSpecConfig,
 } from "tsoa";
 import dotenv from "dotenv";
+import { checkEnv } from "../src/v2/utils";
 dotenv.config();
+
+checkEnv();
 
 (async () => {
     const specOptions: ExtendedSpecConfig = {

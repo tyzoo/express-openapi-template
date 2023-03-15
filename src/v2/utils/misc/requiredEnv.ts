@@ -1,3 +1,7 @@
+/**
+ * Checks if a list of ENV vars are included, or throws an error
+ * @param envVars 
+ */
 export function requiredEnv(envVars: string[]): void {
     const undefinedVars: string[] = [];
     const emptyVars: string[] = [];
@@ -18,4 +22,22 @@ export function requiredEnv(envVars: string[]): void {
         }
         throw new Error(errorMessage);
     }
+}
+
+/**
+ * Check required ENV vars for this app
+ */
+export function checkEnv() {
+    requiredEnv([
+        "NODE_ENV",
+        "PORT",
+        "APP_NAME",
+        "APP_DESCRIPTION",
+        "APP_BASE_URL",
+        "APP_BASE_PATH",
+        "MONGO_URI",
+        "REDIS_URI",
+        "SECRET_COOKIE_PASSWORD",
+        "TESTS_ENABLED",
+    ]);
 }

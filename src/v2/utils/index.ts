@@ -1,7 +1,7 @@
 
 export { onStart } from "./misc/onStart";
 export { readDir } from "./misc/readDir";
-export { requiredEnv } from "./misc/requiredEnv";
+export { requiredEnv, checkEnv } from "./misc/requiredEnv";
 export { handleErrors } from "./misc/handleAppErrors";
 export * as svgCaptcha from "svg-captcha";
 export { svg2png } from "svg-png-converter";
