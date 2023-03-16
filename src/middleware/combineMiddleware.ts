@@ -7,14 +7,14 @@ import express from "express";
  * @return {Function} single combined middleware
  */
 export default function combineMiddleware(mids: express.RequestHandler[]) {
-    return mids.reduce(function (a, b) {
-        return function (req, res, next) {
-            a(req, res, function (err) {
-                if (err) {
-                    return next(err);
-                }
-                b(req, res, next);
-            });
-        };
-    });
+	return mids.reduce(function (a, b) {
+		return function (req, res, next) {
+			a(req, res, function (err) {
+				if (err) {
+					return next(err);
+				}
+				b(req, res, next);
+			});
+		};
+	});
 }

@@ -1,11 +1,11 @@
-export { 
-    securityChecks, 
-    dclConfig, 
-    verifyOnMap, 
-    decentralandOptional, 
-    decentralandRequired,
-    Metadata, 
-    PeerResponse, 
+export {
+	securityChecks,
+	dclConfig,
+	verifyOnMap,
+	decentralandOptional,
+	decentralandRequired,
+	Metadata,
+	PeerResponse,
 } from "./decentraland";
 export { RateLimitResponse, redis } from "./rateLimitter";
 export { default as combineMiddleware } from "./combineMiddleware";

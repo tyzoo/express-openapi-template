@@ -1,0 +1,23 @@
+import { prop, getModelForClass, pre, index } from "@typegoose/typegoose";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
+import { ethers } from "ethers";
+
+@pre<Guestbook>("save", async function () {
+	if (this.isNew) {
+		try {
+			this.address = ethers.utils.getAddress(this.address);
+		} catch (err: any) {
+			throw Error(`Invalid ethereum address`);
+		}
+	}
+})
+@index({ address: 1 }, { unique: true })
+export class Guestbook extends TimeStamps {
+	@prop({ required: true })
+	public address!: string;
+
+	@prop({ required: true })
+	public message!: string;
+}
+
+export const GuestbookModel = getModelForClass(Guestbook);

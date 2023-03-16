@@ -10,14 +10,14 @@ export function handleErrors(app: express.Express) {
 		err: unknown,
 		req: express.Request,
 		res: express.Response,
-		next: express.NextFunction
+		next: express.NextFunction,
 	): express.Response | void {
 		if (err instanceof ValidateError) {
 			console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
 			return res.status(422).json({
-				message: `Validation Failed: ${Object.keys(err?.fields ?? {}).map(key => (
-					`'${key}': ${err.fields[key].message.replace(/"/g, "'")}`
-				)).join(", ")}`,
+				message: `Validation Failed: ${Object.keys(err?.fields ?? {})
+					.map((key) => `'${key}': ${err.fields[key].message.replace(/"/g, "'")}`)
+					.join(", ")}`,
 			});
 		}
 		if (err instanceof APIError) {
@@ -38,7 +38,7 @@ export function handleErrors(app: express.Express) {
 	 */
 	// @ts-ignore
 	app.use(((req, res, next) => {
-		var err: any = new Error('Not Found');
+		const err: any = new Error("Not Found");
 		err.status = 404;
 		next(err);
 	}) as express.RequestHandler);
@@ -47,6 +47,6 @@ export function handleErrors(app: express.Express) {
 	app.use(((err, req, res, next) => {
 		res.status(err.status ?? 500).json({
 			message: `Internal server error - ${err.message}`,
-		})
+		});
 	}) as express.ErrorRequestHandler);
 }
