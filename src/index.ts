@@ -1,11 +1,4 @@
 import "global";
-import "./controllers/guestbookController";
-import "./controllers/auth/authController";
-import "./controllers/auth/apiKeyController";
-import "./controllers/auth/captchaController";
-import "./controllers/crudController";
-import "./controllers/dclController";
-import "./controllers/testsController";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
@@ -20,9 +13,12 @@ import {
 	swaggerDocument,
 } from "./utils";
 import { ironSession, morganMiddleware } from "./middleware";
+import { controllerLoader } from "./utils/core/controllerLoader";
 
 dotenv.config();
 checkEnv();
+
+const ctrlCount = controllerLoader();
 const app = express();
 
 app.set("view engine", "pug");
@@ -57,4 +53,4 @@ handleErrors(app);
 
 app.disable("x-powered-by");
 
-void onStart(app);
+void onStart(app, ctrlCount);
