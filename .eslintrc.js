@@ -6,17 +6,17 @@ module.exports = {
 		node: true,
 	},
 	rules: {
-		indent: ["error", "tab", { SwitchCase: 1 }],
-		// "no-unused-vars": "error",
-		// "@typescript-eslint/no-unused-vars": "error",
-		// "@typescript-eslint/indent": ["error", "tab", { SwitchCase: 1 }],
-		"eol-last": ["error", "always"],
 		semi: ["error", "always"],
+		indent: ["error", "tab", { SwitchCase: 1 }],
+		"eol-last": ["error", "always"],
 		"prefer-const": "error",
+		"no-unused-vars": "off",
+		"no-case-declarations": "off",
 		"no-mixed-spaces-and-tabs": "error",
+		"@typescript-eslint/no-unused-vars": "off",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-explicit-any": "off",
-		"no-case-declarations": "off",
+		"@typescript-eslint/ban-ts-comment": "off",
 	},
 	overrides: [
 		{
