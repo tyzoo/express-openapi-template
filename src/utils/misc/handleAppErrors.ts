@@ -44,7 +44,7 @@ export function handleErrors(app: express.Express) {
 	}) as express.RequestHandler);
 
 	// @ts-ignore
-	app.use(((err, req, res, next) => {
+	app.use(((err, req, res) => {
 		res.status(err.status ?? 500).json({
 			message: `Internal server error - ${err.message}`,
 		});

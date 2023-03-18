@@ -3,8 +3,8 @@ import { UserModel } from "../models";
 import { ironSessionOptions } from "../middleware";
 
 export enum TOKEN_TYPES {
-	SIWE = "siwe",
-	API_KEY = "api-key",
+	SIWE = "siwe", //eslint-disable-line
+	API_KEY = "api-key", //eslint-disable-line
 }
 
 /**
@@ -17,19 +17,19 @@ export class TokenServiceInstance {
 		props: any,
 		expiresIn = "365d",
 	) {
-		const user = await UserModel.findById(userId);
+		const user = await UserModel.findById(userId).select("-__v");
 		if (!user) throw Error(`Can't find that user`);
 		switch (type) {
 			case TOKEN_TYPES.API_KEY: {
-				const { userScopes, tokenName } = props;
+				const { scopes, tokenName } = props;
 				if (!tokenName) throw Error(`Missing tokenName in props`);
-				if (!userScopes) throw Error(`Missing userScopes in props`);
+				if (!scopes) throw Error(`Missing scopes in props`);
 				return jwt.sign(
 					{
 						type: TOKEN_TYPES.API_KEY,
 						tokenName,
-						user,
-						userScopes,
+						user: user.toObject(),
+						scopes,
 					},
 					ironSessionOptions.password,
 					{
@@ -38,13 +38,14 @@ export class TokenServiceInstance {
 				);
 			}
 			case TOKEN_TYPES.SIWE: {
-				const { siwe } = props;
+				const { siwe, scopes } = props;
 				if (!siwe) throw Error(`Missing siwe in props`);
 				return jwt.sign(
 					{
 						type: TOKEN_TYPES.SIWE,
-						user,
+						user: user.toObject(),
 						siwe,
+						scopes,
 					},
 					ironSessionOptions.password,
 					{

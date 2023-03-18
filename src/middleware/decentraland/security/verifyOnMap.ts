@@ -1,4 +1,5 @@
 import { MARGIN_OF_ERROR, PeerResponse } from "./dclConfig";
+import axios from "axios";
 
 // validate that the player is active in a catalyst server, and in the indicated coordinates, or within a margin of error
 export async function checkPlayer(
@@ -10,8 +11,8 @@ export async function checkPlayer(
 	// const url = `https://peer.decentraland.org/comms/peers`
 
 	try {
-		const response = await fetch(url);
-		const data: PeerResponse = await response.json();
+		const response = await axios.get(url);
+		const data: PeerResponse = response.data;
 		if (data.ok) {
 			const player = data.peers.find(
 				(peer) =>

@@ -2,13 +2,16 @@
   "name": "express-openapi-template",
   "version": "2.0.1",
   "description": "",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "engines": {
+    "node": ">=14.16"
+  },
   "scripts": {
     "start": "node dist/index.js",
-    "build": "npm run lint && npm run bundle && npm run generator && tsc",
-    "dev": "npm run generator && nodemon src/index.ts",
+    "build": "npm run lint && npm run bundle && tsc",
+    "dev": "npm run generator:dev && nodemon src/index.ts",
     "bundle": "npx webpack --config webpack.config.js",
-    "generator": "ts-node scripts/generator",
+    "generator:dev": "ts-node ./src/scripts/generator",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prettier": "prettier --write \"./src/**/*.{ts,js,json,css,html}\"",
@@ -41,6 +44,7 @@
     "tsoa": "^5.1.1"
   },
   "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.9",
@@ -57,6 +61,7 @@
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.0",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"

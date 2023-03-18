@@ -1,3 +1,5 @@
+//@ts-nocheck
+//Ignore node ts check since this is a browser module
 import axios from "axios";
 import { ethers } from "ethers";
 import { SiweMessage } from "siwe";
@@ -8,7 +10,7 @@ let signature: string | undefined = undefined;
 if (typeof (window as any).ethereum !== "undefined") {
 	console.log("MetaMask is installed!");
 } else {
-	console.log("MetaMask is NOT installed!");
+	alert("MetaMask is NOT installed!");
 }
 
 const domain = window.location.host;
@@ -21,10 +23,34 @@ const showAccount = document.querySelector(".showAccount");
 const siweParent = document.querySelector(".siwe");
 const logoutButton = document.querySelector(".logoutButton");
 
+const expiresAtDropdown = document.createElement(`select`);
+expiresAtDropdown.title = `Select when the Token will expire`;
+expiresAtDropdown.className = `btn btn-lg btn-secondary m-2`;
+
+const defaultValue = "30d";
+
+function addOption(value: string) {
+	const option = document.createElement(`option`);
+	option.value = value;
+	option.textContent = value;
+	if (value === defaultValue) {
+		option.selected = true;
+	}
+	expiresAtDropdown.appendChild(option);
+}
+
+addOption("1d");
+addOption("30d");
+addOption("90d");
+addOption("6mo");
+addOption("1y");
+addOption("2y");
+addOption("3y");
+
 const siweButton = document.createElement(`button`);
 siweButton.innerText = `Sign in with Ethereum`;
 siweButton.type = "button";
-siweButton.className = `btn btn-lg btn-secondary`;
+siweButton.className = `btn btn-lg btn-secondary m-2`;
 
 async function getAccount() {
 	if (account === undefined) {
@@ -37,8 +63,9 @@ async function getAccount() {
 			ethereumButton.innerHTML = `Disconnect Wallet`;
 			showAccount.innerHTML = account;
 			try {
-				await axios.get(`v2/auth/profile`);
+				await axios.get(`auth/profile`);
 			} catch {
+				siweParent.appendChild(expiresAtDropdown);
 				siweParent.appendChild(siweButton);
 			}
 		}
@@ -54,13 +81,13 @@ async function getAccount() {
 }
 
 async function logout() {
-	await axios.get(`v2/auth/logout`);
+	await axios.get(`auth/logout`);
 	window.location.reload();
 }
 
 async function signIn() {
-	console.log(`Signing in with Ethereum account ${account}..`);
-	const { nonce } = (await axios.post(`v2/auth/nonce`, { address: account }))
+	console.log(`Signing in for ${expiresIn} with Ethereum account ${account}..`);
+	const { nonce } = (await axios.post(`auth/nonce`, { address: account }))
 		.data;
 	const message = new SiweMessage({
 		domain,
@@ -70,11 +97,13 @@ async function signIn() {
 		version: "1",
 		nonce,
 		chainId: 1,
+		expiresIn
 	});
 	const payload = message.prepareMessage();
 	signature = await signer.signMessage(payload);
+	const expiresIn = expiresAtDropdown.value;
 	(
-		await axios.post(`v2/auth/login`, {
+		await axios.post(`auth/login?expiresIn=${expiresIn}`, {
 			siwe: {
 				address: account!,
 				payload,

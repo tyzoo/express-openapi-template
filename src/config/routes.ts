@@ -16,6 +16,8 @@ import { TestsController } from './../controllers/testsController';
 import { ApiKeyController } from './../controllers/auth/apiKeyController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './../controllers/auth/authController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { Web3Controller } from './../controllers/auth/web3Controller';
 import { expressAuthentication } from './../utils/core/authentication';
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
@@ -30,6 +32,7 @@ const models: TsoaRoute.Models = {
             "createdAt": {"dataType":"datetime"},
             "updatedAt": {"dataType":"datetime"},
             "address": {"dataType":"string","required":true},
+            "listName": {"dataType":"string","required":true},
             "message": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
@@ -79,7 +82,7 @@ const models: TsoaRoute.Models = {
         "enums": ["read","write"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "APIKey": {
+    "APIKeyDoc": {
         "dataType": "refObject",
         "properties": {
             "createdAt": {"dataType":"datetime"},
@@ -87,8 +90,10 @@ const models: TsoaRoute.Models = {
             "user": {"dataType":"string","required":true},
             "name": {"dataType":"string","required":true},
             "jwt": {"dataType":"string"},
+            "hash": {"dataType":"string"},
             "expiresAt": {"dataType":"datetime","required":true},
             "scopes": {"dataType":"array","array":{"dataType":"refEnum","ref":"APIKey_Scopes"}},
+            "_id": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -483,11 +488,13 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api-keys',
+            authenticateMiddleware([{"siwe":["user"]}]),
             ...(fetchMiddlewares<RequestHandler>(ApiKeyController)),
             ...(fetchMiddlewares<RequestHandler>(ApiKeyController.prototype.findAllitems)),
 
             function ApiKeyController_findAllitems(request: any, response: any, next: any) {
             const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -500,6 +507,33 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.findAllitems.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api-keys',
+            authenticateMiddleware([{"siwe":["user"]}]),
+            ...(fetchMiddlewares<RequestHandler>(ApiKeyController)),
+            ...(fetchMiddlewares<RequestHandler>(ApiKeyController.prototype.createApiKey)),
+
+            function ApiKeyController_createApiKey(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"tokenName":{"dataType":"string","required":true},"scopes":{"dataType":"array","array":{"dataType":"refEnum","ref":"APIKey_Scopes"},"required":true},"expiresInDays":{"dataType":"double","required":true}}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ApiKeyController();
+
+
+              const promise = controller.createApiKey.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -629,6 +663,83 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.profile.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/web3/wallet',
+            authenticateMiddleware([{"siwe":["user"]}]),
+            ...(fetchMiddlewares<RequestHandler>(Web3Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Web3Controller.prototype.wallet)),
+
+            function Web3Controller_wallet(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new Web3Controller();
+
+
+              const promise = controller.wallet.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/web3/ens/resolve/:name',
+            authenticateMiddleware([{"siwe":["user"]}]),
+            ...(fetchMiddlewares<RequestHandler>(Web3Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Web3Controller.prototype.ensResolve)),
+
+            function Web3Controller_ensResolve(request: any, response: any, next: any) {
+            const args = {
+                    name: {"in":"path","name":"name","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new Web3Controller();
+
+
+              const promise = controller.ensResolve.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/web3/ens/lookup/:address',
+            authenticateMiddleware([{"siwe":["user"]}]),
+            ...(fetchMiddlewares<RequestHandler>(Web3Controller)),
+            ...(fetchMiddlewares<RequestHandler>(Web3Controller.prototype.en)),
+
+            function Web3Controller_en(request: any, response: any, next: any) {
+            const args = {
+                    address: {"in":"path","name":"address","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new Web3Controller();
+
+
+              const promise = controller.en.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

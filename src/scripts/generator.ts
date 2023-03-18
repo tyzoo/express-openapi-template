@@ -6,7 +6,7 @@ import {
 	ExtendedSpecConfig,
 } from "tsoa";
 import dotenv from "dotenv";
-import { checkEnv } from "../src/utils/misc/requiredEnv";
+import { checkEnv } from "../utils";
 
 dotenv.config();
 
@@ -30,25 +30,16 @@ const basePath = process.env.APP_BASE_PATH === "/" ? "" : process.env.APP_BASE_P
 		entryFile: "./src/index.ts",
 		specVersion: 3,
 		securityDefinitions: {
-			jwt: {
+			"api-key": {
+				type: "apiKey",
+				name: "token",
+				in: "query",
+			},
+			siwe: {
 				type: "apiKey",
 				name: "authorization",
 				in: "header",
 			},
-			// api_key: {
-			//     type: "apiKey",
-			//     name: "access_token",
-			//     in: "query"
-			// },
-			// tsoa_auth: {
-			//     type: "oauth2",
-			//     authorizationUrl: "http://swagger.io/api/oauth/dialog",
-			//     flow: "implicit",
-			//     scopes: {
-			//         "write:pets": "modify things",
-			//         "read:pets": "read things"
-			//     }
-			// }
 		},
 		tags: [
 			{
@@ -56,16 +47,28 @@ const basePath = process.env.APP_BASE_PATH === "/" ? "" : process.env.APP_BASE_P
 				description: "Authenticate using Sign in With Ethereum (SIWE) [Connect Wallet](./../auth)"
 			},
 			{
+				name: "APIKeys",
+				description: "Generate API keys for interacting with protected API routes"
+			},
+			{
+				name: "Captcha",
+				description: "Simple Captcha Verification Example"
+			},
+			{
 				name: "CRUD",
 				description: "A set of example CRUD routes"
 			},
 			{
-				name: "Tests",
-				description: "Test if the API is up and running"
+				name: "Web3",
+				description: "Web3 Related API Routes"
 			},
 			{
 				name: "Decentraland",
 				description: "Example routes enforcing DCL middleware"
+			},
+			{
+				name: "Tests",
+				description: "Test if the API is up and running"
 			},
 			{
 				name: "Guestbook",
@@ -87,5 +90,6 @@ const basePath = process.env.APP_BASE_PATH === "/" ? "" : process.env.APP_BASE_P
 
 	await generateRoutes(routeOptions);
 	console.log(`✅ Generated OpenAPI Routes`);
-    
+
+	process.exit(0);
 })();

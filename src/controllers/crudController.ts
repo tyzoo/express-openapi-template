@@ -13,7 +13,7 @@ import {
 	Security,
 } from "tsoa";
 import { APIError } from "../utils";
-import { ItemModel, Item, Scopes } from "../models";
+import { ItemModel, Item, User_Scopes } from "../models";
 
 @Route("crud")
 @Tags("CRUD")
@@ -88,7 +88,7 @@ export class CrudController {
 	 * @returns { Item } Updated Item
 	 */
 	@Put("{itemId}")
-	@Security("jwt", [Scopes.ADMIN])
+	@Security("jwt", [User_Scopes.ADMIN])
 	@Example<Item & { _id: string }>(
 		{
 			_id: "62f05f918c8a2e1d6608dfd2",
@@ -129,7 +129,7 @@ export class CrudController {
 		},
 		"Successful Response",
 	)
-	@Security("jwt", [Scopes.ADMIN])
+	@Security("jwt", [User_Scopes.ADMIN])
 	@Response<{ message: string }>(401, "Unauthorized", {
 		message: `Unauthorized request`,
 	})

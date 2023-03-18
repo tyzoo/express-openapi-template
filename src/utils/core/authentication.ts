@@ -2,32 +2,24 @@ import dotenv from "dotenv";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import { User_Scopes, UserModel } from "../../models/auth/User";
-import { combineMiddleware, ironSession } from "../../middleware";
 import { APIKeyModel, APIKey_Scopes } from "../../models/auth/APIKey";
+import { TOKEN_TYPES } from "../../services/tokenService";
 dotenv.config();
 
 export async function expressAuthentication(
 	req: express.Request,
-	securityName: string,
+	tokenType: string,
 	scopes?: string[],
 ): Promise<any> {
-	const getIronRequest = () => {
-		return new Promise((resolve) => {
-			combineMiddleware([
-				ironSession,
-				((req) => resolve(req)) as express.RequestHandler,
-			])(req, req.res!, req.next!);
-		});
-	};
-	const ironReq = (await getIronRequest()) as unknown as express.Request;
-	switch (securityName) {
-		case "api_key":
-		case "jwt":
+	switch (tokenType) {
+		default: throw Error(`Invalid tokenType "${tokenType}"`);
+		case TOKEN_TYPES.API_KEY:
+		case TOKEN_TYPES.SIWE: {
 			const token =
-				ironReq.body.token ||
-				ironReq.query.token ||
-				ironReq.headers.authorization?.replace("Bearer ", "") ||
-				ironReq.session.jwt;
+				req.body.token ||
+				req.query.token ||
+				req.headers.authorization?.replace("Bearer ", "") ||
+				req.session.jwt;
 			return new Promise((resolve, reject) => {
 				if (!token) return reject(new Error("No token provided"));
 				jwt.verify(
@@ -37,6 +29,8 @@ export async function expressAuthentication(
 						if (err) {
 							reject(err);
 						} else {
+							req.res!.locals.jwt = token;
+							req.res!.locals.decoded = decoded;
 							const user = await UserModel.findById(decoded.user._id).select([
 								"jwt",
 								"scopes",
@@ -48,13 +42,16 @@ export async function expressAuthentication(
 							) {
 								return reject(new Error(`Your account is banned`));
 							}
-							const { tokenName } = decoded;
-							if (!tokenName) throw Error(`Invalid JWT. Missing "tokenName"`);
-							switch (securityName) {
-								case "api_key":
+							switch (tokenType) {
+								case TOKEN_TYPES.API_KEY:
 									{
-										const apiKey = await APIKeyModel.findOne({ tokenName });
-										if (!apiKey) throw Error(`Invalid APIKey`);
+										if (decoded.type !== TOKEN_TYPES.API_KEY) {
+											return reject(new Error(`Invalid JWT type: "${decoded.type}" expected: "api-key"`));
+										}
+										const { tokenName } = decoded;
+										if (!tokenName) return reject(new Error(`Invalid JWT. Missing "tokenName"`));
+										const apiKey = await APIKeyModel.findOne({ user: user._id, tokenName });
+										if (!apiKey) return reject(new Error(`Invalid APIKey`));
 										if (scopes) {
 											for (const scope of scopes) {
 												if (!apiKey.scopes?.includes(scope as APIKey_Scopes)) {
@@ -68,8 +65,11 @@ export async function expressAuthentication(
 											return reject(new Error(`APIKey is invalid`));
 									}
 									break;
-								case "jwt":
+								case TOKEN_TYPES.SIWE:
 									{
+										if (decoded.type !== TOKEN_TYPES.SIWE) {
+											return reject(new Error(`Invalid JWT type: "${decoded.type}" expected: "siwe"`));
+										}
 										if (scopes) {
 											for (const scope of scopes) {
 												if (!user.scopes?.includes(scope as User_Scopes)) {
@@ -88,8 +88,6 @@ export async function expressAuthentication(
 					},
 				);
 			});
-		default: {
-			throw Error(`Invalid securityName "${securityName}"`);
 		}
 	}
 }

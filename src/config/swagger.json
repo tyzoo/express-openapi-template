@@ -6,57 +6,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"APIKey_Scopes": {
-				"enum": [
-					"read",
-					"write"
-				],
-				"type": "string"
-			},
-			"APIKey": {
-				"description": "Users must assign unique names to each APIKey",
-				"properties": {
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"user": {
-						"type": "string",
-						"description": "APIKeys are linked to users"
-					},
-					"name": {
-						"type": "string",
-						"description": "Every APIKey should have a unique name"
-					},
-					"jwt": {
-						"type": "string",
-						"description": "Store latest JWT for authorizaiton"
-					},
-					"expiresAt": {
-						"type": "string",
-						"format": "date-time",
-						"description": "Date the API Key expires"
-					},
-					"scopes": {
-						"items": {
-							"$ref": "#/components/schemas/APIKey_Scopes"
-						},
-						"type": "array",
-						"description": "Scopes of the API Key relative to the User account"
-					}
-				},
-				"required": [
-					"user",
-					"name",
-					"expiresAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"Guestbook": {
 				"properties": {
 					"createdAt": {
@@ -70,12 +19,16 @@
 					"address": {
 						"type": "string"
 					},
+					"listName": {
+						"type": "string"
+					},
 					"message": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"address",
+					"listName",
 					"message"
 				],
 				"type": "object",
@@ -268,10 +221,74 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"APIKey_Scopes": {
+				"enum": [
+					"read",
+					"write"
+				],
+				"type": "string"
+			},
+			"APIKeyDoc": {
+				"description": "APIKey document with _id field.",
+				"properties": {
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"user": {
+						"type": "string",
+						"description": "APIKeys are linked to users"
+					},
+					"name": {
+						"type": "string",
+						"description": "Every APIKey should have a unique name"
+					},
+					"jwt": {
+						"type": "string",
+						"description": "Store source JWT for authorizaiton"
+					},
+					"hash": {
+						"type": "string",
+						"description": "Store hash of the JWT"
+					},
+					"expiresAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Date the API Key expires"
+					},
+					"scopes": {
+						"items": {
+							"$ref": "#/components/schemas/APIKey_Scopes"
+						},
+						"type": "array",
+						"description": "Scopes of the API Key relative to the User account"
+					},
+					"_id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"user",
+					"name",
+					"expiresAt",
+					"_id"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
-			"jwt": {
+			"api-key": {
+				"type": "apiKey",
+				"name": "token",
+				"in": "query"
+			},
+			"siwe": {
 				"type": "apiKey",
 				"name": "authorization",
 				"in": "header"
@@ -279,7 +296,7 @@
 		}
 	},
 	"info": {
-		"title": "Example API",
+		"title": "Express OpenAPI Server",
 		"description": "An example node app using OpenAPI - Express - Typescript. [Sign In With Ethereum](./../auth)",
 		"contact": {
 			"name": "@tyzoo",
@@ -289,58 +306,6 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/api-keys": {
-			"get": {
-				"operationId": "FindAllitems",
-				"responses": {
-					"200": {
-						"description": "Array of APIKeys",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/APIKey"
-									},
-									"type": "array"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"message": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message"
-									],
-									"type": "object"
-								},
-								"examples": {
-									"Example 1": {
-										"value": {
-											"message": "Unauthorized request"
-										}
-									}
-								}
-							}
-						}
-					}
-				},
-				"description": "Get all APIKeys",
-				"summary": "Get all APIKeys",
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
 		"/guestbook": {
 			"get": {
 				"operationId": "FindAllitems",
@@ -863,7 +828,7 @@
 				"description": "Generate a new Captcha",
 				"summary": "Generate a new Captcha",
 				"tags": [
-					"Authentication"
+					"Captcha"
 				],
 				"security": [],
 				"parameters": []
@@ -927,7 +892,7 @@
 				"description": "Verify a Captcha",
 				"summary": "Verify a Captcha",
 				"tags": [
-					"Authentication"
+					"Captcha"
 				],
 				"security": [],
 				"parameters": [],
@@ -1635,6 +1600,356 @@
 				"security": [],
 				"parameters": []
 			}
+		},
+		"/web3/wallet": {
+			"get": {
+				"operationId": "Wallet",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"privateKey": {
+											"type": "string"
+										},
+										"address": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"privateKey",
+										"address"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Web3"
+				],
+				"security": [
+					{
+						"siwe": [
+							"user"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/web3/ens/resolve/{name}": {
+			"get": {
+				"operationId": "EnsResolve",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"address": {
+											"type": "string",
+											"nullable": true
+										}
+									},
+									"required": [
+										"address"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Web3"
+				],
+				"security": [
+					{
+						"siwe": [
+							"user"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/web3/ens/lookup/{address}": {
+			"get": {
+				"operationId": "En",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string",
+											"nullable": true
+										}
+									},
+									"required": [
+										"name"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Web3"
+				],
+				"security": [
+					{
+						"siwe": [
+							"user"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "address",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api-keys": {
+			"get": {
+				"operationId": "FindAllitems",
+				"responses": {
+					"200": {
+						"description": "- An array of APIKeys.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/APIKeyDoc"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves all APIKeys.",
+				"summary": "Retrieves all APIKeys.",
+				"tags": [
+					"APIKeys"
+				],
+				"security": [
+					{
+						"siwe": [
+							"user"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateApiKey",
+				"responses": {
+					"200": {
+						"description": "- The new APIKey.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/APIKeyDoc"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Creates a new APIKey.",
+				"summary": "Creates a new APIKey.",
+				"tags": [
+					"APIKeys"
+				],
+				"security": [
+					{
+						"siwe": [
+							"user"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"description": "- Request body.",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"tokenName": {
+										"type": "string"
+									},
+									"scopes": {
+										"items": {
+											"$ref": "#/components/schemas/APIKey_Scopes"
+										},
+										"type": "array"
+									},
+									"expiresInDays": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"tokenName",
+									"scopes",
+									"expiresInDays"
+								],
+								"type": "object",
+								"description": "- Request body."
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"servers": [
@@ -1648,16 +1963,28 @@
 			"description": "Authenticate using Sign in With Ethereum (SIWE) [Connect Wallet](./../auth)"
 		},
 		{
+			"name": "APIKeys",
+			"description": "Generate API keys for interacting with protected API routes"
+		},
+		{
+			"name": "Captcha",
+			"description": "Simple Captcha Verification Example"
+		},
+		{
 			"name": "CRUD",
 			"description": "A set of example CRUD routes"
 		},
 		{
-			"name": "Tests",
-			"description": "Test if the API is up and running"
+			"name": "Web3",
+			"description": "Web3 Related API Routes"
 		},
 		{
 			"name": "Decentraland",
 			"description": "Example routes enforcing DCL middleware"
+		},
+		{
+			"name": "Tests",
+			"description": "Test if the API is up and running"
 		},
 		{
 			"name": "Guestbook",

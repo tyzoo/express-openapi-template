@@ -11,10 +11,14 @@ import { ethers } from "ethers";
 		}
 	}
 })
-@index({ address: 1 }, { unique: true })
+@index({ address: 1, listName: 1 }, { unique: true })
 export class Guestbook extends TimeStamps {
+
 	@prop({ required: true })
 	public address!: string;
+
+	@prop({ required: true })
+	public listName!: string;
 
 	@prop({ required: true })
 	public message!: string;

@@ -6,7 +6,6 @@ import {
 	Get,
 	Route,
 	Request,
-	Middlewares,
 	Tags,
 	Body,
 	Post,
@@ -14,10 +13,9 @@ import {
 	Example,
 	Query,
 } from "tsoa";
-import { Scopes, User, UserModel } from "../../models";
+import { User_Scopes, User, UserModel } from "../../models";
 import { APIError } from "../../utils";
 import { TokenService, TOKEN_TYPES } from "../../services/tokenService";
-import { ironSession } from "../../middleware";
 
 interface UserDoc extends User {
 	_id: string;
@@ -39,7 +37,6 @@ export class AuthController {
 	 * @returns Nonce for user
 	 */
 	@Post("nonce")
-	@Middlewares(ironSession)
 	@Example<{ nonce: string }>(
 		{
 			nonce: "MQ4YUxu1R1WUqwerty",
@@ -77,7 +74,6 @@ export class AuthController {
 	 * @returns { string } Raw SIWE Payload as a string, to be signed
 	 */
 	@Post("siwe-payload")
-	@Middlewares(ironSession)
 	@Example<{ message: string }>(
 		{
 			message:
@@ -131,7 +127,6 @@ export class AuthController {
 	 * @returns Success boolean
 	 */
 	@Post("login")
-	@Middlewares(ironSession)
 	@Example<{ success: boolean }>(
 		{
 			success: true,
@@ -168,14 +163,15 @@ export class AuthController {
 			user._id,
 			{
 				siwe: fields,
+				tokenName: "siwe",
 			},
 			expiresIn,
 		);
 		req.session.jwt = token;
 		await req.session.save();
 		user.jwt = token;
-		if (!user.scopes?.includes(Scopes.USER)) {
-			user.scopes?.push(Scopes.USER);
+		if (!user.scopes?.includes(User_Scopes.USER)) {
+			user.scopes?.push(User_Scopes.USER);
 		}
 		await user.save();
 		return { success: true };
@@ -187,7 +183,6 @@ export class AuthController {
 	 * @returns Success boolean
 	 */
 	@Get("logout")
-	@Middlewares(ironSession)
 	@Example<{ success: boolean }>(
 		{
 			success: true,
@@ -219,7 +214,6 @@ export class AuthController {
 	 * @returns { ProfileResponse } User object and JWT for the logged in user
 	 */
 	@Get("profile")
-	@Middlewares(ironSession)
 	@Example<ProfileResponse>(
 		{
 			user: {

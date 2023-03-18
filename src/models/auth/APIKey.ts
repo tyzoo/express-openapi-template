@@ -9,10 +9,11 @@ import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { ModelType } from "@typegoose/typegoose/lib/types";
 import { UserModel } from "./User";
 import { TokenService, TOKEN_TYPES } from "../../services/tokenService";
+import { sha256 } from "ethers/lib/utils";
 
 export enum APIKey_Scopes {
-	READ = "read",
-	WRITE = "write",
+	READ = "read", //eslint-disable-line
+	WRITE = "write", //eslint-disable-line
 }
 
 /**
@@ -41,10 +42,16 @@ export class APIKey extends TimeStamps {
 	public name!: string;
 
 	/**
-	 * Store latest JWT for authorizaiton
+	 * Store source JWT for authorizaiton
 	 */
 	@prop({ required: false, select: false, default: null })
 	public jwt?: string;
+
+	/**
+	 * Store hash of the JWT
+	 */
+	@prop({ required: false, select: false, default: null })
+	public hash?: string;
 
 	/**
 	 * Date the API Key expires
@@ -59,9 +66,6 @@ export class APIKey extends TimeStamps {
 	@prop({ required: false, default: [] })
 	public scopes?: APIKey_Scopes[];
 
-	/**
-	 * Scopes of the API Key
-	 */
 	public static async issueToken(
 		this: ModelType<APIKey>,
 		userId: string,
@@ -71,21 +75,27 @@ export class APIKey extends TimeStamps {
 	) {
 		const user = await UserModel.findById(userId);
 		if (!user) throw Error(`Can't find that user`);
+		const token = await TokenService.issueToken(
+			TOKEN_TYPES.API_KEY,
+			userId,
+			{
+				scopes,
+				tokenName,
+			},
+			expiresInDays + "d",
+		);
+		if (!token) throw Error(`Failed to issue token`);
 		const oneDayInSeconds = 24 * 60 * 60 * 1000;
-		return this.create({
-			user,
+		const apiKey = await this.create({
+			user: user._id,
 			name: tokenName,
-			token: await TokenService.issueToken(
-				TOKEN_TYPES.API_KEY,
-				userId,
-				{
-					scopes,
-					tokenName,
-				},
-				expiresInDays + "d",
-			),
+			scopes,
+			jwt: token,
+			hash: sha256(Buffer.from(token, "base64")),
 			expiresAt: new Date(Date.now() + expiresInDays * oneDayInSeconds),
 		});
+		console.log({ apiKey });
+		return apiKey;
 	}
 }
 

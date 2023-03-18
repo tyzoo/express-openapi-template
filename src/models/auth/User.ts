@@ -10,10 +10,10 @@ import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { ethers } from "ethers";
 
 export enum User_Scopes {
-	ADMIN = "admin",
-	USER = "user",
-	BANNED = "banned",
-	VERIFIED = "verified",
+	ADMIN = "admin", //eslint-disable-line
+	USER = "user", //eslint-disable-line
+	BANNED = "banned", //eslint-disable-line
+	VERIFIED = "verified", //eslint-disable-line
 }
 
 @pre<User>("save", async function () {

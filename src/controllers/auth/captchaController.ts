@@ -3,18 +3,16 @@ import {
 	Get,
 	Route,
 	Request,
-	Middlewares,
 	Tags,
 	Body,
 	Post,
 	Response,
 	Example,
 } from "tsoa";
-import { ironSession } from "../../middleware";
 import { APIError, svg2png, svgCaptcha } from "../../utils";
 
 @Route("captcha")
-@Tags("Authentication")
+@Tags("Captcha")
 @Response<{ message: string }>(401, "Unauthorized", {
 	message: `Unauthorized request`,
 })
@@ -25,7 +23,6 @@ export class CaptchaController {
 	 * @returns Captcha Image (PNG Format)
 	 */
 	@Get("new")
-	@Middlewares(ironSession)
 	public async newCaptcha(@Request() req: express.Request): Promise<null> {
 		const res = req.res;
 		const captcha = svgCaptcha.create({
@@ -62,7 +59,6 @@ export class CaptchaController {
 	 * @returns Success Boolean
 	 */
 	@Post("verify")
-	@Middlewares(ironSession)
 	@Example<{ success: boolean }>(
 		{
 			success: true,

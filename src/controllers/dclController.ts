@@ -60,7 +60,7 @@ export class DCLController {
 	public async optional(
 		@Request() _req: express.Request,
 	): Promise<MetadataResponse> {
-		const req: Request & dcl.DecentralandSignatureData = _req as any;
+		const req: express.Request & dcl.DecentralandSignatureData = _req as any;
 		const address: string | undefined = req.auth;
 		const metadata: Metadata | undefined = req.authMetadata as Metadata;
 		return { address, metadata };
@@ -96,7 +96,7 @@ export class DCLController {
 	public async required(
 		@Request() _req: express.Request,
 	): Promise<MetadataResponse> {
-		const req: Request & dcl.DecentralandSignatureData = _req as any;
+		const req: express.Request & dcl.DecentralandSignatureData = _req as any;
 		const address: string = req.auth;
 		const metadata = req.authMetadata as Metadata;
 		return { address, metadata };
