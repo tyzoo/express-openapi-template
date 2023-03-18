@@ -26,7 +26,7 @@ export function handleErrors(app: express.Express) {
 			});
 		}
 		if (err instanceof Error) {
-			return res.status(500).json({
+			return res.status(401).json({
 				message: err?.message ?? `Internal server error`,
 			});
 		}
