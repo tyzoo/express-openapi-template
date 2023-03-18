@@ -86,6 +86,7 @@ async function logout() {
 }
 
 async function signIn() {
+	const expiresIn = expiresAtDropdown.value;
 	console.log(`Signing in for ${expiresIn} with Ethereum account ${account}..`);
 	const { nonce } = (await axios.post(`auth/nonce`, { address: account }))
 		.data;
@@ -101,7 +102,6 @@ async function signIn() {
 	});
 	const payload = message.prepareMessage();
 	signature = await signer.signMessage(payload);
-	const expiresIn = expiresAtDropdown.value;
 	(
 		await axios.post(`auth/login?expiresIn=${expiresIn}`, {
 			siwe: {
