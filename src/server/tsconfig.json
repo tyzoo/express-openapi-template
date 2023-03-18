@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "../../dist/server",
+    "module": "commonjs",
+  },
+  "references": [
+    {
+      "path": "../common"
+    }
+  ],
+  "include": [
+    "./**/*.ts",
+    "./config/swagger.json"
+  ]
+}
