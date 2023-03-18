@@ -1,8 +1,8 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "../../dist/common",
-    "module": "CommonJS"
-  },
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"rootDir": ".",
+		"outDir": "../../dist/common",
+		"module": "CommonJS"
+	}
 }

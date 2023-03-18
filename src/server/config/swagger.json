@@ -26,11 +26,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"address",
-					"listName",
-					"message"
-				],
+				"required": ["address", "listName", "message"],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -44,9 +40,7 @@
 						"format": "double"
 					}
 				},
-				"required": [
-					"name"
-				],
+				"required": ["name"],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -94,10 +88,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"signer",
-					"realm"
-				],
+				"required": ["signer", "realm"],
 				"type": "object"
 			},
 			"MetadataResponse": {
@@ -109,9 +100,7 @@
 						"$ref": "#/components/schemas/Metadata"
 					}
 				},
-				"required": [
-					"address"
-				],
+				"required": ["address"],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -140,22 +129,12 @@
 						"example": 10
 					}
 				},
-				"required": [
-					"ok",
-					"message",
-					"requests",
-					"ttl"
-				],
+				"required": ["ok", "message", "requests", "ttl"],
 				"type": "object",
 				"additionalProperties": false
 			},
 			"User_Scopes": {
-				"enum": [
-					"admin",
-					"user",
-					"banned",
-					"verified"
-				],
+				"enum": ["admin", "user", "banned", "verified"],
 				"type": "string"
 			},
 			"UserDoc": {
@@ -180,12 +159,7 @@
 						},
 						"type": "array",
 						"description": "Privleged access to API's and other account flags",
-						"example": [
-							"user",
-							"admin",
-							"verified",
-							"banned"
-						]
+						"example": ["user", "admin", "verified", "banned"]
 					},
 					"jwt": {
 						"type": "string",
@@ -195,10 +169,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"address",
-					"_id"
-				],
+				"required": ["address", "_id"],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -216,17 +187,12 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"user"
-				],
+				"required": ["user"],
 				"type": "object",
 				"additionalProperties": false
 			},
 			"APIKey_Scopes": {
-				"enum": [
-					"read",
-					"write"
-				],
+				"enum": ["read", "write"],
 				"type": "string"
 			},
 			"APIKeyDoc": {
@@ -272,12 +238,7 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"user",
-					"name",
-					"expiresAt",
-					"_id"
-				],
+				"required": ["user", "name", "expiresAt", "_id"],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -326,9 +287,7 @@
 														"type": "string"
 													}
 												},
-												"required": [
-													"_id"
-												],
+												"required": ["_id"],
 												"type": "object"
 											}
 										]
@@ -341,9 +300,7 @@
 				},
 				"description": "Get all items",
 				"summary": "Get all items",
-				"tags": [
-					"Guestbook"
-				],
+				"tags": ["Guestbook"],
 				"security": [],
 				"parameters": []
 			},
@@ -365,9 +322,7 @@
 													"type": "string"
 												}
 											},
-											"required": [
-												"_id"
-											],
+											"required": ["_id"],
 											"type": "object"
 										}
 									]
@@ -378,9 +333,7 @@
 				},
 				"description": "Create an Item",
 				"summary": "Create an Item",
-				"tags": [
-					"Guestbook"
-				],
+				"tags": ["Guestbook"],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -397,10 +350,7 @@
 										"type": "string"
 									}
 								},
-								"required": [
-									"message",
-									"address"
-								],
+								"required": ["message", "address"],
 								"type": "object",
 								"description": "Provide new document contents"
 							}
@@ -428,9 +378,7 @@
 													"type": "string"
 												}
 											},
-											"required": [
-												"_id"
-											],
+											"required": ["_id"],
 											"type": "object"
 										}
 									],
@@ -451,9 +399,7 @@
 				},
 				"description": "Get Item by ID",
 				"summary": "Get Item By ID",
-				"tags": [
-					"CRUD"
-				],
+				"tags": ["CRUD"],
 				"security": [],
 				"parameters": [
 					{
@@ -485,9 +431,7 @@
 													"type": "string"
 												}
 											},
-											"required": [
-												"_id"
-											],
+											"required": ["_id"],
 											"type": "object"
 										}
 									]
@@ -514,9 +458,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -532,14 +474,10 @@
 				},
 				"description": "Update an Item",
 				"summary": "Update an Item (User Only)",
-				"tags": [
-					"CRUD"
-				],
+				"tags": ["CRUD"],
 				"security": [
 					{
-						"jwt": [
-							"user"
-						]
+						"jwt": ["user"]
 					}
 				],
 				"parameters": [
@@ -564,9 +502,7 @@
 										"type": "string"
 									}
 								},
-								"required": [
-									"name"
-								],
+								"required": ["name"],
 								"type": "object",
 								"description": "Content to update to"
 							}
@@ -592,9 +528,7 @@
 													"type": "string"
 												}
 											},
-											"required": [
-												"_id"
-											],
+											"required": ["_id"],
 											"type": "object"
 										}
 									]
@@ -621,9 +555,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -639,14 +571,10 @@
 				},
 				"description": "Delete an Item",
 				"summary": "Delete an Item  (Admin Only)",
-				"tags": [
-					"CRUD"
-				],
+				"tags": ["CRUD"],
 				"security": [
 					{
-						"jwt": [
-							"admin"
-						]
+						"jwt": ["admin"]
 					}
 				],
 				"parameters": [
@@ -681,9 +609,7 @@
 													"type": "string"
 												}
 											},
-											"required": [
-												"_id"
-											],
+											"required": ["_id"],
 											"type": "object"
 										}
 									]
@@ -703,9 +629,7 @@
 				},
 				"description": "Create an Item",
 				"summary": "Create an Item",
-				"tags": [
-					"CRUD"
-				],
+				"tags": ["CRUD"],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -719,9 +643,7 @@
 										"type": "string"
 									}
 								},
-								"required": [
-									"name"
-								],
+								"required": ["name"],
 								"type": "object",
 								"description": "Provide new document contents"
 							}
@@ -740,9 +662,7 @@
 							"application/json": {
 								"schema": {
 									"type": "number",
-									"enum": [
-										null
-									],
+									"enum": [null],
 									"nullable": true
 								}
 							}
@@ -758,9 +678,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -776,9 +694,7 @@
 				},
 				"description": "Generate a new Captcha",
 				"summary": "Generate a new Captcha",
-				"tags": [
-					"Captcha"
-				],
+				"tags": ["Captcha"],
 				"security": [],
 				"parameters": []
 			}
@@ -797,9 +713,7 @@
 											"type": "boolean"
 										}
 									},
-									"required": [
-										"success"
-									],
+									"required": ["success"],
 									"type": "object"
 								},
 								"examples": {
@@ -822,9 +736,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -840,9 +752,7 @@
 				},
 				"description": "Verify a Captcha",
 				"summary": "Verify a Captcha",
-				"tags": [
-					"Captcha"
-				],
+				"tags": ["Captcha"],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -855,9 +765,7 @@
 										"type": "string"
 									}
 								},
-								"required": [
-									"code"
-								],
+								"required": ["code"],
 								"type": "object"
 							}
 						}
@@ -913,10 +821,7 @@
 											"type": "boolean"
 										}
 									},
-									"required": [
-										"message",
-										"ok"
-									],
+									"required": ["message", "ok"],
 									"type": "object"
 								},
 								"examples": {
@@ -933,9 +838,7 @@
 				},
 				"description": "Optional DCL route",
 				"summary": "Optional DCL Route",
-				"tags": [
-					"Decentraland"
-				],
+				"tags": ["Decentraland"],
 				"security": [],
 				"parameters": []
 			}
@@ -988,10 +891,7 @@
 											"type": "boolean"
 										}
 									},
-									"required": [
-										"message",
-										"ok"
-									],
+									"required": ["message", "ok"],
 									"type": "object"
 								},
 								"examples": {
@@ -1008,9 +908,7 @@
 				},
 				"description": "Required DCL Route",
 				"summary": "Required DCL Route",
-				"tags": [
-					"Decentraland"
-				],
+				"tags": ["Decentraland"],
 				"security": [],
 				"parameters": []
 			}
@@ -1029,9 +927,7 @@
 											"type": "boolean"
 										}
 									},
-									"required": [
-										"online"
-									],
+									"required": ["online"],
 									"type": "object"
 								},
 								"examples": {
@@ -1047,9 +943,7 @@
 				},
 				"description": "Check if API is online",
 				"summary": "Check if API is online",
-				"tags": [
-					"Tests"
-				],
+				"tags": ["Tests"],
 				"security": [],
 				"parameters": []
 			}
@@ -1068,9 +962,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1086,9 +978,7 @@
 				},
 				"description": "Add 10 test items to DB",
 				"summary": "Add 10 test items to DB",
-				"tags": [
-					"Tests"
-				],
+				"tags": ["Tests"],
 				"security": [],
 				"parameters": []
 			}
@@ -1140,9 +1030,7 @@
 				},
 				"description": "Test Rate Limitter",
 				"summary": "Test Rate Limitter",
-				"tags": [
-					"Tests"
-				],
+				"tags": ["Tests"],
 				"security": [],
 				"parameters": []
 			}
@@ -1161,9 +1049,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"nonce"
-									],
+									"required": ["nonce"],
 									"type": "object"
 								},
 								"examples": {
@@ -1186,9 +1072,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1204,9 +1088,7 @@
 				},
 				"description": "Get a nonce for a user",
 				"summary": "Get a new nonce",
-				"tags": [
-					"Authentication"
-				],
+				"tags": ["Authentication"],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -1219,9 +1101,7 @@
 										"type": "string"
 									}
 								},
-								"required": [
-									"address"
-								],
+								"required": ["address"],
 								"type": "object"
 							}
 						}
@@ -1243,9 +1123,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1268,9 +1146,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1286,9 +1162,7 @@
 				},
 				"description": "Get a SIWE Payload for an address/nonce",
 				"summary": "Get a SIWE Payload",
-				"tags": [
-					"Authentication"
-				],
+				"tags": ["Authentication"],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -1304,10 +1178,7 @@
 										"type": "string"
 									}
 								},
-								"required": [
-									"nonce",
-									"address"
-								],
+								"required": ["nonce", "address"],
 								"type": "object"
 							}
 						}
@@ -1329,9 +1200,7 @@
 											"type": "boolean"
 										}
 									},
-									"required": [
-										"success"
-									],
+									"required": ["success"],
 									"type": "object"
 								},
 								"examples": {
@@ -1354,9 +1223,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1372,9 +1239,7 @@
 				},
 				"description": "Login with SIWE",
 				"summary": "Login with SIWE",
-				"tags": [
-					"Authentication"
-				],
+				"tags": ["Authentication"],
 				"security": [],
 				"parameters": [
 					{
@@ -1405,17 +1270,11 @@
 												"type": "string"
 											}
 										},
-										"required": [
-											"payload",
-											"signature",
-											"address"
-										],
+										"required": ["payload", "signature", "address"],
 										"type": "object"
 									}
 								},
-								"required": [
-									"siwe"
-								],
+								"required": ["siwe"],
 								"type": "object",
 								"description": "SIWE Object with address, signature, payload"
 							}
@@ -1438,9 +1297,7 @@
 											"type": "boolean"
 										}
 									},
-									"required": [
-										"success"
-									],
+									"required": ["success"],
 									"type": "object"
 								},
 								"examples": {
@@ -1463,9 +1320,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1481,9 +1336,7 @@
 				},
 				"description": "Logout from SIWE",
 				"summary": "Logout from SIWE",
-				"tags": [
-					"Authentication"
-				],
+				"tags": ["Authentication"],
 				"security": [],
 				"parameters": []
 			}
@@ -1525,9 +1378,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1543,9 +1394,7 @@
 				},
 				"description": "Get SIWE Profile",
 				"summary": "Get SIWE Profile",
-				"tags": [
-					"Authentication"
-				],
+				"tags": ["Authentication"],
 				"security": [],
 				"parameters": []
 			}
@@ -1567,10 +1416,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"privateKey",
-										"address"
-									],
+									"required": ["privateKey", "address"],
 									"type": "object"
 								}
 							}
@@ -1586,9 +1432,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1602,14 +1446,10 @@
 						}
 					}
 				},
-				"tags": [
-					"Web3"
-				],
+				"tags": ["Web3"],
 				"security": [
 					{
-						"siwe": [
-							"user"
-						]
+						"siwe": ["user"]
 					}
 				],
 				"parameters": []
@@ -1630,9 +1470,7 @@
 											"nullable": true
 										}
 									},
-									"required": [
-										"address"
-									],
+									"required": ["address"],
 									"type": "object"
 								}
 							}
@@ -1648,9 +1486,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1664,14 +1500,10 @@
 						}
 					}
 				},
-				"tags": [
-					"Web3"
-				],
+				"tags": ["Web3"],
 				"security": [
 					{
-						"siwe": [
-							"user"
-						]
+						"siwe": ["user"]
 					}
 				],
 				"parameters": [
@@ -1701,9 +1533,7 @@
 											"nullable": true
 										}
 									},
-									"required": [
-										"name"
-									],
+									"required": ["name"],
 									"type": "object"
 								}
 							}
@@ -1719,9 +1549,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1735,14 +1563,10 @@
 						}
 					}
 				},
-				"tags": [
-					"Web3"
-				],
+				"tags": ["Web3"],
 				"security": [
 					{
-						"siwe": [
-							"user"
-						]
+						"siwe": ["user"]
 					}
 				],
 				"parameters": [
@@ -1784,9 +1608,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1802,14 +1624,10 @@
 				},
 				"description": "Retrieves all APIKeys.",
 				"summary": "Retrieves all APIKeys.",
-				"tags": [
-					"APIKeys"
-				],
+				"tags": ["APIKeys"],
 				"security": [
 					{
-						"siwe": [
-							"user"
-						]
+						"siwe": ["user"]
 					}
 				],
 				"parameters": []
@@ -1837,9 +1655,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"message"
-									],
+									"required": ["message"],
 									"type": "object"
 								},
 								"examples": {
@@ -1855,14 +1671,10 @@
 				},
 				"description": "Creates a new APIKey.",
 				"summary": "Creates a new APIKey.",
-				"tags": [
-					"APIKeys"
-				],
+				"tags": ["APIKeys"],
 				"security": [
 					{
-						"siwe": [
-							"user"
-						]
+						"siwe": ["user"]
 					}
 				],
 				"parameters": [],
@@ -1887,11 +1699,7 @@
 										"format": "double"
 									}
 								},
-								"required": [
-									"tokenName",
-									"scopes",
-									"expiresInDays"
-								],
+								"required": ["tokenName", "scopes", "expiresInDays"],
 								"type": "object",
 								"description": "- Request body."
 							}

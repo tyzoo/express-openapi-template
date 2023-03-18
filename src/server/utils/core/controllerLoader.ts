@@ -14,9 +14,9 @@ function loadControllersFromDir(dir: string): number {
 		if (entry.isDirectory()) {
 			count += loadControllersFromDir(fullPath);
 		} else if (
-			(entry.name.endsWith(".ts") || entry.name.endsWith(".js"))
-			&& entry.name.includes("Controller")
-			&& !entry.name.endsWith(".d.ts")
+			(entry.name.endsWith(".ts") || entry.name.endsWith(".js")) &&
+			entry.name.includes("Controller") &&
+			!entry.name.endsWith(".d.ts")
 		) {
 			require(fullPath);
 			count++;

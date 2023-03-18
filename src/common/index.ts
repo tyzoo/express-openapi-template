@@ -1,3 +1,3 @@
 export function commonFunc() {
-  console.log(`Common lib`);
+	console.log(`Common lib`);
 }
