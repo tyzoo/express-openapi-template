@@ -9,6 +9,7 @@ import {
 	Middlewares,
 	Request,
 	Queries,
+	Example,
 } from "tsoa";
 import { decentralandRequired } from "../../middleware";
 import { Guestbook, GuestbookModel } from "../../models";
@@ -24,6 +25,29 @@ export class GuestbookController {
 	 * @returns { PaginateResult<Guestbook> } Array of Items
 	 */
 	@Get("")
+	@Example<PaginateResult<Guestbook & { _id: string }>>(
+		{
+			"docs": [
+				{
+					"_id": "62f05f918c8a2e1d6608dfd2",
+					"address": "0x12345",
+					"message": "henlo",
+					"listName": "event-1"
+				},
+			],
+			"totalDocs": 113,
+			"offset": 0,
+			"limit": 10,
+			"totalPages": 12,
+			"page": 1,
+			"pagingCounter": 1,
+			"hasPrevPage": false,
+			"hasNextPage": true,
+			"prevPage": null,
+			"nextPage": 2
+		},
+		"Successful Response",
+	)
 	public async findAllItems(
 		@Queries() queryParams: FilterQueryParams
 	): Promise<PaginateResult<Guestbook>> {

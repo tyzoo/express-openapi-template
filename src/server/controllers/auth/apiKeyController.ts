@@ -12,6 +12,7 @@ import {
 	Queries,
 	Delete,
 	Path,
+	Example,
 } from "tsoa";
 import { UserModel, User_Scopes } from "../../models";
 import { TOKEN_TYPES } from "../../services/tokenService";
@@ -47,6 +48,34 @@ export class ApiKeyController {
 	 * @returns { PaginateResult<APIKey> } - An array of paginated APIKeys
 	 */
 	@Get("/")
+	@Example<PaginateResult<APIKey & { _id: string }>>(
+		{
+			"docs": [
+				{
+					"_id": "6416b112d8dce57694812345",
+					"user": "632a1ed547dcfbc73c12345",
+					"name": "test-token",
+					"expiresAt": new Date("2023-03-29T06:52:02.048Z"),
+					"scopes": [
+						APIKey_Scopes.USER_READ,
+					],
+					"createdAt": new Date("2023-03-19T06:52:02.053Z"),
+					"updatedAt": new Date("2023-03-19T06:52:02.053Z")
+				}
+			],
+			"totalDocs": 3,
+			"offset": 0,
+			"limit": 10,
+			"totalPages": 1,
+			"page": 1,
+			"pagingCounter": 1,
+			"hasPrevPage": false,
+			"hasNextPage": false,
+			"prevPage": null,
+			"nextPage": null
+		},
+		"Successful Response",
+	)
 	public async findAllItems(
 		@Queries() queryParams: FilterQueryParams,
 		@Request() req: express.Request,
