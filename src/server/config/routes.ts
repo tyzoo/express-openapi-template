@@ -12,13 +12,13 @@ import {
 	fetchMiddlewares,
 } from "@tsoa/runtime";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { GuestbookController } from "./../controllers/guestbookController";
+import { GuestbookController } from "./../controllers/features/guestbookController";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { CrudController } from "./../controllers/crudController";
+import { CrudController } from "./../controllers/features/crudController";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CaptchaController } from "./../controllers/auth/captchaController";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { DCLController } from "./../controllers/dclController";
+import { DCLController } from "./../controllers/features/dclController";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TestsController } from "./../controllers/testsController";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -35,18 +35,6 @@ import type { RequestHandler, Router } from "express";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-	Guestbook: {
-		dataType: "refObject",
-		properties: {
-			createdAt: { dataType: "datetime" },
-			updatedAt: { dataType: "datetime" },
-			address: { dataType: "string", required: true },
-			listName: { dataType: "string", required: true },
-			message: { dataType: "string", required: true },
-		},
-		additionalProperties: false,
-	},
-	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 	FlattenMaps_T_: {
 		dataType: "refAlias",
 		type: {
@@ -61,13 +49,14 @@ const models: TsoaRoute.Models = {
 		type: { ref: "FlattenMaps_T_", validators: {} },
 	},
 	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-	Item: {
+	Guestbook: {
 		dataType: "refObject",
 		properties: {
 			createdAt: { dataType: "datetime" },
 			updatedAt: { dataType: "datetime" },
-			name: { dataType: "string", required: true },
-			rng: { dataType: "double" },
+			address: { dataType: "string", required: true },
+			listName: { dataType: "string", required: true },
+			message: { dataType: "string", required: true },
 		},
 		additionalProperties: false,
 	},
@@ -91,6 +80,17 @@ const models: TsoaRoute.Models = {
 			page: { dataType: "double" },
 		},
 		additionalProperties: { dataType: "any" },
+	},
+	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+	Item: {
+		dataType: "refObject",
+		properties: {
+			createdAt: { dataType: "datetime" },
+			updatedAt: { dataType: "datetime" },
+			name: { dataType: "string", required: true },
+			rng: { dataType: "double" },
+		},
+		additionalProperties: false,
 	},
 	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 	"mongoose.Types.ObjectId": {
@@ -218,15 +218,22 @@ export function RegisterRoutes(app: Router) {
 		"/guestbook",
 		...fetchMiddlewares<RequestHandler>(GuestbookController),
 		...fetchMiddlewares<RequestHandler>(
-			GuestbookController.prototype.findAllitems,
+			GuestbookController.prototype.findAllItems,
 		),
 
-		function GuestbookController_findAllitems(
+		function GuestbookController_findAllItems(
 			request: any,
 			response: any,
 			next: any,
 		) {
-			const args = {};
+			const args = {
+				queryParams: {
+					in: "queries",
+					name: "queryParams",
+					required: true,
+					ref: "FilterQueryParams",
+				},
+			};
 
 			// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
@@ -236,7 +243,7 @@ export function RegisterRoutes(app: Router) {
 
 				const controller = new GuestbookController();
 
-				const promise = controller.findAllitems.apply(
+				const promise = controller.findAllItems.apply(
 					controller,
 					validatedArgs as any,
 				);
@@ -682,14 +689,20 @@ export function RegisterRoutes(app: Router) {
 		"/api-keys",
 		authenticateMiddleware([{ siwe: ["user"] }]),
 		...fetchMiddlewares<RequestHandler>(ApiKeyController),
-		...fetchMiddlewares<RequestHandler>(ApiKeyController.prototype.findAllitems),
+		...fetchMiddlewares<RequestHandler>(ApiKeyController.prototype.findAllItems),
 
-		function ApiKeyController_findAllitems(
+		function ApiKeyController_findAllItems(
 			request: any,
 			response: any,
 			next: any,
 		) {
 			const args = {
+				queryParams: {
+					in: "queries",
+					name: "queryParams",
+					required: true,
+					ref: "FilterQueryParams",
+				},
 				req: { in: "request", name: "req", required: true, dataType: "object" },
 			};
 
@@ -701,7 +714,7 @@ export function RegisterRoutes(app: Router) {
 
 				const controller = new ApiKeyController();
 
-				const promise = controller.findAllitems.apply(
+				const promise = controller.findAllItems.apply(
 					controller,
 					validatedArgs as any,
 				);
@@ -751,6 +764,41 @@ export function RegisterRoutes(app: Router) {
 				const controller = new ApiKeyController();
 
 				const promise = controller.createApiKey.apply(
+					controller,
+					validatedArgs as any,
+				);
+				promiseHandler(controller, promise, response, undefined, next);
+			} catch (err) {
+				return next(err);
+			}
+		},
+	);
+	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+	app.delete(
+		"/api-keys/:itemId",
+		authenticateMiddleware([{ siwe: ["user"] }]),
+		...fetchMiddlewares<RequestHandler>(ApiKeyController),
+		...fetchMiddlewares<RequestHandler>(ApiKeyController.prototype.deleteApiKey),
+
+		function ApiKeyController_deleteApiKey(
+			request: any,
+			response: any,
+			next: any,
+		) {
+			const args = {
+				itemId: { in: "path", name: "itemId", required: true, dataType: "string" },
+				req: { in: "request", name: "req", required: true, dataType: "object" },
+			};
+
+			// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+			let validatedArgs: any[] = [];
+			try {
+				validatedArgs = getValidatedArgs(args, request, response);
+
+				const controller = new ApiKeyController();
+
+				const promise = controller.deleteApiKey.apply(
 					controller,
 					validatedArgs as any,
 				);

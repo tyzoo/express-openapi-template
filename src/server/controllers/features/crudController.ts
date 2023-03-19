@@ -13,9 +13,9 @@ import {
 	Security,
 	Queries,
 } from "tsoa";
-import { ItemModel, Item, User_Scopes } from "../models";
-import { APIError } from "../utils";
-import { buildMongoQuery, FilterQueryParams } from "../utils/db/mongoQuery";
+import { ItemModel, Item, User_Scopes } from "../../models";
+import { APIError } from "../../utils";
+import { buildMongoQuery, FilterQueryParams } from "../../utils/db/mongoQuery";
 
 @Route("crud")
 @Tags("CRUD")
@@ -41,7 +41,8 @@ export class CrudController {
 		const items = await ItemModel.find(mongoQuery.filters)
 			.sort(mongoQuery.options.sort)
 			.skip(mongoQuery.options.skip)
-			.limit(mongoQuery.options.limit);
+			.limit(mongoQuery.options.limit)
+			.select("-__v");
 		return items;
 	}
 

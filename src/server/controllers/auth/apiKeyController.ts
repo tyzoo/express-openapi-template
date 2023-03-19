@@ -8,11 +8,15 @@ import {
 	Security,
 	Post,
 	Body,
+	Queries,
+	Delete,
+	Path,
 } from "tsoa";
 import { UserModel, User_Scopes } from "../../models";
 import { TOKEN_TYPES } from "../../services/tokenService";
 import { APIKey, APIKeyModel, APIKey_Scopes } from "../../models/auth/APIKey";
 import { APIError } from "../../utils";
+import { buildMongoQuery, FilterQueryParams } from "../../utils/db/mongoQuery";
 
 /**
  * APIKey document with _id field.
@@ -41,13 +45,23 @@ export class ApiKeyController {
 	 * @returns { Promise<APIKey[]> } - An array of APIKeys.
 	 */
 	@Get("/")
-	public async findAllitems(
+	public async findAllItems(
+		@Queries() queryParams: FilterQueryParams,
 		@Request() req: express.Request,
 	): Promise<APIKeyDoc[]> {
 		const userId = req.res!.locals.decoded.user._id;
 		const user = await UserModel.findById(userId);
 		if (!user) throw new APIError(403, "Invalid user");
-		return APIKeyModel.find({ user: user._id }).select(["-__v"]);
+		const mongoQuery = buildMongoQuery(queryParams);
+		const items = await APIKeyModel.find({
+			...mongoQuery.filters,
+			user: user._id,
+		})
+			.sort(mongoQuery.options.sort)
+			.skip(mongoQuery.options.skip)
+			.limit(mongoQuery.options.limit)
+			.select("-__v");
+		return items;
 	}
 
 	/**
@@ -74,5 +88,31 @@ export class ApiKeyController {
 		const user = await UserModel.findById(userId);
 		if (!user) throw new APIError(403, "Invalid user");
 		return APIKeyModel.issueToken(userId, tokenName, expiresInDays, scopes);
+	}
+
+	/**
+	 * Deletes an APIKey.
+	 * @summary Deletes an APIKey.
+	 * @param {string} id - The ID of the APIKey to delete.
+	 * @returns { Promise<{ success: boolean, message: string }> } - A success status message.
+	 */
+	@Delete("/{itemId}")
+	public async deleteApiKey(
+		@Path() itemId: string,
+		@Request() req: express.Request,
+	): Promise<{ success: boolean; message: string }> {
+		const userId = req.res!.locals.decoded.user._id;
+		const user = await UserModel.findById(userId);
+		if (!user) throw new APIError(403, "Invalid user");
+		const apiKey = await APIKeyModel.findOne({
+			_id: itemId,
+			user: user._id,
+		});
+		if (!apiKey) throw new APIError(404, "API key not found");
+		await apiKey.remove();
+		return {
+			success: true,
+			message: "API key successfully deleted",
+		};
 	}
 }

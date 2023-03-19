@@ -6,6 +6,14 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"Document_any.any.any_": {
+				"$ref": "#/components/schemas/FlattenMaps_T_",
+				"description": "Generic types for Document:\n*  T - the type of _id\n*  TQueryHelpers - Object with any helpers that should be mixed into the Query type\n*  DocType - the type of the actual Document created"
+			},
 			"Guestbook": {
 				"properties": {
 					"createdAt": {
@@ -27,36 +35,6 @@
 					}
 				},
 				"required": ["address", "listName", "message"],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"FlattenMaps_T_": {
-				"properties": {},
-				"type": "object"
-			},
-			"Document_any.any.any_": {
-				"$ref": "#/components/schemas/FlattenMaps_T_",
-				"description": "Generic types for Document:\n*  T - the type of _id\n*  TQueryHelpers - Object with any helpers that should be mixed into the Query type\n*  DocType - the type of the actual Document created"
-			},
-			"Item": {
-				"properties": {
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"name": {
-						"type": "string"
-					},
-					"rng": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": ["name"],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -85,6 +63,28 @@
 				},
 				"type": "object",
 				"additionalProperties": {}
+			},
+			"Item": {
+				"properties": {
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"rng": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": ["name"],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"mongoose.Types.ObjectId": {
 				"type": "string"
@@ -311,7 +311,7 @@
 	"paths": {
 		"/guestbook": {
 			"get": {
-				"operationId": "FindAllitems",
+				"operationId": "FindAllItems",
 				"responses": {
 					"200": {
 						"description": "Array of Items",
@@ -321,12 +321,18 @@
 									"items": {
 										"allOf": [
 											{
+												"$ref": "#/components/schemas/Document_any.any.any_"
+											},
+											{
 												"$ref": "#/components/schemas/Guestbook"
+											},
+											{
+												"$ref": "#/components/schemas/IObjectWithTypegooseFunction"
 											},
 											{
 												"properties": {
 													"_id": {
-														"type": "string"
+														"$ref": "#/components/schemas/ObjectId"
 													}
 												},
 												"required": ["_id"],
@@ -344,7 +350,34 @@
 				"summary": "Get all items",
 				"tags": ["Guestbook"],
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			},
 			"post": {
 				"operationId": "CreateItem",
@@ -1710,7 +1743,7 @@
 		},
 		"/api-keys": {
 			"get": {
-				"operationId": "FindAllitems",
+				"operationId": "FindAllItems",
 				"responses": {
 					"200": {
 						"description": "- An array of APIKeys.",
@@ -1757,7 +1790,34 @@
 						"siwe": ["user"]
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			},
 			"post": {
 				"operationId": "CreateApiKey",
@@ -1833,6 +1893,73 @@
 						}
 					}
 				}
+			}
+		},
+		"/api-keys/{itemId}": {
+			"delete": {
+				"operationId": "DeleteApiKey",
+				"responses": {
+					"200": {
+						"description": "- A success status message.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										},
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": ["message", "success"],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": ["message"],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Unauthorized request"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Deletes an APIKey.",
+				"summary": "Deletes an APIKey.",
+				"tags": ["APIKeys"],
+				"security": [
+					{
+						"siwe": ["user"]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "itemId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

@@ -1,7 +1,17 @@
-import { Get, Route, Tags, Body, Post, Middlewares, Request } from "tsoa";
+import {
+	Get,
+	Route,
+	Tags,
+	Body,
+	Post,
+	Middlewares,
+	Request,
+	Queries,
+} from "tsoa";
 import express from "express";
-import { decentralandRequired } from "../middleware";
-import { Guestbook, GuestbookModel } from "../models";
+import { decentralandRequired } from "../../middleware";
+import { Guestbook, GuestbookModel } from "../../models";
+import { buildMongoQuery, FilterQueryParams } from "../../utils/db/mongoQuery";
 
 @Route("/guestbook")
 @Tags("Guestbook")
@@ -12,8 +22,14 @@ export class GuestbookController {
 	 * @returns { Guestbook[] } Array of Items
 	 */
 	@Get("")
-	public async findAllitems(): Promise<(Guestbook & { _id: string })[]> {
-		return GuestbookModel.find({}).select(["-__v"]);
+	public async findAllItems(@Queries() queryParams: FilterQueryParams) {
+		const mongoQuery = buildMongoQuery(queryParams);
+		const items = await GuestbookModel.find(mongoQuery.filters)
+			.sort(mongoQuery.options.sort)
+			.skip(mongoQuery.options.skip)
+			.limit(mongoQuery.options.limit)
+			.select("-__v");
+		return items;
 	}
 
 	/**

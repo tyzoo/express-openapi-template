@@ -13,7 +13,7 @@ import {
 	decentralandOptional,
 	decentralandRequired,
 	Metadata,
-} from "../middleware";
+} from "../../middleware";
 
 interface MetadataResponse {
 	address: string;
