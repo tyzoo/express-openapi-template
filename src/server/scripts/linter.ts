@@ -4,7 +4,7 @@ import { ESLint } from "eslint";
 async function runLinter() {
 	// Initialize ESLint with the desired configuration
 	const eslint = new ESLint({
-		overrideConfigFile: path.resolve(__dirname, "..", ".eslintrc.js"), // Path to your ESLint configuration file
+		overrideConfigFile: path.resolve(__dirname, "..", "..", ".eslintrc.js"), // Path to your ESLint configuration file
 		extensions: [".ts"],
 	});
 

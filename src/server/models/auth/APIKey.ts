@@ -12,8 +12,8 @@ import { BaseModel } from "../core/BaseModel";
 import { UserModel } from "./User";
 
 export enum APIKey_Scopes {
-	READ = "read", //eslint-disable-line
-	WRITE = "write", //eslint-disable-line
+	USER_READ = "user:read", //eslint-disable-line
+	USER_WRITE = "user:write", //eslint-disable-line
 }
 
 /**
@@ -59,7 +59,7 @@ export class APIKey extends BaseModel {
 
 	/**
 	 * Scopes of the API Key relative to the User account
-	 * @example "read", "write"
+	 * @example "user:read", "user:write"
 	 */
 	@prop({ required: false, default: [] })
 	public scopes?: APIKey_Scopes[];

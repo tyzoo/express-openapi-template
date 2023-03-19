@@ -158,6 +158,8 @@ export function buildMongoQuery(queryParams: FilterQueryParams) {
 	if (parsedQueryParams.page && parsedQueryParams.limit) {
 		mongoQuery.options.skip =
 			(parsedQueryParams.page - 1) * parsedQueryParams.limit;
+
+		mongoQuery.options.page = parsedQueryParams.page;
 	}
 
 	// console.log(JSON.stringify({ mongoQuery }, null, 2));

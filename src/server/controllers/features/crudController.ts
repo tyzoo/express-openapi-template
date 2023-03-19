@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { PaginateResult } from "mongoose";
 import {
 	Get,
 	Route,
@@ -23,27 +23,42 @@ export class CrudController {
 	/**
 	 * Get all items
 	 * @summary Get all items (With Pagination, Sorting, Filtering)
-	 * @returns { Item[] } Array of Items
+	 * @returns { PaginateResult<Item> } Array of Items
 	 */
 	@Get("")
-	@Example<(Item & { _id: string })[]>(
-		[
-			{
-				_id: "62f05f918c8a2e1d6608dfd2",
-				name: "Item 4",
-				rng: 0.9992763155631645,
-			},
-		],
+	@Example<PaginateResult<Item & { _id: string }>>(
+		{
+			"docs": [
+				{
+					"_id": "62f05f918c8a2e1d6608dfd2",
+					"name": "222",
+					"rng": 0.9992763155631645
+				},
+			],
+			"totalDocs": 113,
+			"offset": 0,
+			"limit": 10,
+			"totalPages": 12,
+			"page": 1,
+			"pagingCounter": 1,
+			"hasPrevPage": false,
+			"hasNextPage": true,
+			"prevPage": null,
+			"nextPage": 2
+		},
 		"Successful Response",
 	)
-	public async findAllItems(@Queries() queryParams: FilterQueryParams) {
+	public async findAllItems(
+		@Queries() queryParams: FilterQueryParams
+	): Promise<PaginateResult<Item>> {
 		const mongoQuery = buildMongoQuery(queryParams);
-		const items = await ItemModel.find(mongoQuery.filters)
-			.sort(mongoQuery.options.sort)
-			.skip(mongoQuery.options.skip)
-			.limit(mongoQuery.options.limit)
-			.select("-__v");
-		return items;
+		const items = await ItemModel.paginate({
+			...mongoQuery.filters,
+		}, {
+			...mongoQuery.options,
+			select: ["-__v"],
+		});
+		return items as PaginateResult<Item>;
 	}
 
 	/**

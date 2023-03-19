@@ -2,6 +2,8 @@
 
 ### by [@tyzoo](https://github.io/tyzoo)
 
+---
+
 ### About
 
 A simple express API written in typescript with example OpenAPI/Swagger annotation which is used to automatically generate beautiful and functional docs for your API.
@@ -11,9 +13,15 @@ A simple express API written in typescript with example OpenAPI/Swagger annotati
 - Authentication: Sign in With Ethereum with secure sessions via Iron Session
 - Rate limit with Redis
 
+---
+
 ### Demo
 
 [https://express-openapi-ts-app.herokuapp.com/](https://express-openapi-ts-app.herokuapp.com/)
+
+###
+
+---
 
 ### Getting Started
 
@@ -22,6 +30,10 @@ A simple express API written in typescript with example OpenAPI/Swagger annotati
 - `npm run dev` or `yarn dev` to start the app in development mode
 - View the docs at [http://localhost:4270/](http://localhost:4270/)
 - Test your API at [http://localhost:4270/v1/](http://localhost:4270/v1/)
+
+###
+
+---
 
 ### Querying (Find All) Routes
 
@@ -48,12 +60,18 @@ A simple express API written in typescript with example OpenAPI/Swagger annotati
   - Case insensitive search
     - `/crud?filters[$and]=[{"name":{"$regex":"0x123456","$options":"i"}}]`
   - Query an array inside a document
-    - `/api-keys?filters[$and]=[{"scopes":{"$in":["read"]}}]`
+    - `/api-keys?filters[$and]=[{"scopes":{"$in":["user:read"]}}]`
 
 Note that not all MongoDB operators are allowed. You can refer to the documentation for the list of allowed operators.
+
+###
+
+---
 
 ### Links
 
 - [helmetjs](https://helmetjs.github.io/)
 - [typegoose](https://typegoose.github.io/typegoose/docs/guides/quick-start-guide)
 - [tsoa](https://tsoa-community.github.io/docs/introduction.html)
+
+---

@@ -12,6 +12,7 @@ import express from "express";
 import { decentralandRequired } from "../../middleware";
 import { Guestbook, GuestbookModel } from "../../models";
 import { buildMongoQuery, FilterQueryParams } from "../../utils/db/mongoQuery";
+import { PaginateResult } from "mongoose";
 
 @Route("/guestbook")
 @Tags("Guestbook")
@@ -19,17 +20,20 @@ export class GuestbookController {
 	/**
 	 * Get all items
 	 * @summary Get all items
-	 * @returns { Guestbook[] } Array of Items
+	 * @returns { PaginateResult<Guestbook> } Array of Items
 	 */
 	@Get("")
-	public async findAllItems(@Queries() queryParams: FilterQueryParams) {
+	public async findAllItems(
+		@Queries() queryParams: FilterQueryParams
+	): Promise<PaginateResult<Guestbook>> {
 		const mongoQuery = buildMongoQuery(queryParams);
-		const items = await GuestbookModel.find(mongoQuery.filters)
-			.sort(mongoQuery.options.sort)
-			.skip(mongoQuery.options.skip)
-			.limit(mongoQuery.options.limit)
-			.select("-__v");
-		return items;
+		const items = await GuestbookModel.paginate({
+			...mongoQuery.filters,
+		}, {
+			...mongoQuery.options,
+			select: ["-__v"],
+		});
+		return items as PaginateResult<Guestbook>;
 	}
 
 	/**

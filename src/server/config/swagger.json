@@ -6,14 +6,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"FlattenMaps_T_": {
-				"properties": {},
-				"type": "object"
-			},
-			"Document_any.any.any_": {
-				"$ref": "#/components/schemas/FlattenMaps_T_",
-				"description": "Generic types for Document:\n*  T - the type of _id\n*  TQueryHelpers - Object with any helpers that should be mixed into the Query type\n*  DocType - the type of the actual Document created"
-			},
 			"Guestbook": {
 				"properties": {
 					"createdAt": {
@@ -42,14 +34,85 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IObjectWithTypegooseFunction": {
-				"description": "Interface describing a Object that has a \"typegooseName\" Function",
-				"properties": {},
+			"PaginateResult_Guestbook_": {
+				"properties": {
+					"docs": {
+						"items": {
+							"$ref": "#/components/schemas/Guestbook"
+						},
+						"type": "array"
+					},
+					"totalDocs": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"hasPrevPage": {
+						"type": "boolean"
+					},
+					"hasNextPage": {
+						"type": "boolean"
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"prevPage": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"nextPage": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"pagingCounter": {
+						"type": "number",
+						"format": "double"
+					},
+					"meta": {}
+				},
+				"required": [
+					"docs",
+					"totalDocs",
+					"limit",
+					"hasPrevPage",
+					"hasNextPage",
+					"totalPages",
+					"offset",
+					"pagingCounter"
+				],
 				"type": "object",
-				"additionalProperties": false
-			},
-			"ObjectId": {
-				"type": "string"
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"items": {
+								"$ref": "#/components/schemas/Guestbook"
+							},
+							"type": "array"
+						},
+						{
+							"type": "number",
+							"format": "double"
+						},
+						{
+							"type": "boolean"
+						}
+					],
+					"nullable": true
+				}
 			},
 			"FilterQueryParams": {
 				"properties": {
@@ -91,6 +154,86 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"PaginateResult_Item_": {
+				"properties": {
+					"docs": {
+						"items": {
+							"$ref": "#/components/schemas/Item"
+						},
+						"type": "array"
+					},
+					"totalDocs": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"hasPrevPage": {
+						"type": "boolean"
+					},
+					"hasNextPage": {
+						"type": "boolean"
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"prevPage": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"nextPage": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"pagingCounter": {
+						"type": "number",
+						"format": "double"
+					},
+					"meta": {}
+				},
+				"required": [
+					"docs",
+					"totalDocs",
+					"limit",
+					"hasPrevPage",
+					"hasNextPage",
+					"totalPages",
+					"offset",
+					"pagingCounter"
+				],
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"items": {
+								"$ref": "#/components/schemas/Item"
+							},
+							"type": "array"
+						},
+						{
+							"type": "number",
+							"format": "double"
+						},
+						{
+							"type": "boolean"
+						}
+					],
+					"nullable": true
+				}
 			},
 			"mongoose.Types.ObjectId": {
 				"type": "string"
@@ -266,10 +409,138 @@
 			},
 			"APIKey_Scopes": {
 				"enum": [
-					"read",
-					"write"
+					"user:read",
+					"user:write"
 				],
 				"type": "string"
+			},
+			"APIKey": {
+				"description": "Users must assign unique names to each APIKey",
+				"properties": {
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"user": {
+						"type": "string",
+						"description": "APIKeys are linked to users"
+					},
+					"name": {
+						"type": "string",
+						"description": "Every APIKey should have a unique name"
+					},
+					"jwt": {
+						"type": "string",
+						"description": "Store source JWT for authorizaiton"
+					},
+					"hash": {
+						"type": "string",
+						"description": "Store hash of the JWT"
+					},
+					"expiresAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Date the API Key expires"
+					},
+					"scopes": {
+						"items": {
+							"$ref": "#/components/schemas/APIKey_Scopes"
+						},
+						"type": "array",
+						"description": "Scopes of the API Key relative to the User account"
+					}
+				},
+				"required": [
+					"user",
+					"name",
+					"expiresAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PaginateResult_APIKey_": {
+				"properties": {
+					"docs": {
+						"items": {
+							"$ref": "#/components/schemas/APIKey"
+						},
+						"type": "array"
+					},
+					"totalDocs": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"hasPrevPage": {
+						"type": "boolean"
+					},
+					"hasNextPage": {
+						"type": "boolean"
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"prevPage": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"nextPage": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"pagingCounter": {
+						"type": "number",
+						"format": "double"
+					},
+					"meta": {}
+				},
+				"required": [
+					"docs",
+					"totalDocs",
+					"limit",
+					"hasPrevPage",
+					"hasNextPage",
+					"totalPages",
+					"offset",
+					"pagingCounter"
+				],
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"items": {
+								"$ref": "#/components/schemas/APIKey"
+							},
+							"type": "array"
+						},
+						{
+							"type": "number",
+							"format": "double"
+						},
+						{
+							"type": "boolean"
+						}
+					],
+					"nullable": true
+				}
 			},
 			"APIKeyDoc": {
 				"description": "APIKey document with _id field",
@@ -357,31 +628,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"allOf": [
-											{
-												"$ref": "#/components/schemas/Document_any.any.any_"
-											},
-											{
-												"$ref": "#/components/schemas/Guestbook"
-											},
-											{
-												"$ref": "#/components/schemas/IObjectWithTypegooseFunction"
-											},
-											{
-												"properties": {
-													"_id": {
-														"$ref": "#/components/schemas/ObjectId"
-													}
-												},
-												"required": [
-													"_id"
-												],
-												"type": "object"
-											}
-										]
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/PaginateResult_Guestbook_"
 								}
 							}
 						}
@@ -493,41 +740,29 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"allOf": [
-											{
-												"$ref": "#/components/schemas/Document_any.any.any_"
-											},
-											{
-												"$ref": "#/components/schemas/Item"
-											},
-											{
-												"$ref": "#/components/schemas/IObjectWithTypegooseFunction"
-											},
-											{
-												"properties": {
-													"_id": {
-														"$ref": "#/components/schemas/ObjectId"
-													}
-												},
-												"required": [
-													"_id"
-												],
-												"type": "object"
-											}
-										]
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/PaginateResult_Item_"
 								},
 								"examples": {
 									"Successful Response": {
-										"value": [
-											{
-												"_id": "62f05f918c8a2e1d6608dfd2",
-												"name": "Item 4",
-												"rng": 0.9992763155631645
-											}
-										]
+										"value": {
+											"docs": [
+												{
+													"_id": "62f05f918c8a2e1d6608dfd2",
+													"name": "222",
+													"rng": 0.9992763155631645
+												}
+											],
+											"totalDocs": 113,
+											"offset": 0,
+											"limit": 10,
+											"totalPages": 12,
+											"page": 1,
+											"pagingCounter": 1,
+											"hasPrevPage": false,
+											"hasNextPage": true,
+											"prevPage": null,
+											"nextPage": 2
+										}
 									}
 								}
 							}
@@ -1908,14 +2143,11 @@
 				"operationId": "FindAllItems",
 				"responses": {
 					"200": {
-						"description": "- An array of APIKeys.",
+						"description": "- An array of paginated APIKeys",
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/APIKeyDoc"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/PaginateResult_APIKey_"
 								}
 							}
 						}

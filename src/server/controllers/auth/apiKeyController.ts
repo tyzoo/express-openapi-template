@@ -12,11 +12,12 @@ import {
 	Delete,
 	Path,
 } from "tsoa";
-import { UserModel, User_Scopes } from "../../models";
+import { BaseModel, UserModel, User_Scopes } from "../../models";
 import { TOKEN_TYPES } from "../../services/tokenService";
 import { APIKey, APIKeyModel, APIKey_Scopes } from "../../models/auth/APIKey";
 import { APIError } from "../../utils";
 import { buildMongoQuery, FilterQueryParams } from "../../utils/db/mongoQuery";
+import { PaginateResult } from "mongoose";
 
 /**
  * APIKey document with _id field
@@ -42,26 +43,25 @@ export class ApiKeyController {
 	/**
 	 * Retrieve all APIKeys
 	 * @summary Retrieve all APIKeys (User Only)
-	 * @returns { Promise<APIKey[]> } - An array of APIKeys.
+	 * @returns { PaginateResult<APIKey> } - An array of paginated APIKeys
 	 */
 	@Get("/")
 	public async findAllItems(
 		@Queries() queryParams: FilterQueryParams,
 		@Request() req: express.Request,
-	): Promise<APIKeyDoc[]> {
+	): Promise<PaginateResult<APIKey>> {
 		const userId = req.res!.locals.decoded.user._id;
 		const user = await UserModel.findById(userId);
 		if (!user) throw new APIError(403, "Invalid user");
 		const mongoQuery = buildMongoQuery(queryParams);
-		const items = await APIKeyModel.find({
+		const items = await APIKeyModel.paginate({
 			...mongoQuery.filters,
 			user: user._id,
-		})
-			.sort(mongoQuery.options.sort)
-			.skip(mongoQuery.options.skip)
-			.limit(mongoQuery.options.limit)
-			.select("-__v");
-		return items;
+		}, {
+			...mongoQuery.options,
+			select: ["-__v"],
+		});
+		return items as PaginateResult<APIKey>;
 	}
 
 	/**
@@ -69,9 +69,9 @@ export class ApiKeyController {
 	 * @summary Create a new APIKey (User Only)
 	 * @param {object} body - Request body
 	 * @param {number} body.expiresInDays 356 - The number of days the token should be valid for.
-	 * @param {APIKey_Scopes[]} body.scopes ["read"] - The scopes for the new APIKey relativre to the user.
+	 * @param {APIKey_Scopes[]} body.scopes ["user:read"] - The scopes for the new APIKey relativre to the user.
 	 * @param {string} body.tokenName "Read Only Token" - The name for the new APIKey.
-	 * @returns { Promise<APIKey> } - The new APIKey.
+	 * @returns { APIKey } - The new APIKey.
 	 */
 	@Post("/")
 	public async createApiKey(
@@ -94,7 +94,7 @@ export class ApiKeyController {
 	 * Delete an APIKey
 	 * @summary Delete an APIKey (User Only)
 	 * @param {string} id - The ID of the APIKey to delete.
-	 * @returns { Promise<{ success: boolean, message: string }> } - A success status message.
+	 * @returns { { success: boolean, message: string } } - A success status message.
 	 */
 	@Delete("/{itemId}")
 	public async deleteApiKey(
