@@ -1,4 +1,3 @@
-import express from "express";
 import mongoose from "mongoose";
 import {
 	Get,
@@ -12,16 +11,18 @@ import {
 	Path,
 	Example,
 	Security,
+	Queries,
 } from "tsoa";
-import { APIError, withMongoQuery } from "../utils";
 import { ItemModel, Item, User_Scopes } from "../models";
+import { APIError } from "../utils";
+import { buildMongoQuery, FilterQueryParams } from "../utils/db/mongoQuery";
 
 @Route("crud")
 @Tags("CRUD")
 export class CrudController {
 	/**
 	 * Get all items
-	 * @summary Get all items
+	 * @summary Get all items (With Pagination, Sorting, Filtering)
 	 * @returns { Item[] } Array of Items
 	 */
 	@Get("")
@@ -35,23 +36,16 @@ export class CrudController {
 		],
 		"Successful Response",
 	)
-	// @MongoQuery()
-	public findAllitems = withMongoQuery(
-		async (
-			// @ts-ignore
-			req: express.Request,
-			// @ts-ignore
-			res: express.Response,
-			mongoQuery: any,
-		) => {
-			const items = await ItemModel.find(
-				mongoQuery.filters,
-				null,
-				mongoQuery.options,
-			);
-			return items;
-		},
-	);
+	public async findAllItems(
+		@Queries() queryParams: FilterQueryParams
+	) {
+		const mongoQuery = buildMongoQuery(queryParams);
+		const items = await ItemModel.find(mongoQuery.filters)
+			.sort(mongoQuery.options.sort)
+			.skip(mongoQuery.options.skip)
+			.limit(mongoQuery.options.limit);
+		return items;
+	}
 
 	/**
 	 * Get Item by ID

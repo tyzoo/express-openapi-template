@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		"rootDir": ".",
 		"outDir": "../../dist/common",
-		"module": "CommonJS"
+		"module": "CommonJS",
+		"preserveValueImports": false
 	}
 }

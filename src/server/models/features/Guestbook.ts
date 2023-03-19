@@ -13,6 +13,7 @@ import { ethers } from "ethers";
 })
 @index({ address: 1, listName: 1 }, { unique: true })
 export class Guestbook extends TimeStamps {
+
 	@prop({ required: true })
 	public address!: string;
 

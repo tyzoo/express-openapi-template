@@ -20,14 +20,8 @@ export { readDir } from "./misc/readDir";
 export { requiredEnv, checkEnv } from "./misc/requiredEnv";
 export { handleErrors } from "./misc/handleAppErrors";
 
-export { withMongoQuery } from "./db/withMongoQuery";
-export { buildMongoQuery } from "./db/buildMongoQuery";
-export { parseQueryParams } from "./db/parseQueryParams";
-// export { MongoQuery } from "./db/mongoQueryDecorator";
-
 export class APIError extends Error {
 	constructor(
-		// eslint-disable-next-line
 		public status: number,
 		public message: string,
 	) {

@@ -8,7 +8,7 @@ import {
 	Response,
 	Example,
 } from "tsoa";
-import { ItemModel } from "../models/Item";
+import { ItemModel } from "../models/features/Item";
 import createRateLimiter, {
 	RateLimitResponse,
 } from "../middleware/rateLimitter";
