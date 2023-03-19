@@ -10,7 +10,7 @@
     "start": "node dist/server/index.js",
     "build": "npm run lint && npm run bundle && tsc --build",
     "dev": "concurrently \"nodemon ./server \" \"nodemon -x npm run generator:dev\"",
-    "bundle": "npx webpack --config webpack.config.cjs",
+    "bundle": "npx webpack --config webpack.config.js",
     "generator:dev": "ts-node ./src/server/scripts/generator",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",

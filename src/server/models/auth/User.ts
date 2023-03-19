@@ -6,8 +6,8 @@ import {
 	modelOptions,
 	Severity,
 } from "@typegoose/typegoose";
-import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { ethers } from "ethers";
+import { BaseModel } from "../core/BaseModel";
 
 export enum User_Scopes {
 	ADMIN = "admin", //eslint-disable-line
@@ -34,7 +34,7 @@ export enum User_Scopes {
  * The User object contains common information across
  * every user in the system regardless of status and role.
  */
-export class User extends TimeStamps {
+export class User extends BaseModel {
 	@prop({ required: true, immutable: true })
 	public address!: string;
 

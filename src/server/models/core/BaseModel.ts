@@ -11,12 +11,12 @@ export type PaginateMethod<T> = (
 
 @plugin(paginate)
 
-export class PaginatedModel extends TimeStamps {
+export class BaseModel extends TimeStamps {
 
   constructor() {
     super()
   }
 
-  static paginate: PaginateMethod<PaginatedModel>;
+  static paginate: PaginateMethod<BaseModel>;
 
 }

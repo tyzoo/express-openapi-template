@@ -7,7 +7,7 @@ export { APIKey, APIKeyModel } from "./auth/APIKey";
 /**
  * Core
  */
-export { PaginatedModel } from "./core/BaseModel";
+export { BaseModel } from "./core/BaseModel";
 
 /**
  * Features / Examples

@@ -5,10 +5,10 @@ import {
 	modelOptions,
 	Severity,
 } from "@typegoose/typegoose";
-import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { ModelType } from "@typegoose/typegoose/lib/types";
 import { sha256 } from "ethers/lib/utils";
 import { TokenService, TOKEN_TYPES } from "../../services/tokenService";
+import { BaseModel } from "../core/BaseModel";
 import { UserModel } from "./User";
 
 export enum APIKey_Scopes {
@@ -23,12 +23,10 @@ export enum APIKey_Scopes {
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 
 /**
- * APIKey objects allow you to associate actions performed
- * in the system with the user that performed them.
- * The APIKey object contains common information to link
- * back to the user which contains status and role.
+ * APIKey objects allows users to to access
+ * scoped read/write routes
  */
-export class APIKey extends TimeStamps {
+export class APIKey extends BaseModel {
 	/**
 	 * APIKeys are linked to users
 	 */

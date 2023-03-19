@@ -1,6 +1,6 @@
 import { prop, getModelForClass, pre, index } from "@typegoose/typegoose";
-import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { ethers } from "ethers";
+import { BaseModel } from "../core/BaseModel";
 
 @pre<Guestbook>("save", async function () {
 	if (this.isNew) {
@@ -12,7 +12,8 @@ import { ethers } from "ethers";
 	}
 })
 @index({ address: 1, listName: 1 }, { unique: true })
-export class Guestbook extends TimeStamps {
+
+export class Guestbook extends BaseModel {
 
 	@prop({ required: true })
 	public address!: string;
