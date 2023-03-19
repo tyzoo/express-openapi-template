@@ -629,6 +629,30 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/PaginateResult_Guestbook_"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"docs": [
+												{
+													"_id": "62f05f918c8a2e1d6608dfd2",
+													"address": "0x12345",
+													"message": "henlo",
+													"listName": "event-1"
+												}
+											],
+											"totalDocs": 113,
+											"offset": 0,
+											"limit": 10,
+											"totalPages": 12,
+											"page": 1,
+											"pagingCounter": 1,
+											"hasPrevPage": false,
+											"hasNextPage": true,
+											"prevPage": null,
+											"nextPage": 2
+										}
+									}
 								}
 							}
 						}
@@ -2148,6 +2172,35 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/PaginateResult_APIKey_"
+								},
+								"examples": {
+									"Successful Response": {
+										"value": {
+											"docs": [
+												{
+													"_id": "6416b112d8dce57694812345",
+													"user": "632a1ed547dcfbc73c12345",
+													"name": "test-token",
+													"expiresAt": "2023-03-29T06:52:02.048Z",
+													"scopes": [
+														"user:read"
+													],
+													"createdAt": "2023-03-19T06:52:02.053Z",
+													"updatedAt": "2023-03-19T06:52:02.053Z"
+												}
+											],
+											"totalDocs": 3,
+											"offset": 0,
+											"limit": 10,
+											"totalPages": 1,
+											"page": 1,
+											"pagingCounter": 1,
+											"hasPrevPage": false,
+											"hasNextPage": false,
+											"prevPage": null,
+											"nextPage": null
+										}
+									}
 								}
 							}
 						}
