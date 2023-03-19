@@ -16,13 +16,18 @@ export async function expressAuthentication(
 			throw Error(`Invalid tokenType "${tokenType}"`);
 		case TOKEN_TYPES.API_KEY:
 		case TOKEN_TYPES.SIWE: {
-			const token =
+			let token =
 				req.body.token ||
 				req.query.token ||
 				req.headers.authorization?.replace("Bearer ", "") ||
 				req.session.jwt;
-			return new Promise((resolve, reject) => {
+			return new Promise(async (resolve, reject) => {
 				if (!token) return reject(new Error("No token provided"));
+				if (token.startsWith("0x")) {
+					const apiKeyLookup = await APIKeyModel.findOne({ hash: token }).select(["jwt"]);
+					if (!apiKeyLookup) return reject(new Error("Incorrect API Key"));
+					token = apiKeyLookup.jwt;
+				}
 				jwt.verify(
 					token,
 					process.env.SECRET_COOKIE_PASSWORD!,

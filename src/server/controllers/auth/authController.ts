@@ -232,7 +232,7 @@ export class AuthController {
 		const address = req.session.siwe?.address;
 		const jwt = req.session?.jwt;
 		if (!address) throw new APIError(401, "Session not found");
-		const user = await UserModel.findOne({ address });
+		const user = await UserModel.findOne({ address }).select(["-__v"]);
 		if (!user) throw new APIError(401, "User not found");
 		return { user, jwt };
 	}
