@@ -13,7 +13,6 @@ import { TOKEN_TYPES } from "../../services/tokenService";
 	message: `Unauthorized request`,
 })
 export class Web3Controller {
-
 	/**
 	 * Generates a random wallet address and returns it with the private key
 	 * @returns {Promise<{address: string; privateKey: string;}>} Object containing the randomly generated address and private key

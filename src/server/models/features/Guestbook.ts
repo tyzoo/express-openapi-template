@@ -12,9 +12,7 @@ import { BaseModel } from "../core/BaseModel";
 	}
 })
 @index({ address: 1, listName: 1 }, { unique: true })
-
 export class Guestbook extends BaseModel {
-
 	@prop({ required: true })
 	public address!: string;
 

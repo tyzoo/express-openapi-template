@@ -1,18 +1,15 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "../../dist/server",
-    "module": "commonjs",
-    "preserveValueImports": false,
-  },
-  "references": [
-    {
-      "path": "../common"
-    }
-  ],
-  "include": [
-    "./**/*.ts",
-    "./config/swagger.json"
-  ]
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"rootDir": ".",
+		"outDir": "../../dist/server",
+		"module": "commonjs",
+		"preserveValueImports": false
+	},
+	"references": [
+		{
+			"path": "../common"
+		}
+	],
+	"include": ["./**/*.ts", "./config/swagger.json"]
 }

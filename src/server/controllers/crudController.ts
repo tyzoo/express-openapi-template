@@ -36,9 +36,7 @@ export class CrudController {
 		],
 		"Successful Response",
 	)
-	public async findAllItems(
-		@Queries() queryParams: FilterQueryParams
-	) {
+	public async findAllItems(@Queries() queryParams: FilterQueryParams) {
 		const mongoQuery = buildMongoQuery(queryParams);
 		const items = await ItemModel.find(mongoQuery.filters)
 			.sort(mongoQuery.options.sort)

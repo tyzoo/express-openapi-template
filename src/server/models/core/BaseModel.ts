@@ -1,22 +1,19 @@
-import { FilterQuery, PaginateOptions, PaginateResult } from 'mongoose';
-import { plugin } from '@typegoose/typegoose';
+import { FilterQuery, PaginateOptions, PaginateResult } from "mongoose";
+import { plugin } from "@typegoose/typegoose";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
-import paginate from 'mongoose-paginate-v2';
+import paginate from "mongoose-paginate-v2";
 
 export type PaginateMethod<T> = (
-  query?: FilterQuery<T>,
-  options?: PaginateOptions,
-  callback?: (err: any, result: PaginateResult<T>) => void,
+	query?: FilterQuery<T>, //eslint-disable-line
+	options?: PaginateOptions, //eslint-disable-line
+	callback?: (err: any, result: PaginateResult<T>) => void, //eslint-disable-line
 ) => Promise<PaginateResult<T>>;
 
 @plugin(paginate)
-
 export class BaseModel extends TimeStamps {
+	constructor() {
+		super();
+	}
 
-  constructor() {
-    super()
-  }
-
-  static paginate: PaginateMethod<BaseModel>;
-
+	static paginate: PaginateMethod<BaseModel>;
 }

@@ -21,10 +21,8 @@ export { requiredEnv, checkEnv } from "./misc/requiredEnv";
 export { handleErrors } from "./misc/handleAppErrors";
 
 export class APIError extends Error {
-	constructor(
-		public status: number,
-		public message: string,
-	) {
+	//eslint-disable-next-line
+	constructor(public status: number, public message: string) {
 		super(message);
 	}
 }
