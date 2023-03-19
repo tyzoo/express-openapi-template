@@ -1,4 +1,5 @@
 import express from "express";
+import { PaginateResult } from "mongoose";
 import {
 	Get,
 	Route,
@@ -12,12 +13,12 @@ import {
 	Delete,
 	Path,
 } from "tsoa";
-import { BaseModel, UserModel, User_Scopes } from "../../models";
+import { UserModel, User_Scopes } from "../../models";
 import { TOKEN_TYPES } from "../../services/tokenService";
 import { APIKey, APIKeyModel, APIKey_Scopes } from "../../models/auth/APIKey";
 import { APIError } from "../../utils";
 import { buildMongoQuery, FilterQueryParams } from "../../utils/db/mongoQuery";
-import { PaginateResult } from "mongoose";
+
 
 /**
  * APIKey document with _id field
