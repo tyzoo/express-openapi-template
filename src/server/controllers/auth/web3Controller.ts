@@ -1,14 +1,11 @@
-import { Get, Route, Tags, Response, Security, Path } from "tsoa";
+import { Get, Route, Tags, Response, Path } from "tsoa";
 import { ethers } from "ethers";
-import { User_Scopes } from "../../models";
-import { TOKEN_TYPES } from "../../services/tokenService";
 
 /**
  * Controller for web3-related endpoints
  */
 @Route("web3")
 @Tags("Web3")
-@Security(TOKEN_TYPES.SIWE, [User_Scopes.USER])
 @Response<{ message: string }>(401, "Unauthorized", {
 	message: `Unauthorized request`,
 })
