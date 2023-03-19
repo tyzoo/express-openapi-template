@@ -72,7 +72,7 @@ export class DCLController {
 	 * @returns {MetadataResponse}
 	 */
 	@Get("required")
-	@Middlewares(decentralandRequired)
+	@Middlewares(decentralandRequired([0, 0]))
 	@Example<MetadataResponse>(
 		{
 			address: `0x12345...`,

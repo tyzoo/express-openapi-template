@@ -18,11 +18,11 @@ export const decentralandOptional = combineMiddleware([
 		const req: express.Request & dcl.DecentralandSignatureData = _req as any;
 		res.locals.address = req.auth as string | undefined;
 		res.locals.metadata = req.authMetadata as Metadata | undefined;
-		next();
+		return next();
 	},
 ]);
 
-export const decentralandRequired = (parcel: [x: number, y: number]) => {
+export const decentralandRequired = (parcel?: [x: number, y: number]) => {
 	return combineMiddleware([
 		dcl.express({
 			optional: false,
@@ -35,14 +35,13 @@ export const decentralandRequired = (parcel: [x: number, y: number]) => {
 			res.locals.metadata = req.authMetadata as Metadata;
 			try {
 				await runChecks(req, parcel);
-				return;
 			} catch (err: any) {
 				const { message } = err;
 				return res.status(403).json({
 					message,
 				});
 			}
-			next();
+			return next();
 		},
 	]);
 };

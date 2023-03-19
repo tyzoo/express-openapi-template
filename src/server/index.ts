@@ -62,7 +62,7 @@ app.get("/", (req, res) => {
 		message: `${app.get("APP_NAME")} is online :)`,
 	});
 });
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, "..", "..", "public")));
 
 handleErrors(app);
 

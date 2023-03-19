@@ -19,10 +19,10 @@ import { APIError } from "../../utils";
 import { buildMongoQuery, FilterQueryParams } from "../../utils/db/mongoQuery";
 
 /**
- * APIKey document with _id field.
+ * APIKey document with _id field
  * @interface
  * @extends APIKey
- * @property {string} _id - The ID of the APIKey.
+ * @property {string} _id - The ID of the APIKey
  */
 interface APIKeyDoc extends APIKey {
 	_id: string;
@@ -40,8 +40,8 @@ interface APIKeyDoc extends APIKey {
 })
 export class ApiKeyController {
 	/**
-	 * Retrieves all APIKeys.
-	 * @summary Retrieves all APIKeys.
+	 * Retrieve all APIKeys
+	 * @summary Retrieve all APIKeys (User Only)
 	 * @returns { Promise<APIKey[]> } - An array of APIKeys.
 	 */
 	@Get("/")
@@ -65,9 +65,9 @@ export class ApiKeyController {
 	}
 
 	/**
-	 * Creates a new APIKey.
-	 * @summary Creates a new APIKey.
-	 * @param {object} body - Request body.
+	 * Create a new APIKey.
+	 * @summary Create a new APIKey (User Only)
+	 * @param {object} body - Request body
 	 * @param {number} body.expiresInDays 356 - The number of days the token should be valid for.
 	 * @param {APIKey_Scopes[]} body.scopes ["read"] - The scopes for the new APIKey relativre to the user.
 	 * @param {string} body.tokenName "Read Only Token" - The name for the new APIKey.
@@ -91,8 +91,8 @@ export class ApiKeyController {
 	}
 
 	/**
-	 * Deletes an APIKey.
-	 * @summary Deletes an APIKey.
+	 * Delete an APIKey
+	 * @summary Delete an APIKey (User Only)
 	 * @param {string} id - The ID of the APIKey to delete.
 	 * @returns { Promise<{ success: boolean, message: string }> } - A success status message.
 	 */

@@ -23,7 +23,7 @@ A simple express API written in typescript with example OpenAPI/Swagger annotati
 - View the docs at [http://localhost:4270/](http://localhost:4270/)
 - Test your API at [http://localhost:4270/v1/](http://localhost:4270/v1/)
 
-### Mongo Querying
+### Querying (Find All) Routes
 
 - **Pagination**: Use limit and page query parameters to paginate through results.
 
@@ -45,6 +45,10 @@ A simple express API written in typescript with example OpenAPI/Swagger annotati
     - `/crud?filters[name][$eq]=Item&filters[rng][$gte]=0.95`
   - Using Logical Query Operators
     - `/crud?filters[$or]=[{"rng.$gte":0.90},{"name.$lte":0.10}]`
+  - Case insensitive search
+    - `/crud?filters[$and]=[{"name":{"$regex":"0x123456","$options":"i"}}]`
+  - Query an array inside a document
+    - `/api-keys?filters[$and]=[{"scopes":{"$in":["read"]}}]`
 
 Note that not all MongoDB operators are allowed. You can refer to the documentation for the list of allowed operators.
 
